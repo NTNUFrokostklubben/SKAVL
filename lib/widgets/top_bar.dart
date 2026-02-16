@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/l10n/app_localizations.dart';
+
+
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  final BuildContext context;
+  final BuildContext foreignContext;
   final double height = 25;
+  const TopBar({super.key, required this.foreignContext});
 
-  TopBar({super.key, required this.context});
+  AppLocalizations? loc() {
+    return AppLocalizations.of(foreignContext);
+  }
 
-  final List<String> options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      toolbarHeight: 25,
-      backgroundColor: Color(0xFFE3E0E0),
-      actions: [
-        DropdownMenu(
-          dropdownMenuEntries: options
-              .map((option) => DropdownMenuEntry(value: option, label: option))
-              .toList(),
-        ),
-      ],
+  ButtonStyle menuItemStyle() {
+    return ButtonStyle(
+      fixedSize: WidgetStateProperty.all(Size(200, height+5)),
+      minimumSize: WidgetStateProperty.all(Size(25, height)),
     );
   }
 
-  @override
-  Size get preferredSize => Size(MediaQuery.of(context).size.width, height);
-}
+  MenuItemButton menuItem(String text, void Function() onPressed) {
+    return MenuItemButton(
+      onPressed: onPressed,
+       style :menuItemStyle(),
+      child: MenuAcceleratorLabel('&$text'), // child
+    );
+  }
 
-class MyMenuBar extends StatelessWidget implements PreferredSizeWidget {
-  final BuildContext foreignContext;
-  final double height = 25;
-  const MyMenuBar({super.key, required this.foreignContext});
+  SubmenuButton submenu(String text, List<Widget> children) {
+    return SubmenuButton(
+      style :menuItemStyle(),
+      menuChildren: children,
+      child: MenuAcceleratorLabel('&$text'), // Parent
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,90 +45,51 @@ class MyMenuBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               Expanded(
                 child: MenuBar(
-                  style: new MenuStyle(
-                    maximumSize: WidgetStateProperty.all(Size(500, height)),
+                  style: MenuStyle(
+                    maximumSize: WidgetStateProperty.all(Size(1000, height)),
                   ),
                   children: <Widget>[
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        MenuItemButton(
-                          onPressed: () {
-                            showAboutDialog(
-                              context: context,
-                              applicationName: '',
-                              applicationVersion: '1.0.0',
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&About'),
+                        menuItem(loc()!.g_save, (){}),
+                        menuItem(loc()!.topbar_saveAs, (){}),
+                        menuItem(loc()!.topbar_newProject, (){}),
+                        menuItem(loc()!.topbar_openProject, (){}),
+                        submenu(loc()!.topbar_openRecent, []),
+                        submenu(loc()!.g_share, [
+                          menuItem(loc()!.g_share, (){}),
+                          ]
                         ),
-                        MenuItemButton(
-                          style: new ButtonStyle(
-                            fixedSize: WidgetStateProperty.all(
-                              Size(50, height),
-                            ),
-                          ),
-                          child: const MenuAcceleratorLabel('&Save'),
-                        ),
-                        MenuItemButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Quit!')),
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&Quit'),
-                        ),
+                        menuItem(loc()!.topbar_newWindow, (){}),
+                        menuItem(loc()!.g_quit, (){}),
                       ],
-                      child: const MenuAcceleratorLabel('&File'),
+                      child:  MenuAcceleratorLabel('&${loc()!.g_file}'), // Parent
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        MenuItemButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Settings!')),
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&Settings'),
-                        ),
+                        menuItem(loc()!.g_settings, (){}),
                       ],
-                      child: const MenuAcceleratorLabel('&Edit'),
+                      child:  MenuAcceleratorLabel('&${loc()!.g_edit}'), // Parent
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        MenuItemButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Magnify!')),
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&Magnify'),
-                        ),
-                        MenuItemButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Minify!')),
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&Minify'),
-                        ),
+                       
                       ],
-                      child: const MenuAcceleratorLabel('&View'),
+                      child:  MenuAcceleratorLabel('&${loc()!.g_view}'), // Parent
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        MenuItemButton(
-                          onPressed: () {
-                            showAboutDialog(
-                              context: context,
-                              applicationName: '',
-                              applicationVersion: '1.0.0',
-                            );
-                          },
-                          child: const MenuAcceleratorLabel('&About'),
-                        ),
+                       menuItem(loc()!.topbar_about, (){
+                         showAboutDialog(
+                                context: foreignContext,
+                                applicationName: 'Skavl',
+                                applicationVersion: '0.1.0',
+                                applicationLegalese: '© 2026 Bouvetøya AS',
+                              );
+                       }),
                       ],
-                      child: const MenuAcceleratorLabel('&Help'),
-                    ),
+                      child:  MenuAcceleratorLabel('&${loc()!.g_help}'), // Parent
+                    ), 
                   ],
                 ),
               ),
