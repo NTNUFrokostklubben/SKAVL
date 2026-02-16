@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
-import 'app_localizations_no.dart';
+import 'app_localizations_nb.dart';
 
 // ignore_for_file: type=lint
 
@@ -95,7 +95,7 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('no'),
+    Locale('nb'),
   ];
 
   /// The conventional newborn programmer greeting
@@ -121,6 +121,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create new anomaly analysis'**
   String get createNew;
+
+  /// No description provided for @settings_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings_title;
+
+  /// No description provided for @settings_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settings_language;
+
+  /// No description provided for @g_enloc.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get g_enloc;
+
+  /// No description provided for @g_nbloc.
+  ///
+  /// In en, this message translates to:
+  /// **'Norwegian'**
+  String get g_nbloc;
 }
 
 class _AppLocalizationsDelegate
@@ -134,7 +158,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'no'].contains(locale.languageCode);
+      <String>['en', 'nb'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -145,8 +169,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
-    case 'no':
-      return AppLocalizationsNo();
+    case 'nb':
+      return AppLocalizationsNb();
   }
 
   throw FlutterError(

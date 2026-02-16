@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/pages/settings.dart';
 import 'l10n/app_localizations.dart';
 
 import 'package:skavl/widgets/long_button.dart';
@@ -6,21 +7,39 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  Locale? _locale;
+  void _setLocale(Locale? val) {
+    if (_locale == val) {
+      return;
+    }
+
+    setState(() {
+      _locale = val;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    bool i = true;
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'SKAVL',
+      locale: _locale,
 
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Welcome Page'),
+      home: i ? Settings(currentLocale: _locale, onLocaleChanged: _setLocale,) : const MyHomePage(title: 'SKAVL'),
     );
   }
 }

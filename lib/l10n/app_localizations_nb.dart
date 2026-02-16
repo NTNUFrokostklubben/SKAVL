@@ -4,9 +4,9 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for Norwegian (`no`).
-class AppLocalizationsNo extends AppLocalizations {
-  AppLocalizationsNo([String locale = 'no']) : super(locale);
+/// The translations for Norwegian Bokmål (`nb`).
+class AppLocalizationsNb extends AppLocalizations {
+  AppLocalizationsNb([String locale = 'nb']) : super(locale);
 
   @override
   String get helloWorld => 'Hallo verden!';
@@ -19,4 +19,16 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get createNew => 'Opprett ny anomalianalyse';
+
+  @override
+  String get settings_title => 'Innstillinger';
+
+  @override
+  String get settings_language => 'Språk';
+
+  @override
+  String get g_enloc => 'Engelsk';
+
+  @override
+  String get g_nbloc => 'Norsk (Bokmål)';
 }

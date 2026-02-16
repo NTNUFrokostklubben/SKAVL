@@ -15,6 +15,18 @@
   "@openFormer": {},
 
   "createNew": "Create new anomaly analysis",
-  "@createNew": {}
+  "@createNew": {},
+
+  "settings_title": "Settings",
+  "@settings_title": {},
+
+  "settings_language": "Language",
+  "@settings_language": {},
+
+  "g_enloc": "English",
+  "@g_enloc": {},
+
+  "g_nbloc": "Norwegian",
+  "@g_nbloc": {}
 
 }

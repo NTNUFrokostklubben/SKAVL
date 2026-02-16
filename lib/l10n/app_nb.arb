@@ -1,0 +1,31 @@
+{
+  "@@locale": "nb",
+
+  "helloWorld": "Hallo verden!",
+  "@helloWorld": {
+    "description": "Standard hilsen for nybegynnere i programmering"
+  },
+
+  "welcomeSKAVL": "Velkommen til SKAVL!",
+  "@welcomeSKAVL": {
+    "description": "Velkommen tekst til SKAVL"
+  },
+
+  "openFormer": "Åpne tidligere anomalianalyse",
+  "@openFormer": {},
+
+  "createNew": "Opprett ny anomalianalyse",
+  "@createNew": {},
+
+  "settings_title": "Innstillinger",
+  "@settings_title": {},
+
+  "settings_language": "Språk",
+  "@settings_language": {},
+
+  "g_enloc": "Engelsk",
+  "@g_enloc": {},
+
+  "g_nbloc": "Norsk (Bokmål)",
+  "@g_nbloc": {}
+}

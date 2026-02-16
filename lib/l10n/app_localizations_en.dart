@@ -19,4 +19,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createNew => 'Create new anomaly analysis';
+
+  @override
+  String get settings_title => 'Settings';
+
+  @override
+  String get settings_language => 'Language';
+
+  @override
+  String get g_enloc => 'English';
+
+  @override
+  String get g_nbloc => 'Norwegian';
 }
