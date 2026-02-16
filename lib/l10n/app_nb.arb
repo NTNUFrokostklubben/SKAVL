@@ -1,11 +1,67 @@
 {
   "@@locale": "nb",
 
+  "topbar_about" : "Om",
+  "@topbar_about": {
+    "description": "About menu item"
+  },
   "helloWorld": "Hallo verden!",
   "@helloWorld": {
     "description": "Standard hilsen for nybegynnere i programmering"
   },
 
+  "g_save": "Lagre",
+  "@g_save": {
+    "description": "Save something"
+  },
+  "topbar_saveAs": " Lagre som",
+  "@topbar_saveAs": {
+    "description": "Save something as something specific"
+  },
+  "g_quit": "Avslutt",
+  "@g_quit": {
+    "description": "Quit something"
+  },
+  "topbar_newProject": "Nytt prosjekt",
+  "@topbar_newProject": {
+    "description": "New Project menu item"
+  },
+  "topbar_newWindow": "Nytt vindu",
+  "@topbar_newWindow": {
+    "description": "New Window menu item"
+  },
+  "topbar_openProject": "Åpne prosjekt",
+  "@topbar_openProject": {
+    "description": "Open File menu item"
+  },
+  "g_share" : "Del",
+  "@g_share": {
+    "description": "Share something"
+  },
+  "topbar_openRecent": "Åpne nylige prosjekt",
+  "@topbar_openRecent": {
+    "description": "Open Recent menu item"
+  },
+  "g_file": "Fil",
+  "@g_file": {
+    "description": "Used as a menu item for file, but also as file in general"
+  },
+  "g_settings": "Innstillinger",
+  "@g_settings": {
+    "description": "Used as a menu item for settings, but also as settings in general"
+  },
+  "g_edit": "Rediger",
+  "@g_edit": {
+    "description": "Edit something"
+  },
+  "g_view": "Vis",
+  "@g_view": {
+    "description": "View something"
+  },
+  "g_help": "Hjelp",
+  "@g_help": {
+    "description": "Help menu item, but also used as help in general"
+  },
   "welcomeSKAVL": "Velkommen til SKAVL!",
   "@welcomeSKAVL": {
     "description": "Velkommen tekst til SKAVL"

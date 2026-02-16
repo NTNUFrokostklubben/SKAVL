@@ -9,7 +9,46 @@ class AppLocalizationsNb extends AppLocalizations {
   AppLocalizationsNb([String locale = 'nb']) : super(locale);
 
   @override
-  String get helloWorld => 'Hallo verden!';
+  String get topbar_about => 'Om';
+
+  @override
+  String get g_save => 'Lagre';
+
+  @override
+  String get topbar_saveAs => ' Lagre som';
+
+  @override
+  String get g_quit => 'Avslutt';
+
+  @override
+  String get topbar_newProject => 'Nytt prosjekt';
+
+  @override
+  String get topbar_newWindow => 'Nytt vindu';
+
+  @override
+  String get topbar_openProject => 'Åpne prosjekt';
+
+  @override
+  String get g_share => 'Del';
+
+  @override
+  String get topbar_openRecent => 'Åpne nylige prosjekt';
+
+  @override
+  String get g_file => 'Fil';
+
+  @override
+  String get g_settings => 'Innstillinger';
+
+  @override
+  String get g_edit => 'Rediger';
+
+  @override
+  String get g_view => 'Vis';
+
+  @override
+  String get g_help => 'Hjelp';
 
   @override
   String get welcomeSKAVL => 'Velkommen til SKAVL!';

@@ -98,11 +98,89 @@ abstract class AppLocalizations {
     Locale('nb'),
   ];
 
-  /// The conventional newborn programmer greeting
+  /// About menu item
   ///
   /// In en, this message translates to:
-  /// **'Hello World!'**
-  String get helloWorld;
+  /// **'About'**
+  String get topbar_about;
+
+  /// Save something
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get g_save;
+
+  /// Save something as something specific
+  ///
+  /// In en, this message translates to:
+  /// **' Save as'**
+  String get topbar_saveAs;
+
+  /// Quit something
+  ///
+  /// In en, this message translates to:
+  /// **'Quit'**
+  String get g_quit;
+
+  /// New Project menu item
+  ///
+  /// In en, this message translates to:
+  /// **'New Project'**
+  String get topbar_newProject;
+
+  /// New Window menu item
+  ///
+  /// In en, this message translates to:
+  /// **'New Window'**
+  String get topbar_newWindow;
+
+  /// Open File menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Open Project'**
+  String get topbar_openProject;
+
+  /// Share something
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get g_share;
+
+  /// Open Recent menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Open Recent project'**
+  String get topbar_openRecent;
+
+  /// Used as a menu item for file, but also as file in general
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get g_file;
+
+  /// Used as a menu item for settings, but also as settings in general
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get g_settings;
+
+  /// Edit something
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get g_edit;
+
+  /// View something
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get g_view;
+
+  /// Help menu item, but also used as help in general
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get g_help;
 
   /// Welcome text to SKAVL
   ///
