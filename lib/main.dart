@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
-typedef T = AppLocalizations;
 void main() {
   runApp(const MyApp());
 }
@@ -64,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// It uses the AppLocalizations class to access the localized values.
   /// based on Applocalizations.of(context) but with a shorter name for convenience.
   AppLocalizations? loc() {
-    return T.of(context);
+    return AppLocalizations.of(context);
   }
   void _incrementCounter() {
     setState(() {
