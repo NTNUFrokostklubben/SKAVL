@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// This method retrieves the localized strings for the current context.
   /// It uses the AppLocalizations class to access the localized values.
   /// based on Applocalizations.of(context) but with a shorter name for convenience.
-  AppLocalizations? loc(BuildContext context) {
+  AppLocalizations? loc() {
     return T.of(context);
   }
   void _incrementCounter() {
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(loc(context)!.helloWorld),
+        title: Text(loc()!.helloWorld),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
