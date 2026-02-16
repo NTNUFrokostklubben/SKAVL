@@ -103,6 +103,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello World!'**
   String get helloWorld;
+
+  /// Welcome text to SKAVL
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to SKAVL!'**
+  String get welcomeSKAVL;
+
+  /// No description provided for @openFormer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open former anomaly analysis'**
+  String get openFormer;
+
+  /// No description provided for @createNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new anomaly analysis'**
+  String get createNew;
 }
 
 class _AppLocalizationsDelegate

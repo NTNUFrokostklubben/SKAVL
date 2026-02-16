@@ -1,7 +1,19 @@
 {
   "@@locale": "no",
+
   "helloWorld": "Hallo verden!",
   "@helloWorld": {
     "description": "Standard hilsen for nybegynnere i programmering"
-  }
+  },
+
+  "welcomeSKAVL": "Velkommen til SKAVL!",
+  "@welcomeSKAVL": {
+    "description": "Velkommen tekst til SKAVL"
+  },
+
+  "openFormer": "Åpne tidligere anomalianalyse",
+  "@openFormer": {},
+
+  "createNew": "Opprett ny anomalianalyse",
+  "@createNew": {}
 }
