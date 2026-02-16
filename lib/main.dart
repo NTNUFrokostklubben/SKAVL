@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
 
 import 'package:skavl/widgets/long_button.dart';
-import 'package:skavl/theme/colors.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -36,10 +35,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -14,12 +14,11 @@ class LongButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         onPressed: () {
-          print("Button pressed!");
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
         ),
-        child: Text(this.title, 
+        child: Text(title, 
           style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
       ),
     );
