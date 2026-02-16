@@ -1,0 +1,7 @@
+{
+  "@@locale": "no",
+  "helloWorld": "Hallo verden!",
+  "@helloWorld": {
+    "description": "Standard hilsen for nybegynnere i programmering"
+  }
+}
