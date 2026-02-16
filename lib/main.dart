@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
-
 import 'package:skavl/widgets/long_button.dart';
+import 'pages/create_new_report.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Welcome Page'),
+      home: const CreateNewReportPage(),
     );
   }
 }
