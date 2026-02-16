@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/widgets/long_button.dart';
+import 'package:skavl/theme/colors.dart';
 
 void main() {
   runApp(const MyApp());

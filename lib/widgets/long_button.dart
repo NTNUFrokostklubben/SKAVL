@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/theme/colors.dart';
+
 
 class LongButton extends StatelessWidget {
   const LongButton(this.title, {super.key});
@@ -17,7 +19,8 @@ class LongButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
         ),
-        child: Text(this.title, style: const TextStyle(fontSize: 16)),
+        child: Text(this.title, 
+          style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
       ),
     );
   }
