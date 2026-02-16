@@ -3,10 +3,6 @@ import 'package:skavl/theme/colors.dart';
 
 import '../l10n/app_localizations.dart';
 
-typedef MenuEntry = DropdownMenuEntry<String>;
-
-const List<String> list = <String>['en', 'no'];
-
 class Settings extends StatelessWidget {
   const Settings({
     super.key,
@@ -29,9 +25,11 @@ class Settings extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // TODO: Fix styling, maybe use a title component or something idk
             Text(
@@ -43,20 +41,20 @@ class Settings extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(32.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 48,
                 children: [
-                  SizedBox(width: 64, child: Text(loc()!.settings_language)),
+                  SizedBox(width: 64,child: Text(loc()!.settings_language)),
                   DropdownMenu(
+                    width: 400,
                     dropdownMenuEntries: entries,
                     initialSelection: currentLocale,
                     onSelected: (v) {
                       onLocaleChanged(v);
                     },
                   ),
-                  Text(loc()!.openFormer),
                 ],
               ),
             ),
