@@ -52,6 +52,8 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  
+
 /// Builds the top bar widget, which consists of a row of menu buttons (File, Edit, View, Help).
 /// Each menu button is a SubmenuButton that contains a list of menu items or submenus,
 /// allowing for easy navigation and access to various features of the application.
