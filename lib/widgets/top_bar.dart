@@ -3,6 +3,11 @@ import 'package:skavl/l10n/app_localizations.dart';
 
 
 
+
+/// A custom top bar widget that implements the PreferredSizeWidget interface,
+///  allowing it to be used as an AppBar in a Scaffold.
+/// The TopBar widget contains a menu bar with various menu items and submenus, providing
+///  easy access to different features of the application.
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext foreignContext;
   final double height = 25;
@@ -12,6 +17,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     return AppLocalizations.of(foreignContext);
   }
 
+/// Returns a ButtonStyle for menu items, with fixed and minimum sizes based on the height property.
+/// This style ensures that all menu items have a consistent size, improving the overall appearance of the menu.
+/// The fixedSize is set to a width of 200 and a height slightly larger than the defined height, while the minimumSize
+///  ensures that menu items do not shrink below the specified dimensions.
   ButtonStyle menuItemStyle() {
     return ButtonStyle(
       fixedSize: WidgetStateProperty.all(Size(200, height+5)),
@@ -19,6 +28,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+/// Creates a MenuItemButton with the given text and onPressed callback.
+/// The button is styled using the menuItemStyle method to ensure consistent sizing.
+/// The text is displayed with an accelerator label, allowing for keyboard shortcuts
+///  to be easily identified by the user.
   MenuItemButton menuItem(String text, void Function() onPressed) {
     return MenuItemButton(
       onPressed: onPressed,
@@ -27,6 +40,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  /// Creates a SubmenuButton with the given text and list of child widgets.
+  /// The button is styled using the menuItemStyle method to ensure consistent sizing.
+  /// The text is displayed with an accelerator label, allowing for keyboard shortcuts
+  ///  to be easily identified by the user.
   SubmenuButton submenu(String text, List<Widget> children) {
     return SubmenuButton(
       style :menuItemStyle(),
@@ -35,6 +52,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+/// Builds the top bar widget, which consists of a row of menu buttons (File, Edit, View, Help).
+/// Each menu button is a SubmenuButton that contains a list of menu items or submenus,
+/// allowing for easy navigation and access to various features of the application.
   @override
   Widget build(BuildContext context) {
     return Center(
