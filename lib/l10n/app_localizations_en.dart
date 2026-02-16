@@ -10,4 +10,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helloWorld => 'Hello World!';
+
+  @override
+  String get welcomeSKAVL => 'Welcome to SKAVL!';
+
+  @override
+  String get openFormer => 'Open former anomaly analysis';
+
+  @override
+  String get createNew => 'Create new anomaly analysis';
 }
