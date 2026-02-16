@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
-
 import 'package:skavl/widgets/long_button.dart';
 void main() {
   runApp(const MyApp());
@@ -42,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopBar(foreignContext: context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
