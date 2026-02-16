@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 /// Represents each "set" of data included in a page of the main application.
 /// Each detected anomaly will be a set and the data on this set will be used
