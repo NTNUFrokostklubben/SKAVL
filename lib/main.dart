@@ -36,15 +36,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  /// Localization helper method to keep the build method clean
-  /// This method retrieves the localized strings for the current context.
-  /// It uses the AppLocalizations class to access the localized values.
-  /// based on Applocalizations.of(context) but with a shorter name for convenience.
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,12 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   spacing: 20,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
-                      'Welcome to SKAVL',
+                    Text(
+                      loc()!.welcomeSKAVL,
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    LongButton('Open former anomaly analysis'),
-                    LongButton('Create new anomaly analysis'),
+                    LongButton(loc()!.openFormer),
+                    LongButton(loc()!.createNew),
                   ],
                 ),
                 const Image(

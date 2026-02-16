@@ -10,4 +10,13 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get helloWorld => 'Hallo verden!';
+
+  @override
+  String get welcomeSKAVL => 'Velkommen til SKAVL!';
+
+  @override
+  String get openFormer => 'Åpne tidligere anomalianalyse';
+
+  @override
+  String get createNew => 'Opprett ny anomalianalyse';
 }
