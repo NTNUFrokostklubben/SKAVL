@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
                 const Image(
-                  image: AssetImage('resources/images/topographic-icon.png'),
+                  image: AssetImage('assets/images/topographic-icon.png'),
                   width: 200,
                 ),
               ]
