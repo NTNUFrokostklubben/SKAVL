@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
-
+typedef T = AppLocalizations;
 void main() {
   runApp(const MyApp());
 }
@@ -59,6 +59,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  /// Localization helper method to keep the build method clean
+  /// This method retrieves the localized strings for the current context.
+  /// It uses the AppLocalizations class to access the localized values.
+  /// based on Applocalizations.of(context) but with a shorter name for convenience.
+  AppLocalizations? loc(BuildContext context) {
+    return T.of(context);
+  }
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -86,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(AppLocalizations.of(context)!.helloWorld),
+        title: Text(loc(context)!.helloWorld),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
