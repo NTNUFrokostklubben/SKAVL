@@ -35,7 +35,7 @@ migrate_working_dir/
 app_localizations*.dart
 
 # Windows specific
-windows/flutter/generated_plugin*.cmake
+windows/flutter/generated_plugin*
 
 # Symbolication related
 app.*.symbols
