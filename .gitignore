@@ -34,6 +34,9 @@ migrate_working_dir/
 /coverage/
 app_localizations*.dart
 
+# Windows specific
+windows/flutter/generated_plugin*
+
 # Symbolication related
 app.*.symbols
 
