@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/main.dart';
+import 'package:skavl/pages/create_new_report.dart';
+import 'package:skavl/pages/settings.dart';
+
+import '../util/navigation_util.dart';
 
 
 /// A custom top bar widget that implements the PreferredSizeWidget interface,
@@ -71,6 +76,13 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   children: <Widget>[
                     SubmenuButton(
                       menuChildren: <Widget>[
+                        menuItem(loc()!.g_home, (){
+                          navigateTo(context, MyHomePage(title: "title"));
+                        }),
+                        menuItem("Upload page", (){
+                          navigateTo(context, CreateNewReportPage());
+                        }),
+                        PopupMenuDivider(),
                         menuItem(loc()!.g_save, (){}),
                         menuItem(loc()!.topbar_saveAs, (){}),
                         menuItem(loc()!.topbar_newProject, (){}),
@@ -87,7 +99,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        menuItem(loc()!.g_settings, (){}),
+                        menuItem(loc()!.g_settings, (){
+                          navigateTo(context, Settings());
+                        }),
                       ],
                       child:  MenuAcceleratorLabel('&${loc()!.g_edit}'), // Parent
                     ),
@@ -120,7 +134,11 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+
+
   @override
   Size get preferredSize =>
       Size(MediaQuery.of(foreignContext).size.width, height);
 }
+
+

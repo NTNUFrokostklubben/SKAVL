@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
+import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
 
 class CreateNewReportPage extends StatefulWidget {
@@ -119,6 +120,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
           ],
         ),
       ),
+      appBar: TopBar(foreignContext: context),
     );
   }
 }
