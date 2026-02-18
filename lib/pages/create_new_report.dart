@@ -16,19 +16,17 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
     return AppLocalizations.of(context);
   }
 
+  //  
   Future<void> startLoadingModal() async {
-    print('Starting loading modal');
-
     // Show loading dialog
-    LoadingDialog.show(context, text: "Analyzing your areal images");
+    LoadingDialog.show(context);
 
-    // Simulate async work (replace with real API call)
+    // Simulate async work
     await Future.delayed(const Duration(seconds: 10));
+    if (!mounted) return;
 
     // Hide dialog
     LoadingDialog.hide(context);
-
-    print('Finished loading modal');
   }
 
 

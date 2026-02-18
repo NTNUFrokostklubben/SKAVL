@@ -1,12 +1,63 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
-class LoadingDialog {
-  /// Show loading dialog
-  static void show(BuildContext context, {String text = "Loading..."}) {
+class LoadingDialog extends StatefulWidget {
+  const LoadingDialog({super.key});
+
+  @override
+  State<LoadingDialog> createState() => _LoadingDialogState();
+
+  static void show(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
+      builder: (_) => LoadingDialog(),
+    );
+  }
+
+  static void hide(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+}
+
+class _LoadingDialogState extends State<LoadingDialog> {
+
+  // TODO: This is just a mockup, replace with real progress updates
+
+  double totalImages = 17000;
+  double progress = 0.0;
+  Timer? _timer;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _startLoading();
+  }
+
+  void _startLoading() {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        progress += 0.01; // 10%
+
+        if (progress >= 1.0) {
+          progress = 1.0;
+          _timer?.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: SizedBox(
           width: 800,
           height: 400,
@@ -18,21 +69,42 @@ class LoadingDialog {
                 width: 100,
                 height: 100,
                 child: Transform.scale(
-                    scale: 1.0,
-                    child: CircularProgressIndicator(),
-                  ),
+                  scale: 1.0,
+                  child: CircularProgressIndicator(),
+                ),
               ),
               const SizedBox(height: 50),
-              Expanded(child: Text(text)),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Analyzing your aereal images",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'This is a great time to grab a coffee (or 15 idk...)!',
+                    ),
+                    const SizedBox(height: 30),
+                    LinearProgressIndicator(
+                      value: progress,
+                      semanticsLabel: 'Linear progress indicator',
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '${(totalImages*progress).toInt()} / ${totalImages.toInt()}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// Hide loading dialog
-  static void hide(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pop();
+      );
   }
 }
