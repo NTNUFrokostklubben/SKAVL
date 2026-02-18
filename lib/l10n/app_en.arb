@@ -60,15 +60,43 @@
     "description": "Help menu item, but also used as help in general"
   },
 
-  "welcomeSKAVL": "Welcome to SKAVL!",
-  "@welcomeSKAVL": {
-    "description": "Welcome text to SKAVL"
+  "welcome_SKAVL": "Welcome to SKAVL!",
+  "@welcome_SKAVL": {
+    "description": "Welcome text to SKAVL - title"
   },
 
-  "openFormer": "Open former anomaly analysis",
-  "@openFormer": {},
+  "open_former": "Open former anomaly analysis",
+  "@open_former": {
+     "description": "Open former anomaly analysis - button text"
+  },
 
-  "createNew": "Create new anomaly analysis",
-  "@createNew": {}
+  "create_new_button": "Create new anomaly analysis",
+  "@create_new_button": {
+    "description": "Create new anomaly analysis - button text"
+  },
 
+  "create_new_title": "Create new anomaly detection report",
+  "@create_new_title": {
+    "description": "Create new anomaly detection report - title"
+  },
+
+  "create_new_title_input": "Title",
+  "@create_new_title_input": {
+    "description": "Title - input field"
+  },
+
+  "upload_plane_images": "Upload plane images",
+  "@upload_plane_images": {
+    "description": "Upload plane images - text"
+  },
+
+  "upload_SOSI_file": "Upload SOSI file",
+  "@upload_SOSI_file": {
+    "description": "Upload SOSI file - text"
+  },  
+
+  "create_report_button": "Create report",
+  "@create_report_button": {
+    "description": "Create report - button text"
+  }
 }

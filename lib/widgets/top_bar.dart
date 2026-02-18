@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 
 
-
-
 /// A custom top bar widget that implements the PreferredSizeWidget interface,
 ///  allowing it to be used as an AppBar in a Scaffold.
 /// The TopBar widget contains a menu bar with various menu items and submenus, providing
