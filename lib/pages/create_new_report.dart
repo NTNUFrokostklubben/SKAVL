@@ -51,7 +51,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 children: [
                   SizedBox(width: titleStart),
                   Text(
-                    loc()!.create_new_title,
+                    loc()!.createPage_Title,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -64,7 +64,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 height: containerHeight,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
-                  color: MyColors.grey,
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: Column(
@@ -79,7 +78,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                             borderRadius: BorderRadius.circular(2),
                           ),
                           focusColor: MyColors.secondaryBlack,
-                          labelText: loc()!.create_new_title_input,
+                          labelText: loc()!.createPage_titleInput,
                         ),
                       ),
                     ),
@@ -91,12 +90,12 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           UploadBox(
-                            text: loc()!.upload_plane_images,
+                            text: loc()!.createPage_uploadPlaneImages,
                             onTap: () {},
                             width: containerWidth * 0.5 - 20,
                           ),
                           UploadBox(
-                            text: loc()!.upload_SOSI_file,
+                            text: loc()!.createPage_uploadSOSIFile,
                             onTap: () {},
                             width: containerWidth * 0.5 - 20,
                           ),
@@ -124,7 +123,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  loc()!.create_report_button,
+                                  loc()!.createPage_createReportButton,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: MyColors.secondaryBlack,

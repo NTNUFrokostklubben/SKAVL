@@ -81,11 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      loc()!.welcome_SKAVL,
+                      loc()!.welcomePage_SKAVL,
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    LongButton(loc()!.open_former),
-                    LongButton(loc()!.create_new_button),
+                    LongButton(loc()!.welcomePage_openFormer),
+                    LongButton(loc()!.welcomePage_createNewButton),
                   ],
                 ),
                 const Image(
