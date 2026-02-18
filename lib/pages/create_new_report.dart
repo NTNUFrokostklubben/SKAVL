@@ -34,7 +34,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 children: [
                   SizedBox(width: titleStart),
                   Text(
-                    'Create new anomaly detection report',
+                    loc()!.create_new_title,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -62,7 +62,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                             borderRadius: BorderRadius.circular(2),
                           ),
                           focusColor: MyColors.secondaryBlack,
-                          labelText: 'Title',
+                          labelText: loc()!.create_new_title_input,
                         ),
                       ),
                     ),
@@ -73,8 +73,8 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          UploadBox(text: 'Upload plane images', onTap: () {}, width: containerWidth*0.5 - 20),
-                          UploadBox(text: 'Upload SOSI file', onTap: () {}, width: containerWidth*0.5 - 20),  
+                          UploadBox(text: loc()!.upload_plane_images, onTap: () {}, width: containerWidth*0.5 - 20),
+                          UploadBox(text: loc()!.upload_SOSI_file, onTap: () {}, width: containerWidth*0.5 - 20),  
                         ],  
                       ),
                     ),
@@ -98,7 +98,8 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                               spacing: 8,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Create report', style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
+                                Text(
+                                  loc()!.create_report_button, style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
