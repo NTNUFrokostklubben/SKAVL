@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/upload.dart';
+import 'package:skavl/widgets/loading_popup.dart';
 
 class CreateNewReportPage extends StatefulWidget {
   const CreateNewReportPage({super.key});
@@ -15,10 +16,27 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
     return AppLocalizations.of(context);
   }
 
+  Future<void> startLoadingModal() async {
+    print('Starting loading modal');
+
+    // Show loading dialog
+    LoadingDialog.show(context, text: "Analyzing your areal images");
+
+    // Simulate async work (replace with real API call)
+    await Future.delayed(const Duration(seconds: 10));
+
+    // Hide dialog
+    LoadingDialog.hide(context);
+
+    print('Finished loading modal');
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final containerWidth = MediaQuery.of(context).size.width * 0.9;
-    final titleStart = (MediaQuery.of(context).size.width - containerWidth) * 0.5;
+    final titleStart =
+        (MediaQuery.of(context).size.width - containerWidth) * 0.5;
     final containerHeight = MediaQuery.of(context).size.height * 0.8;
 
     return Scaffold(
@@ -66,16 +84,24 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         ),
                       ),
                     ),
-                
+
                     // Upload boxes
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          UploadBox(text: loc()!.upload_plane_images, onTap: () {}, width: containerWidth*0.5 - 20),
-                          UploadBox(text: loc()!.upload_SOSI_file, onTap: () {}, width: containerWidth*0.5 - 20),  
-                        ],  
+                          UploadBox(
+                            text: loc()!.upload_plane_images,
+                            onTap: () {},
+                            width: containerWidth * 0.5 - 20,
+                          ),
+                          UploadBox(
+                            text: loc()!.upload_SOSI_file,
+                            onTap: () {},
+                            width: containerWidth * 0.5 - 20,
+                          ),
+                        ],
                       ),
                     ),
 
@@ -90,16 +116,21 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(2),
                               ),
                             ),
-                            onPressed: () {}, 
+                            onPressed: startLoadingModal,
                             child: Row(
                               spacing: 8,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  loc()!.create_report_button, style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
+                                  loc()!.create_report_button,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: MyColors.secondaryBlack,
+                                  ),
+                                ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
@@ -110,8 +141,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                           ),
                         ],
                       ),
-                    )
-                    
+                    ),
                   ],
                 ),
               ),
