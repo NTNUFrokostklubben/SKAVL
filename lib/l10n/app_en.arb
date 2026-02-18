@@ -98,5 +98,20 @@
   "create_report_button": "Create report",
   "@create_report_button": {
     "description": "Create report - button text"
+  },
+
+  "loadingDialog_analyzing": "Analyzing your aereal images",
+  "@loadingDialog_analyzing": {
+    "description": "Analyzing your aereal images - title"
+  },
+
+  "loadingDialog_grabCoffee": "This is a great time to grab a coffee (or 15 idk...)!",
+  "@loadingDialog_grabCoffee": {
+    "description": "Grab a coffee - subtext"
+  },
+
+  "loadingDialog_semanticsLabel": "Linear progress indicator",
+  "@loadingDialog_semanticsLabel": {
+    "description": "Linear progress indicator - semantics label"
   }
 }

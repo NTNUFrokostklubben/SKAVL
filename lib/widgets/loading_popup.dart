@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 
 class LoadingDialog extends StatefulWidget {
   const LoadingDialog({super.key});
@@ -21,6 +22,10 @@ class LoadingDialog extends StatefulWidget {
 }
 
 class _LoadingDialogState extends State<LoadingDialog> {
+
+  AppLocalizations? loc() {
+    return AppLocalizations.of(context);
+  }
 
   // TODO: This is just a mockup, replace with real progress updates
 
@@ -79,19 +84,19 @@ class _LoadingDialogState extends State<LoadingDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Analyzing your aereal images",
+                      loc()!.loadingDialog_analyzing,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'This is a great time to grab a coffee (or 15 idk...)!',
+                      loc()!.loadingDialog_grabCoffee,
                     ),
                     const SizedBox(height: 30),
                     LinearProgressIndicator(
                       value: progress,
-                      semanticsLabel: 'Linear progress indicator',
+                      semanticsLabel: loc()!.loadingDialog_semanticsLabel,
                       borderRadius: BorderRadius.circular(2),
                     ),
                     const SizedBox(height: 20),

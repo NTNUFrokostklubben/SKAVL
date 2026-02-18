@@ -101,5 +101,20 @@
   "create_report_button": "Lag rapport",
   "@create_report_button": {
     "description": "Lag rapport - button text"
+  },
+
+  "loadingDialog_analyzing": "Analyserer luftbildene dine",
+  "@loadingDialog_analyzing": {
+    "description": "Analyserer luftbildene dine - title"
+  },
+
+  "loadingDialog_grabCoffee": "Dette er et flott tidspunkt å ta en kaffe (eller 15 idk...)!",
+  "@loadingDialog_grabCoffee": {
+    "description": "Ta en kaffe - subtext"
+  },
+
+  "loadingDialog_semanticsLabel": "Lineær fremdriftsindikator",
+  "@loadingDialog_semanticsLabel": {
+    "description": "Linear fremdriftsindikator - semantics label"
   }
 }
