@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
-import 'pages/create_new_report.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    /// State system for settings
+    ChangeNotifierProvider(
+      create: (_) => SettingsModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,16 +21,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final settings = context.watch<SettingsModel>();
+
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: settings.locale,
       title: 'SKAVL',
 
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const CreateNewReportPage(),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      home: const MainPage(),
     );
+  }
+}
+
+/// Abstracted MainPage into an "Orchestrator"
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return MyHomePage(title: "title");
   }
 }
 
