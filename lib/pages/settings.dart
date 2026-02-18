@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/model/settings_model.dart';
-import 'package:skavl/theme/colors.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 
 import '../l10n/app_localizations.dart';
@@ -9,9 +9,7 @@ import '../l10n/app_localizations.dart';
 /// Settings page for changing global settings in the application
 /// Uses the settings model to store the actual settings values
 class Settings extends StatelessWidget {
-  const Settings({
-    super.key
-  });
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +32,8 @@ class Settings extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // TODO: Fix styling, maybe use a title component or something idk
-            Text(
-              loc()!.settings_title,
-              style: TextStyle(
-                color: MyColors.secondaryBlack,
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-              ),
+            LargeHeader(
+                loc()!.settings_title
             ),
             Padding(
               padding: const EdgeInsets.all(32.0),
@@ -48,7 +41,7 @@ class Settings extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 48,
                 children: [
-                  SizedBox(width: 64,child: Text(loc()!.settings_language)),
+                  SizedBox(width: 80, child: Text(loc()!.settings_language)),
                   DropdownMenu(
                     width: 400,
                     dropdownMenuEntries: entries,
