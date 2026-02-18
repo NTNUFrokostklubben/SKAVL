@@ -5,6 +5,7 @@ import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/widgets/anomaly_classif_bar.dart';
 
 void main() {
   runApp(
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: AnomalyClassifBar(), 
     );
   }
 }
