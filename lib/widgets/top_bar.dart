@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
+import 'package:skavl/pages/settings.dart';
 
 
 
@@ -74,6 +75,14 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   children: <Widget>[
                     SubmenuButton(
                       menuChildren: <Widget>[
+                        menuItem(loc()!.g_home, (){
+                          Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (context) => const MyHomePage(title: "title"),
+                              )
+                          );
+                        }),
+                        PopupMenuDivider(),
                         menuItem(loc()!.g_save, (){}),
                         menuItem(loc()!.topbar_saveAs, (){}),
                         menuItem(loc()!.topbar_newProject, (){}),
@@ -93,7 +102,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         menuItem(loc()!.g_settings, (){
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
-                              builder: (context) => const MyHomePage(title: "title"),
+                              builder: (context) => const Settings(),
                             )
                           );
                         }),

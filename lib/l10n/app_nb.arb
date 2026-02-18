@@ -1,6 +1,6 @@
 {
   "@@locale": "nb",
-  
+
   "topbar_about" : "Om",
   "@topbar_about": {
     "description": "About menu item"
@@ -22,6 +22,11 @@
   "@g_quit": {
     "description": "Quit something"
   },
+  "g_home": "Hjem",
+  "@g_home": {
+    "description": "Home"
+  },
+
   "topbar_newProject": "Nytt prosjekt",
   "@topbar_newProject": {
     "description": "New Project menu item"
@@ -71,5 +76,17 @@
   "@openFormer": {},
 
   "createNew": "Opprett ny anomalianalyse",
-  "@createNew": {}
+  "@createNew": {},
+
+  "settings_title": "Innstillinger",
+  "@settings_title": {},
+
+  "settings_language": "Språk",
+  "@settings_language": {},
+
+  "g_enloc": "Engelsk",
+  "@g_enloc": {},
+
+  "g_nbloc": "Norsk (Bokmål)",
+  "@g_nbloc": {}
 }
