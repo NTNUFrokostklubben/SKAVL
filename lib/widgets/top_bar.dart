@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/main.dart';
 
 
 
@@ -89,7 +90,13 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        menuItem(loc()!.g_settings, (){}),
+                        menuItem(loc()!.g_settings, (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (context) => const MyHomePage(title: "title"),
+                            )
+                          );
+                        }),
                       ],
                       child:  MenuAcceleratorLabel('&${loc()!.g_edit}'), // Parent
                     ),
