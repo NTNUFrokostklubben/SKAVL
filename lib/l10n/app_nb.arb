@@ -1,6 +1,6 @@
 {
   "@@locale": "nb",
-
+  
   "topbar_about" : "Om",
   "@topbar_about": {
     "description": "About menu item"
@@ -67,13 +67,36 @@
   "@g_help": {
     "description": "Help menu item, but also used as help in general"
   },
-  "welcomeSKAVL": "Velkommen til SKAVL!",
-  "@welcomeSKAVL": {
-    "description": "Velkommen tekst til SKAVL"
+
+  "welcome_SKAVL": "Velkommen til SKAVL!",
+  "@welcome_SKAVL": {
+    "description": "Velkommen til SKAVL - title"
   },
 
-  "openFormer": "Åpne tidligere anomalianalyse",
-  "@openFormer": {},
+  "open_former": "Åpne tidligere anomalianalyse",
+  "@open_former": {
+     "description": "Åpne tidligere anomalianalyse - button text"
+  },
+
+  "create_new_button": "Opprett ny anomalianalyse",
+  "@create_new_button": {
+    "description": "Opprett ny anomalianalyse - button text"
+  },
+
+  "create_new_title": "Opprett ny rapport for avviksdeteksjon",
+  "@create_new_title": {
+    "description": "Opprett ny rapport for avviksdeteksjon - title"
+  },
+
+  "create_new_title_input": "Tittel",
+  "@create_new_title_input": {
+    "description": "Tittel - input field"
+  },
+
+  "upload_plane_images": "Last opp flybilder",
+  "@upload_plane_images": {
+    "description": "Last opp flybilder - text"
+  },
 
   "createNew": "Opprett ny anomalianalyse",
   "@createNew": {},
@@ -88,5 +111,15 @@
   "@g_enloc": {},
 
   "g_nbloc": "Norsk (Bokmål)",
-  "@g_nbloc": {}
+  "@g_nbloc": {},
+
+  "upload_SOSI_file": "Last opp SOSI fil",
+  "@upload_SOSI_file": {
+    "description": "Last opp SOSI fil - text"
+  },
+
+  "create_report_button": "Lag rapport",
+  "@create_report_button": {
+    "description": "Lag rapport - button text"
+  }
 }

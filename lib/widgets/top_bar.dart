@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
+import 'package:skavl/pages/create_new_report.dart';
 import 'package:skavl/pages/settings.dart';
 
-import '../util/navigation-util.dart';
-
-
+import '../util/navigation_util.dart';
 
 
 /// A custom top bar widget that implements the PreferredSizeWidget interface,
@@ -79,6 +78,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                       menuChildren: <Widget>[
                         menuItem(loc()!.g_home, (){
                           navigateTo(context, MyHomePage(title: "title"));
+                        }),
+                        menuItem("Upload page", (){
+                          navigateTo(context, CreateNewReportPage());
                         }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, (){}),

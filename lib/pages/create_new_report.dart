@@ -1,0 +1,126 @@
+import 'package:flutter/material.dart';
+import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/theme/colors.dart';
+import 'package:skavl/widgets/top_bar.dart';
+import 'package:skavl/widgets/upload.dart';
+
+class CreateNewReportPage extends StatefulWidget {
+  const CreateNewReportPage({super.key});
+
+  @override
+  State<CreateNewReportPage> createState() => _CreateNewReportPageState();
+}
+
+class _CreateNewReportPageState extends State<CreateNewReportPage> {
+  AppLocalizations? loc() {
+    return AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final containerWidth = MediaQuery.of(context).size.width * 0.9;
+    final titleStart = (MediaQuery.of(context).size.width - containerWidth) * 0.5;
+    final containerHeight = MediaQuery.of(context).size.height * 0.8;
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 40),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: titleStart),
+                  Text(
+                    loc()!.create_new_title,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: containerWidth,
+                height: containerHeight,
+                alignment: Alignment.topLeft,
+                decoration: BoxDecoration(
+                  color: MyColors.grey,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        cursorColor: MyColors.secondaryBlack,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          focusColor: MyColors.secondaryBlack,
+                          labelText: loc()!.create_new_title_input,
+                        ),
+                      ),
+                    ),
+                
+                    // Upload boxes
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          UploadBox(text: loc()!.upload_plane_images, onTap: () {}, width: containerWidth*0.5 - 20),
+                          UploadBox(text: loc()!.upload_SOSI_file, onTap: () {}, width: containerWidth*0.5 - 20),  
+                        ],  
+                      ),
+                    ),
+
+                    Spacer(),
+
+                    // Create report button
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                            onPressed: () {}, 
+                            child: Row(
+                              spacing: 8,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  loc()!.create_report_button, style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
+                                Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 20,
+                                  color: MyColors.secondaryBlack,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      appBar: TopBar(foreignContext: context),
+    );
+  }
+}

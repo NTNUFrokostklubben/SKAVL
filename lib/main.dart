@@ -60,10 +60,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,22 +80,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      loc()!.welcomeSKAVL,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      loc()!.welcome_SKAVL,
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    LongButton(loc()!.openFormer),
-                    LongButton(loc()!.createNew),
+                    LongButton(loc()!.open_former),
+                    LongButton(loc()!.create_new_button),
                   ],
                 ),
                 const Image(
                   image: AssetImage('assets/images/topographic-icon.png'),
                   width: 200,
                 ),
-              ],
-            ),
+              ]
+            )
           ],
         ),
       ),
