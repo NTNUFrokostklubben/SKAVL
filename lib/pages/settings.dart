@@ -6,6 +6,8 @@ import 'package:skavl/widgets/top_bar.dart';
 
 import '../l10n/app_localizations.dart';
 
+/// Settings page for changing global settings in the application
+/// Uses the settings model to store the actual settings values
 class Settings extends StatelessWidget {
   const Settings({
     super.key

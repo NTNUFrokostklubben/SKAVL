@@ -3,6 +3,8 @@ import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
 import 'package:skavl/pages/settings.dart';
 
+import '../util/navigation-util.dart';
+
 
 
 
@@ -76,11 +78,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     SubmenuButton(
                       menuChildren: <Widget>[
                         menuItem(loc()!.g_home, (){
-                          Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (context) => const MyHomePage(title: "title"),
-                              )
-                          );
+                          navigateTo(context, MyHomePage(title: "title"));
                         }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, (){}),
@@ -100,11 +98,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     SubmenuButton(
                       menuChildren: <Widget>[
                         menuItem(loc()!.g_settings, (){
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (context) => const Settings(),
-                            )
-                          );
+                          navigateTo(context, Settings());
                         }),
                       ],
                       child:  MenuAcceleratorLabel('&${loc()!.g_edit}'), // Parent
@@ -138,7 +132,11 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+
+
   @override
   Size get preferredSize =>
       Size(MediaQuery.of(foreignContext).size.width, height);
 }
+
+

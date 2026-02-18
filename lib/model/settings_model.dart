@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+/// Settings model used as the global state for settings
+/// TODO: Make this persistent in the future
 class SettingsModel extends ChangeNotifier {
   Locale _locale = const Locale("en");
 
