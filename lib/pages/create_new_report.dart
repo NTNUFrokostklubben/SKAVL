@@ -30,7 +30,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
     LoadingDialog.hide(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final containerWidth = MediaQuery.of(context).size.width * 0.9;
@@ -51,7 +50,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 children: [
                   SizedBox(width: titleStart),
                   Text(
-                    loc()!.createPage_Title,
+                    loc()!.createPage_title,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
