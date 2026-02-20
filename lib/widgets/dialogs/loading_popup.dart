@@ -62,7 +62,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         content: SizedBox(
           width: 800,
           height: 400,
@@ -97,7 +97,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
                     LinearProgressIndicator(
                       value: progress,
                       semanticsLabel: loc()!.loadingDialog_semanticsLabel,
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     const SizedBox(height: 20),
                     Text(

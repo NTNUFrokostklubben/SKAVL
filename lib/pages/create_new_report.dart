@@ -63,7 +63,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 height: containerHeight,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +74,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         cursorColor: MyColors.secondaryBlack,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           focusColor: MyColors.secondaryBlack,
                           labelText: loc()!.createPage_titleInput,
@@ -113,7 +113,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
                             onPressed: startLoadingModal,
