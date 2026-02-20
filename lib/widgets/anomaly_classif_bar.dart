@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/widgets/dialogs/confirm_anomaly_popup.dart';
 
 class AnomalyClassifBar extends StatefulWidget {
   const AnomalyClassifBar({super.key});
@@ -20,6 +21,15 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
 
   int _currentImage = 1;
   final int _totalImages = 789;
+
+  // open confirm anomaly dialog and wait for result
+  Future<void> openAnomalyConfirmDialog() async {
+        // Show loading dialog
+    ConfirmAnomalyDialog.show(context);
+
+    // Simulate async work
+    if (!mounted) return;
+  }    
 
   @override
   void initState() {
@@ -109,7 +119,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                       vertical: 8,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   onChanged: _updateFromText,
@@ -129,10 +139,10 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: openAnomalyConfirmDialog,
                   child: Row(
                     spacing: 8,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +171,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   backgroundColor: MyColors.grey,
                 ),
@@ -179,7 +189,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 width: 150,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: MyColors.secondaryBlack, width: 1),
                   ),
                   child: Center(
@@ -202,7 +212,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   backgroundColor: MyColors.grey,
                 ),

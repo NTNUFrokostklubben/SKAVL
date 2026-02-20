@@ -3,7 +3,7 @@ import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
-import 'package:skavl/widgets/loading_popup.dart';
+import 'package:skavl/widgets/dialogs/loading_popup.dart';
 
 class CreateNewReportPage extends StatefulWidget {
   const CreateNewReportPage({super.key});
@@ -63,7 +63,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 height: containerHeight,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +74,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         cursorColor: MyColors.secondaryBlack,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           focusColor: MyColors.secondaryBlack,
                           labelText: loc()!.createPage_titleInput,
@@ -113,7 +113,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
                             onPressed: startLoadingModal,

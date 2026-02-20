@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/theme/app_themes.dart';
+import 'package:skavl/widgets/anomaly_classif_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: AnomalyClassifBar(),
     );
   }
 }

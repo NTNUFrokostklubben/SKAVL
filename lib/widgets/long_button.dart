@@ -16,7 +16,7 @@ class LongButton extends StatelessWidget {
         onPressed: () {
         },
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
         child: Text(title, 
           style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),

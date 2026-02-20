@@ -52,6 +52,16 @@
     "description": "Home"
   },
 
+  "g_cancel": "Cancel",
+  "@g_cancel": {
+    "description": "Cancel"
+  },
+
+  "g_confirm": "Confirm",
+  "@g_cancel": {
+    "description": "Confirm"
+  },
+
   "settings_title": "Settings",
   "@settings_title": {},
 
@@ -144,5 +154,22 @@
   "loadingDialog_semanticsLabel": "Linear progress indicator",
   "@loadingDialog_semanticsLabel": {
     "description": "Linear progress indicator - semantics label"
+  },
+
+  "confirmAnomaly_imageName": "Image name",
+  "@confirmAnomaly_imageName": {
+    "description": "Image name - subtext"
+  },
+    
+  "anomalyClassifBar_anomalyType": "Anomaly type",
+  "@anomalyClassifBar_anomalyType": {
+    "description": "Anomaly type - title"
+  },
+
+  "anomalyClassifBar_searchCreate": "Search or create anomaly type",
+  "@anomalyClassifBar_searchCreate": {
+    "description": "Search or create anomaly type - text input hint"
   }
+
+
 }

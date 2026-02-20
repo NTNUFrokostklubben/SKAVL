@@ -23,3 +23,8 @@ app_en.arb and app_nb.arb both define localization strings, any new string must 
 To get the functions for localization run "flutter gen-l10n". 
 
 for the localization .arb files we use the structure of "identifier_string", where identifier prefix describes the scope of the localization string. "g_" prefix is used for global/generic. Description should reflect usage of word and be generic for generic strings, such as "share something" and not "share via email". specification must be in a scope such as "topbar_share".
+
+
+## License
+Open-source: AGPL-3.0 (see LICENSE)
+Commercial: available on inquiry (see COMMERCIAL.md)
