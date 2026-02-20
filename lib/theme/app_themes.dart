@@ -54,6 +54,14 @@ class AppThemes {
       ),
     ),
 
+    // SLIDER THEME
+    sliderTheme: const SliderThemeData(
+      thumbColor: MyColors.green,
+      activeTrackColor: MyColors.darkGreen,
+      inactiveTrackColor: MyColors.primaryWhite,
+      overlayColor: MyColors.lightGreen,
+    ),
+
 
   );
 }
