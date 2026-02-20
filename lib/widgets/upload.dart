@@ -23,7 +23,7 @@ class UploadBox extends StatelessWidget {
           width: width,
           padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
+            borderRadius: BorderRadius.circular(5),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

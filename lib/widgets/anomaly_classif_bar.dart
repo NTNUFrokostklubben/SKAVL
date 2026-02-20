@@ -119,7 +119,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                       vertical: 8,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   onChanged: _updateFromText,
@@ -139,7 +139,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   onPressed: openAnomalyConfirmDialog,
@@ -171,7 +171,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   backgroundColor: MyColors.grey,
                 ),
@@ -189,7 +189,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 width: 150,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: MyColors.secondaryBlack, width: 1),
                   ),
                   child: Center(
@@ -212,7 +212,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   backgroundColor: MyColors.grey,
                 ),
