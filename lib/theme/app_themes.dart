@@ -54,6 +54,16 @@ class AppThemes {
       ),
     ),
 
+    // TEXT BUTTON THEME
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: MyColors.secondaryBlack,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        shadowColor: MyColors.grey,
+      ),
+    ),
+
     // SLIDER THEME
     sliderTheme: const SliderThemeData(
       thumbColor: MyColors.green,
