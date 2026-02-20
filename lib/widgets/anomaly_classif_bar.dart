@@ -111,17 +111,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  cursorColor: MyColors.secondaryBlack,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
                   onChanged: _updateFromText,
                 ),
               ),

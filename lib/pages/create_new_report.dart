@@ -73,10 +73,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                       child: TextField(
                         cursorColor: MyColors.secondaryBlack,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          focusColor: MyColors.secondaryBlack,
                           labelText: loc()!.createPage_titleInput,
                         ),
                       ),

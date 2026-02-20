@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/theme/colors.dart';
 
 /// Class to hold all app themes
 ///
@@ -22,6 +23,26 @@ class AppThemes {
         TargetPlatform.windows: _NoTransitionsBuilder(),
         TargetPlatform.linux: _NoTransitionsBuilder(),
       },
+    ),
+
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5))
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderSide: BorderSide(color: MyColors.darkGreen, width: 2),
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),  
+      filled: true,
+      fillColor: MyColors.primaryWhite,
+      helperStyle: TextStyle(fontSize: 16, color: MyColors.secondaryBlack)
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      ),
     ),
   );
 }
