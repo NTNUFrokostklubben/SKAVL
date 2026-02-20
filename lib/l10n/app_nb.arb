@@ -52,6 +52,16 @@
     "description": "Home"
   },
 
+  "g_cancel": "Avbryt",
+  "@g_cancel": {
+    "description": "Avbryt"
+  },
+
+  "g_confirm": "Bekreft",
+  "@g_cancel": {
+    "description": "Bekreft"
+  },
+
   "settings_title": "Innstillinger",
   "@settings_title": {},
 
@@ -146,5 +156,21 @@
   "loadingDialog_semanticsLabel": "Lineær fremdriftsindikator",
   "@loadingDialog_semanticsLabel": {
     "description": "Linear fremdriftsindikator - semantics label"
+  },
+
+  "confirmAnomaly_imageName": "Bilde navn",
+  "@confirmAnomaly_imageName": {
+    "description": "Bilde navn - subtext"
+  },
+
+  "anomalyClassifBar_anomalyType": "Avvik type",
+  "@anomalyClassifBar_anomalyType": {
+    "description": "Avvik type - title"
+  },
+  
+  "anomalyClassifBar_searchCreate": "Søk eller opprett avvikstype",
+  "@anomalyClassifBar_searchCreate": {
+    "description": "Søk eller opprett avvikstype - text input hint"
   }
+
 }

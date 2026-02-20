@@ -3,7 +3,7 @@ import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
-import 'package:skavl/widgets/loading_popup.dart';
+import 'package:skavl/widgets/dialogs/loading_popup.dart';
 
 class CreateNewReportPage extends StatefulWidget {
   const CreateNewReportPage({super.key});
