@@ -18,13 +18,17 @@ class AppThemes {
       bodySmall: const TextStyle(fontSize: 12),
       labelLarge: const TextStyle(fontSize: 14)
     ),
+
+    // PAGE TRANSITION THEME
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.windows: _NoTransitionsBuilder(),
         TargetPlatform.linux: _NoTransitionsBuilder(),
+        TargetPlatform.macOS: _NoTransitionsBuilder(),
       },
     ),
 
+    // INPUT DECORATION THEME
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(5))
@@ -39,11 +43,18 @@ class AppThemes {
       helperStyle: TextStyle(fontSize: 16, color: MyColors.secondaryBlack)
     ),
 
+    // ELEVATED BUTTON THEME
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        backgroundColor: MyColors.primaryWhite,
+        foregroundColor: MyColors.secondaryBlack,
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        overlayColor: MyColors.lightGreen,
       ),
     ),
+
+
   );
 }
 

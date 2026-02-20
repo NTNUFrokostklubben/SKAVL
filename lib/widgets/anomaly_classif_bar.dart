@@ -126,11 +126,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
                   onPressed: openAnomalyConfirmDialog,
                   child: Row(
                     spacing: 8,
@@ -158,12 +153,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
             children: [
 
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  backgroundColor: MyColors.grey,
-                ),
                 onPressed: _arrowBackPressed,
                 child: Icon(
                     Icons.arrow_back,
@@ -199,12 +188,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               SizedBox(width: 20),
 
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  backgroundColor: MyColors.grey,
-                ),
                 onPressed: _arrowForwardPressed,
                 child: Icon(
                   Icons.arrow_forward,

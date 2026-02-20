@@ -107,11 +107,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
                             onPressed: startLoadingModal,
                             child: Row(
                               spacing: 8,
