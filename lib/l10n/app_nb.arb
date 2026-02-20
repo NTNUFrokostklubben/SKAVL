@@ -146,5 +146,16 @@
   "loadingDialog_semanticsLabel": "Lineær fremdriftsindikator",
   "@loadingDialog_semanticsLabel": {
     "description": "Linear fremdriftsindikator - semantics label"
+  },
+
+  "confirmAnomaly_imageName": "Bilde navn",
+  "@confirmAnomaly_imageName": {
+    "description": "Bilde navn - subtext"
+  },
+
+  "anomalyClassifBar_anomalyType": "Avvik type",
+  "@anomalyClassifBar_anomalyType": {
+    "description": "Avvik type - title"
   }
+
 }

@@ -144,5 +144,15 @@
   "loadingDialog_semanticsLabel": "Linear progress indicator",
   "@loadingDialog_semanticsLabel": {
     "description": "Linear progress indicator - semantics label"
+  },
+
+  "confirmAnomaly_imageName": "Image name",
+  "@confirmAnomaly_imageName": {
+    "description": "Image name - subtext"
+  },
+    
+  "anomalyClassifBar_anomalyType": "Anomaly type",
+  "@anomalyClassifBar_anomalyType": {
+    "description": "Anomaly type - title"
   }
 }
