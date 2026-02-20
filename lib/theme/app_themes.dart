@@ -62,6 +62,10 @@ class AppThemes {
       overlayColor: MyColors.lightGreen,
     ),
 
+    // PROGRESS INDICATOR THEME
+   progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: MyColors.green,
+   ),
 
   );
 }
