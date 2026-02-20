@@ -19,7 +19,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   late TextEditingController _textController;
 
   int _currentImage = 1;
-  int _totalImages = 789;
+  final int _totalImages = 789;
 
   @override
   void initState() {
@@ -186,7 +186,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        '${_currentImage} / ${_totalImages}',
+                        '$_currentImage / $_totalImages',
                         style: const TextStyle(
                           fontSize: 16,
                           color: MyColors.secondaryBlack,
