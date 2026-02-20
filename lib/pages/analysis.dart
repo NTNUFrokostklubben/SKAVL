@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/widgets/analysis/side-view.dart';
 import 'package:skavl/widgets/top_bar.dart';
 
 /// View modes displayed on the toolbar
@@ -51,30 +52,17 @@ class _AnalysisState extends State<Analysis> {
           const VerticalDivider(width: 1),
 
           // Main work pane
-          Expanded(child: _AnalysisBody(mode: mode)),
+          Expanded(child: IndexedStack(
+            index: index,
+            children: const [
+              SideView(),
+              Text("Overlay"),
+              Text("GridView"),
+              Text("FreeView")
+            ],
+          )),
         ],
       ),
     );
-  }
-}
-
-/// Internal handler to display different view modes in the work-pane
-class _AnalysisBody extends StatelessWidget {
-  final ViewMode mode;
-
-  const _AnalysisBody({required this.mode});
-
-  @override
-  Widget build(BuildContext context) {
-    switch (mode) {
-      case ViewMode.side:
-        return const Text("Side");
-      case ViewMode.overlay:
-        return const Text("Overlay");
-      case ViewMode.grid:
-        return const Text("Grid");
-      case ViewMode.free:
-        return const Text("Free");
-    }
   }
 }
