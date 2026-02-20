@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
+import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/pages/create_new_report.dart';
 import 'package:skavl/pages/settings.dart';
 
@@ -81,6 +82,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         }),
                         menuItem("Upload page", (){
                           navigateTo(context, CreateNewReportPage());
+                        }),
+                        menuItem("Analysis page", (){
+                          navigateTo(context, Analysis());
                         }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, (){}),
