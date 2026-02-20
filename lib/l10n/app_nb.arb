@@ -87,6 +87,11 @@
   "@topbar_openRecent": {
     "description": "Open Recent menu item"
   },
+
+  "anomalyClassifBar_confirm": "Bekreft avvik",
+  "@anomalyClassifBar_confirm": {
+    "description": "Bekreft avvik"
+  },
   
   "welcomePage_SKAVL": "Velkommen til SKAVL!",
   "@welcomePage_SKAVL": {
@@ -103,8 +108,8 @@
     "description": "Opprett ny anomalianalyse - button text"
   },
 
-  "createPage_Title": "Opprett ny rapport for avviksdeteksjon",
-  "@createPage_Title": {
+  "createPage_title": "Opprett ny rapport for avviksdeteksjon",
+  "@createPage_title": {
     "description": "Opprett ny rapport for avviksdeteksjon - title"
   },
 

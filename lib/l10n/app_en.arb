@@ -85,6 +85,11 @@
   "@topbar_openRecent": {
     "description": "Open Recent menu item"
   },
+
+  "anomalyClassifBar_confirm": "Confirm Anomaly",
+  "@anomalyClassifBar_confirm": {
+    "description": "Confirm Anomaly"
+  },
  
   "welcomePage_SKAVL": "Welcome to SKAVL!",
   "@welcomePage_SKAVL": {
@@ -101,8 +106,8 @@
     "description": "Create new anomaly analysis - button text"
   },
 
-  "createPage_Title": "Create new anomaly detection report",
-  "@createPage_Title": {
+  "createPage_title": "Create new anomaly detection report",
+  "@createPage_title": {
     "description": "Create new anomaly detection report - title"
   },
 
