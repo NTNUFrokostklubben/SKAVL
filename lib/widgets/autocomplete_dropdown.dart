@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 
 class AutocompleteDropdown extends StatelessWidget {
   final List<String> options;
@@ -47,11 +48,11 @@ class AutocompleteDropdown extends StatelessWidget {
             return TextFormField(
               controller: controller,
               focusNode: focusNode,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
-                hintText: 'Search or create anomaly type',
+                hintText: AppLocalizations.of(context,)!.anomalyClassifBar_searchCreate,
               ),
               onFieldSubmitted: (value) {
                 // If the input value is not in the options and is not empty, create a new option

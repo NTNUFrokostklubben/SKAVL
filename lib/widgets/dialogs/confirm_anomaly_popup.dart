@@ -85,7 +85,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          child: const Text('Cancel'),
+          child: Text(loc()!.g_cancel),
         ),
 
         ElevatedButton(
@@ -101,7 +101,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          child: const Text('Confirm'),
+          child: Text(loc()!.g_confirm),
         ),
       ],
     );
