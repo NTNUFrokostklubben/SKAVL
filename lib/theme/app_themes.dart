@@ -10,7 +10,7 @@ class AppThemes {
   /// Default light theme of the application.
 
   static final ThemeData lightTheme = ThemeData(
-    colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    colorScheme: .fromSeed(seedColor: Colors.green, primary: MyColors.primaryWhite, secondary: MyColors.secondaryBlack),
     textTheme: TextTheme(
       titleLarge: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       titleMedium: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
