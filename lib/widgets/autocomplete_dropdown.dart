@@ -49,9 +49,6 @@ class AutocompleteDropdown extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
                 hintText: AppLocalizations.of(context,)!.anomalyClassifBar_searchCreate,
               ),
               onFieldSubmitted: (value) {

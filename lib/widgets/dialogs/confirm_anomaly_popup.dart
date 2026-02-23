@@ -95,12 +95,6 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
             }
             Navigator.of(context).pop(selectedAnomaly);
           },
-          style: TextButton.styleFrom(
-            foregroundColor: MyColors.secondaryBlack,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ),
           child: Text(loc()!.g_confirm),
         ),
       ],
