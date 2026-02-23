@@ -58,7 +58,7 @@
   },
 
   "g_confirm": "Confirm",
-  "@g_cancel": {
+  "@g_confirm": {
     "description": "Confirm"
   },
 
@@ -132,12 +132,12 @@
   },
 
   "createPage_uploadSOSIFile": "Upload SOSI file",
-  "@upload_SOSI_file": {
+  "@createPage_uploadSOSIFile": {
     "description": "Upload SOSI file - text"
   },
 
   "createPage_createReportButton": "Create report",
-  "@create_report_button": {
+  "@createPage_createReportButton": {
     "description": "Create report - button text"
   },
 
