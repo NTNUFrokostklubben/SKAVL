@@ -73,9 +73,18 @@ class AppThemes {
     ),
 
     // PROGRESS INDICATOR THEME
-   progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: MyColors.green,
-   ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: MyColors.green,
+    ),
+
+    scaffoldBackgroundColor: MyColors.primaryWhite,
+
+    // APP BAR THEME
+    appBarTheme: const AppBarTheme(
+      backgroundColor: MyColors.primaryWhite,
+      foregroundColor: MyColors.secondaryBlack,
+      elevation: 0,
+    ),
 
   );
 }
