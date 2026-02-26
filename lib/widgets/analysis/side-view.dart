@@ -1,23 +1,34 @@
-import 'dart:io';
+import 'package:flutter/material.dart';
 
-import 'package:flutter/cupertino.dart';
 
-class SideView extends StatelessWidget {
+class SideView extends StatefulWidget {
   const SideView({super.key});
 
-  static const String imgPath = "C:\\Users\\Admin\\Documents\\bachelor-thesis\\ImageDataTest\\NordmøreGSD10";
+  @override
+  State<SideView> createState() => _SideViewState();
+}
+
+class _SideViewState extends State<SideView> {
+  late final TransformationController _tc;
+
+  @override
+  void initState() {
+    super.initState();
+    _tc = TransformationController();
+  }
+
+  @override
+  void dispose() {
+    _tc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final file = File(imgPath);
-    return const Center(
-      child: Column(
-        children: [
-          Text("Side by Side View"),
 
-        ],
-      ),
+    return SizedBox.expand(
+      child: InteractiveViewer(child: Text("data"), transformationController: _tc,)
     );
   }
-
 }
+
