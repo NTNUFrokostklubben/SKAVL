@@ -84,6 +84,44 @@ class ProgressReport extends $pb.GeneratedMessage {
   void clearProgress() => $_clearField(2);
 }
 
+class ProgressRequest extends $pb.GeneratedMessage {
+  factory ProgressRequest() => create();
+
+  ProgressRequest._();
+
+  factory ProgressRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ProgressRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ProgressRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'skavl'),
+      createEmptyInstance: create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ProgressRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ProgressRequest copyWith(void Function(ProgressRequest) updates) =>
+      super.copyWith((message) => updates(message as ProgressRequest))
+          as ProgressRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ProgressRequest create() => ProgressRequest._();
+  @$core.override
+  ProgressRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ProgressRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ProgressRequest>(create);
+  static ProgressRequest? _defaultInstance;
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
