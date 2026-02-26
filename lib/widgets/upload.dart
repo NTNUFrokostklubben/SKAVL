@@ -32,7 +32,7 @@ class UploadBox extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 text,
-                style: TextStyle(fontSize: 16, color: MyColors.secondaryBlack),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),

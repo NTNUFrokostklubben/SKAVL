@@ -77,7 +77,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: MyColors.grey,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -133,10 +132,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                     children: [
                       Text(
                         loc()!.anomalyClassifBar_confirm,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: MyColors.secondaryBlack,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       )
                     ],
                   ),
@@ -175,10 +171,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
                         '$_currentImage / $_totalImages',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: MyColors.secondaryBlack,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ),

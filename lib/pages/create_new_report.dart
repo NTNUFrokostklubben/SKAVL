@@ -51,7 +51,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                   SizedBox(width: titleStart),
                   Text(
                     loc()!.createPage_title,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
               ),
@@ -71,7 +71,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        cursorColor: MyColors.secondaryBlack,
                         decoration: InputDecoration(
                           labelText: loc()!.createPage_titleInput,
                         ),
@@ -114,10 +113,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                               children: [
                                 Text(
                                   loc()!.createPage_createReportButton,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: MyColors.secondaryBlack,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,

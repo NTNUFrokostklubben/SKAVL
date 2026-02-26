@@ -32,6 +32,8 @@ class MyApp extends StatelessWidget {
       title: 'SKAVL',
 
       theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: settings.theme,
       home: const MainPage(),
     );
   }
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Text(
                       loc()!.welcomePage_SKAVL,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),

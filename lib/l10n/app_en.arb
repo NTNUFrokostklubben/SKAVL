@@ -68,6 +68,16 @@
   "settings_language": "Language",
   "@settings_language": {},
 
+  "settings_theme": "Colour theme",
+  "@settings_theme": {},
+
+  "settings_darkMode": "Dark mode",
+  "@settings_darkMode": {},
+
+  "settings_lightMode": "Light mode",
+  "@settings_lightMode": {},
+
+
   "topbar_about" : "About",
   "@topbar_about": {
     "description": "About menu item"

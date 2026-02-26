@@ -16,7 +16,7 @@ class LongButton extends StatelessWidget {
         onPressed: () {
         },
         child: Text(title, 
-          style: const TextStyle(fontSize: 16, color: MyColors.secondaryBlack)),
+          style: Theme.of(context).textTheme.bodyMedium),
       ),
     );
   }

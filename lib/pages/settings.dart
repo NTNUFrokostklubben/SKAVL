@@ -19,9 +19,14 @@ class Settings extends StatelessWidget {
       return AppLocalizations.of(context);
     }
 
-    List<DropdownMenuEntry> entries = [
+    List<DropdownMenuEntry> languageEntries = [
       DropdownMenuEntry<Locale?>(value: Locale('en'), label: loc()!.g_enloc),
       DropdownMenuEntry<Locale?>(value: Locale('nb'), label: loc()!.g_nbloc),
+    ];
+
+    List<DropdownMenuEntry> modeEntries = [
+      DropdownMenuEntry<ThemeMode>(value: ThemeMode.dark, label: loc()!.settings_darkMode),
+      DropdownMenuEntry<ThemeMode>(value: ThemeMode.light, label: loc()!.settings_lightMode),
     ];
 
     return Scaffold(
@@ -41,16 +46,38 @@ class Settings extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 48,
                 children: [
-                  SizedBox(width: 80, child: Text(loc()!.settings_language)),
+                  SizedBox(width: 80, child: Text(loc()!.settings_language, style: Theme.of(context).textTheme.bodyMedium)),
                   DropdownMenu(
                     width: 400,
-                    dropdownMenuEntries: entries,
+                    dropdownMenuEntries: languageEntries,
                     initialSelection: settings.locale,
                     onSelected: (v) {
                       context.read<SettingsModel>().setLocale(v);
                     },
                   ),
                 ],
+              ),
+            ),
+
+            LargeHeader(loc()!.settings_theme),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: 48,
+              children: [
+                SizedBox(width: 80, child: Text(loc()!.settings_theme,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
+                DropdownMenu(
+                width: 400,
+                dropdownMenuEntries: modeEntries,
+                initialSelection: settings.theme,
+                onSelected: (v) {
+                  context.read<SettingsModel>().setTheme(v);
+                },
+                ),
+              ],
               ),
             ),
           ],

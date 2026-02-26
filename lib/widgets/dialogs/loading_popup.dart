@@ -102,7 +102,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
                     const SizedBox(height: 20),
                     Text(
                       '${(totalImages*progress).toInt()} / ${totalImages.toInt()}',
-                      style: TextStyle(fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
