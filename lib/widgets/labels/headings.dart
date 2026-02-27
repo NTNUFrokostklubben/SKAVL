@@ -30,3 +30,18 @@ class MediumHeader extends StatelessWidget {
     );
   }
 }
+
+/// Semantic SmallHeader component to represent headers
+/// Acts as wrapper for [Text] and applies [titleSmall] from ThemeData
+class SmallHeader extends StatelessWidget {
+  final String text;
+  const SmallHeader(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      header: true,
+      child: Text(text, style: Theme.of(context).textTheme.titleSmall),
+    );
+  }
+}

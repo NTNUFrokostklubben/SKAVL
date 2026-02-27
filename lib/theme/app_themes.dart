@@ -10,11 +10,11 @@ class AppThemes {
   /// Default light theme of the application.
 
   static final ThemeData lightTheme = ThemeData(
-    colorScheme: .fromSeed(seedColor: Colors.green, primary: MyColors.primaryWhite, secondary: MyColors.secondaryBlack),
+    colorScheme: .fromSeed(seedColor: MyColors.lightGreen, primary: MyColors.primaryWhite, secondary: MyColors.secondaryBlack),
     textTheme: TextTheme(
       titleLarge: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
       titleMedium: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      titleSmall: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      titleSmall: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       bodyMedium: const TextStyle(fontSize: 16),
       bodySmall: const TextStyle(fontSize: 12),
       labelLarge: const TextStyle(fontSize: 14)
@@ -54,6 +54,7 @@ class AppThemes {
         foregroundColor: MyColors.secondaryBlack,
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         overlayColor: MyColors.lightGreen,
+        shadowColor: MyColors.grey,
       ),
     ),
 
@@ -94,9 +95,9 @@ class AppThemes {
 
   static final ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.green,
-      primary: MyColors.secondaryBlack, // Dark background primary
-      secondary: MyColors.primaryWhite, // Accent color
+      seedColor: MyColors.darkGreen,
+      primary: MyColors.secondaryBlack,
+      secondary: MyColors.primaryWhite,
       brightness: Brightness.dark,
     ),
 
@@ -134,15 +135,15 @@ class AppThemes {
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        borderSide: BorderSide(color: MyColors.grey, width: 2),
+        borderSide: BorderSide(color: MyColors.lightGreen, width: 2),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        borderSide: BorderSide(color: MyColors.lightGreen, width: 2),
+        borderSide: BorderSide(color: MyColors.darkGreen, width: 2),
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       filled: true,
-      fillColor: MyColors.secondaryBlack,
+      fillColor: MyColors.darkGrey,
       helperStyle: TextStyle(fontSize: 16, color: MyColors.primaryWhite),
       labelStyle: TextStyle(fontSize: 16, color: MyColors.primaryWhite),
     ),
@@ -151,16 +152,18 @@ class AppThemes {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        backgroundColor: MyColors.secondaryBlack,
+        backgroundColor: MyColors.darkGrey,
         foregroundColor: MyColors.primaryWhite,
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         overlayColor: MyColors.darkGreen,
+        shadowColor: MyColors.darkGrey
       ),
     ),
 
     // TEXT BUTTON THEME
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
+        // backgroundColor: MyColors.darkGrey,
         foregroundColor: MyColors.primaryWhite,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -172,7 +175,7 @@ class AppThemes {
     sliderTheme: const SliderThemeData(
       thumbColor: MyColors.lightGreen,
       activeTrackColor: MyColors.green,
-      inactiveTrackColor: MyColors.secondaryBlack,
+      inactiveTrackColor: MyColors.lightBlue,
       overlayColor: MyColors.darkGreen,
     ),
 
@@ -192,6 +195,7 @@ class AppThemes {
 
     bottomAppBarTheme: const BottomAppBarThemeData(
       color: MyColors.secondaryBlack,
+      surfaceTintColor: MyColors.darkGreen,
     )
   );
 }

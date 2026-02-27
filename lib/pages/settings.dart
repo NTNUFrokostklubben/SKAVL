@@ -24,10 +24,26 @@ class Settings extends StatelessWidget {
       DropdownMenuEntry<Locale?>(value: Locale('nb'), label: loc()!.g_nbloc),
     ];
 
-    List<DropdownMenuEntry> modeEntries = [
-      DropdownMenuEntry<ThemeMode>(value: ThemeMode.dark, label: loc()!.settings_darkMode),
-      DropdownMenuEntry<ThemeMode>(value: ThemeMode.light, label: loc()!.settings_lightMode),
+    List<DropdownMenuEntry<ThemeMode>> modeEntries = [
+      DropdownMenuEntry(
+        value: ThemeMode.system,
+        label: loc()!.settings_systemMode,
+      ),
+      DropdownMenuEntry(
+        value: ThemeMode.light,
+        label: loc()!.settings_lightMode,
+      ),
+      DropdownMenuEntry(value: ThemeMode.dark, label: loc()!.settings_darkMode),
     ];
+
+    final themeController = TextEditingController(
+      text: modeEntries.firstWhere((e) => e.value == settings.theme).label,
+    );
+
+    final selectedEntry = modeEntries.firstWhere(
+      (e) => e.value == settings.theme,
+      orElse: () => modeEntries.first,
+    );
 
     return Scaffold(
       body: Padding(
@@ -72,9 +88,11 @@ class Settings extends StatelessWidget {
                 DropdownMenu(
                 width: 400,
                 dropdownMenuEntries: modeEntries,
-                initialSelection: settings.theme,
-                onSelected: (v) {
-                  context.read<SettingsModel>().setTheme(v);
+                controller: themeController,
+                onSelected: (ThemeMode? v) {
+                  if (v != null) {
+                    context.read<SettingsModel>().setTheme(v);
+                  }
                 },
                 ),
               ],

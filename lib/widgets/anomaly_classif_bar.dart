@@ -153,7 +153,9 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 child: Icon(
                     Icons.arrow_back,
                     size: 20,
-                    color: MyColors.secondaryBlack,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? MyColors.secondaryBlack
+                        : MyColors.primaryWhite,
                   ),
               ),
               
@@ -164,7 +166,9 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: MyColors.secondaryBlack, width: 1),
+                    border: Border.all(color: Theme.of(context).brightness == Brightness.light
+                            ? MyColors.secondaryBlack
+                            : MyColors.primaryWhite, width: 1),
                   ),
                   child: Center(
                     child: Padding(
@@ -185,7 +189,9 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 child: Icon(
                   Icons.arrow_forward,
                   size: 20,
-                  color: MyColors.secondaryBlack,
+                  color: Theme.of(context).brightness == Brightness.light
+                        ? MyColors.secondaryBlack
+                        : MyColors.primaryWhite,
                 ),
               ),
             ],

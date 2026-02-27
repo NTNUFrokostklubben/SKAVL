@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skavl/theme/colors.dart';
 
 
 class LongButton extends StatelessWidget {

@@ -46,12 +46,12 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${loc()!.confirmAnomaly_imageName} : HX-123-456' , style: Theme.of(context).textTheme.bodySmall),
+            Text('${loc()!.confirmAnomaly_imageName} : HX-123-456' , style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 20),
 
             Text(
               loc()!.anomalyClassifBar_anomalyType,
-              style: Theme.of(context).textTheme.titleMedium
+              style: Theme.of(context).textTheme.titleSmall
             ),
 
             const SizedBox(height: 12),

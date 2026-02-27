@@ -118,7 +118,9 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
-                                  color: MyColors.secondaryBlack,
+                                  color: Theme.of(context).brightness == Brightness.light
+                                    ? MyColors.secondaryBlack
+                                    : MyColors.primaryWhite,
                                 ),
                               ],
                             ),

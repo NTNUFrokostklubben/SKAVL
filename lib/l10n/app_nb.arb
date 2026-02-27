@@ -76,6 +76,9 @@
 
   "settings_lightMode": "Lysmodus",
   "@settings_lightMode": {},
+
+  "settings_systemMode": "System modus",
+  "@settings_systemMode": {},
   
   "topbar_about" : "Om",
   "@topbar_about": {

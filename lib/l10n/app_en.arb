@@ -77,6 +77,8 @@
   "settings_lightMode": "Light mode",
   "@settings_lightMode": {},
 
+  "settings_systemMode": "System mode",
+  "@settings_systemMode": {},
 
   "topbar_about" : "About",
   "@topbar_about": {

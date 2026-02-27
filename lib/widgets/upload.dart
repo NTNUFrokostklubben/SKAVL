@@ -17,7 +17,7 @@ class UploadBox extends StatelessWidget {
         borderType: BorderType.RRect,
         radius: const Radius.circular(2),
         dashPattern: const [6, 2],
-        color: MyColors.secondaryBlack,
+        color: Theme.of(context).brightness == Brightness.light ? MyColors.secondaryBlack : MyColors.primaryWhite,
         strokeWidth: 2,
         child: Container(
           width: width,
@@ -28,7 +28,11 @@ class UploadBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.cloud_upload_outlined, size: 20, color: MyColors.secondaryBlack),
+              Icon(Icons.cloud_upload_outlined, size: 20,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? MyColors.secondaryBlack
+                    : MyColors.primaryWhite,
+              ),
               const SizedBox(height: 12),
               Text(
                 text,
