@@ -40,11 +40,6 @@ class Settings extends StatelessWidget {
       text: modeEntries.firstWhere((e) => e.value == settings.theme).label,
     );
 
-    final selectedEntry = modeEntries.firstWhere(
-      (e) => e.value == settings.theme,
-      orElse: () => modeEntries.first,
-    );
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
