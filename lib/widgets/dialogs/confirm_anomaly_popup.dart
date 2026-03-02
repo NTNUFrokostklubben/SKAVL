@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/autocomplete_dropdown.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 
 class ConfirmAnomalyDialog extends StatefulWidget {
   const ConfirmAnomalyDialog({super.key});
@@ -38,7 +39,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(loc()!.anomalyClassifBar_confirm),
+      title: MediumHeader(loc()!.anomalyClassifBar_confirm),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       content: SizedBox(
         width: 500,
@@ -46,12 +47,12 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${loc()!.confirmAnomaly_imageName} : HX-123-456'),
+            Text('${loc()!.confirmAnomaly_imageName} : HX-123-456' , style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 20),
 
             Text(
               loc()!.anomalyClassifBar_anomalyType,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleSmall
             ),
 
             const SizedBox(height: 12),
@@ -85,7 +86,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          child: Text(loc()!.g_cancel),
+          child: Text(loc()!.g_cancel, style:  Theme.of(context).textTheme.titleSmall),
         ),
 
         ElevatedButton(
@@ -95,7 +96,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
             }
             Navigator.of(context).pop(selectedAnomaly);
           },
-          child: Text(loc()!.g_confirm),
+          child: Text(loc()!.g_confirm, style:  Theme.of(context).textTheme.titleSmall,),
         ),
       ],
     );

@@ -19,10 +19,26 @@ class Settings extends StatelessWidget {
       return AppLocalizations.of(context);
     }
 
-    List<DropdownMenuEntry> entries = [
+    List<DropdownMenuEntry> languageEntries = [
       DropdownMenuEntry<Locale?>(value: Locale('en'), label: loc()!.g_enloc),
       DropdownMenuEntry<Locale?>(value: Locale('nb'), label: loc()!.g_nbloc),
     ];
+
+    List<DropdownMenuEntry<ThemeMode>> modeEntries = [
+      DropdownMenuEntry(
+        value: ThemeMode.system,
+        label: loc()!.settings_systemMode,
+      ),
+      DropdownMenuEntry(
+        value: ThemeMode.light,
+        label: loc()!.settings_lightMode,
+      ),
+      DropdownMenuEntry(value: ThemeMode.dark, label: loc()!.settings_darkMode),
+    ];
+
+    final themeController = TextEditingController(
+      text: modeEntries.firstWhere((e) => e.value == settings.theme).label,
+    );
 
     return Scaffold(
       body: Padding(
@@ -41,16 +57,40 @@ class Settings extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 48,
                 children: [
-                  SizedBox(width: 80, child: Text(loc()!.settings_language)),
+                  SizedBox(width: 80, child: Text(loc()!.settings_language, style: Theme.of(context).textTheme.bodyMedium)),
                   DropdownMenu(
                     width: 400,
-                    dropdownMenuEntries: entries,
+                    dropdownMenuEntries: languageEntries,
                     initialSelection: settings.locale,
                     onSelected: (v) {
                       context.read<SettingsModel>().setLocale(v);
                     },
                   ),
                 ],
+              ),
+            ),
+
+            LargeHeader(loc()!.settings_theme),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: 48,
+              children: [
+                SizedBox(width: 80, child: Text(loc()!.settings_theme,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
+                DropdownMenu(
+                width: 400,
+                dropdownMenuEntries: modeEntries,
+                controller: themeController,
+                onSelected: (ThemeMode? v) {
+                  if (v != null) {
+                    context.read<SettingsModel>().setTheme(v);
+                  }
+                },
+                ),
+              ],
               ),
             ),
           ],

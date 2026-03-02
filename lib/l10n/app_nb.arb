@@ -67,6 +67,18 @@
 
   "settings_language": "Språk",
   "@settings_language": {},
+
+  "settings_theme": "Fargetema",
+  "@settings_theme": {},
+
+  "settings_darkMode": "Mørkemodus",
+  "@settings_darkMode": {},
+
+  "settings_lightMode": "Lysmodus",
+  "@settings_lightMode": {},
+
+  "settings_systemMode": "System modus",
+  "@settings_systemMode": {},
   
   "topbar_about" : "Om",
   "@topbar_about": {

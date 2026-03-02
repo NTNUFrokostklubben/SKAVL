@@ -81,7 +81,8 @@ class AutocompleteDropdown extends StatelessWidget {
                     shrinkWrap: true,
                     children: filtered.map((option) {
                       return ListTile(
-                        title: Text(option),
+                        title: Text(option, style: Theme.of(context).textTheme.bodySmall,
+                        ),
                         onTap: () {
                           onSelectedInternal(option);
                         },

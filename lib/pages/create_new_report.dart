@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
@@ -49,9 +50,8 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(width: titleStart),
-                  Text(
-                    loc()!.createPage_title,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  LargeHeader(
+                    loc()!.createPage_title
                   ),
                 ],
               ),
@@ -71,7 +71,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        cursorColor: MyColors.secondaryBlack,
                         decoration: InputDecoration(
                           labelText: loc()!.createPage_titleInput,
                         ),
@@ -114,15 +113,14 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                               children: [
                                 Text(
                                   loc()!.createPage_createReportButton,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: MyColors.secondaryBlack,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
-                                  color: MyColors.secondaryBlack,
+                                  color: Theme.of(context).brightness == Brightness.light
+                                    ? MyColors.secondaryBlack
+                                    : MyColors.primaryWhite,
                                 ),
                               ],
                             ),

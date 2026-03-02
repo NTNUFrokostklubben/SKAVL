@@ -17,32 +17,30 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   }
 
   double _currentSliderValue = 0.5;
-  late TextEditingController _textController;
-
+  late TextEditingController _sensitivityController;
+  late TextEditingController _imageController;
   int _currentImage = 1;
-  final int _totalImages = 789;
-
-  // open confirm anomaly dialog and wait for result
-  Future<void> openAnomalyConfirmDialog() async {
-        // Show loading dialog
-    ConfirmAnomalyDialog.show(context);
-
-    // Simulate async work
-    if (!mounted) return;
-  }    
+  final int _totalImages = 789;  
 
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController(
+    _sensitivityController = TextEditingController(
       text: _currentSliderValue.toStringAsFixed(3),
     );
+    _imageController = TextEditingController(text: _currentImage.toString());
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _sensitivityController.dispose();
+    _imageController.dispose();
     super.dispose();
+  }
+
+  Future<void> openAnomalyConfirmDialog() async {
+    ConfirmAnomalyDialog.show(context);
+    if (!mounted) return;
   }
 
   void _arrowBackPressed() {
@@ -52,32 +50,38 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
       } else {
         _currentImage = _totalImages;
       }
+      _imageController.text = _currentImage.toString();
     });
   }
 
-    void _arrowForwardPressed() {
+  void _arrowForwardPressed() {
     setState(() {
       if (_currentImage < _totalImages) {
         _currentImage++;
       } else {
         _currentImage = 1;
       }
+      _imageController.text = _currentImage.toString();
     });
   }
 
-  void _updateFromText(String value) {
-    final parsed = double.tryParse(value);
-    if (parsed != null && parsed >= 0 && parsed <= 1) {
+  void _updateImageFromText(String value) {
+    final parsed = int.tryParse(value);
+
+    if (parsed != null && parsed >= 1 && parsed <= _totalImages) {
       setState(() {
-        _currentSliderValue = parsed;
+        _currentImage = parsed;
+        _imageController.text = _currentImage.toString();
       });
+    } else {
+      // Reset if invalid
+      _imageController.text = _currentImage.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: MyColors.grey,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -95,7 +99,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   onChanged: (double value) {
                     setState(() {
                       _currentSliderValue = value;
-                      _textController.text = value.toStringAsFixed(3);
+                      _sensitivityController.text = value.toStringAsFixed(3);
                     });
                   },
                 ),
@@ -107,11 +111,11 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               SizedBox(
                 width: 80,
                 child: TextField(
-                  controller: _textController,
+                  controller: _sensitivityController,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  onChanged: _updateFromText,
+                  onChanged: _updateImageFromText,
                 ),
               ),
             ],
@@ -133,10 +137,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                     children: [
                       Text(
                         loc()!.anomalyClassifBar_confirm,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: MyColors.secondaryBlack,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       )
                     ],
                   ),
@@ -157,33 +158,53 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 child: Icon(
                     Icons.arrow_back,
                     size: 20,
-                    color: MyColors.secondaryBlack,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? MyColors.secondaryBlack
+                        : MyColors.primaryWhite,
                   ),
               ),
               
               SizedBox(width: 20),
 
-              SizedBox(
-                width: 150,
-                child: Container(
+              Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: MyColors.secondaryBlack, width: 1),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        '$_currentImage / $_totalImages',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: MyColors.secondaryBlack,
-                        ),
-                      ),
+                    border: Border.all(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? MyColors.secondaryBlack
+                          : MyColors.primaryWhite,
+                      width: 1,
                     ),
                   ),
-                )
-              ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 60,
+                        child: TextField(
+                          controller: _imageController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          onSubmitted: _updateImageFromText,
+                          decoration: const InputDecoration(
+                            filled: false,
+                            isDense: true,
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 0,
+                            ),
+
+                          ),
+                        ),
+                      ),
+                      Text(" / $_totalImages"),
+                    ],
+                  ),
+                ),
 
               SizedBox(width: 20),
 
@@ -192,7 +213,9 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                 child: Icon(
                   Icons.arrow_forward,
                   size: 20,
-                  color: MyColors.secondaryBlack,
+                  color: Theme.of(context).brightness == Brightness.light
+                        ? MyColors.secondaryBlack
+                        : MyColors.primaryWhite,
                 ),
               ),
             ],
