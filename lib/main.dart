@@ -6,6 +6,7 @@ import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 
 void main() {
   runApp(
@@ -83,9 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   spacing: 20,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      loc()!.welcomePage_SKAVL,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    LargeHeader(
+                      loc()!.welcomePage_SKAVL
                     ),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),

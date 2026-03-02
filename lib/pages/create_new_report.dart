@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
@@ -49,9 +50,8 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(width: titleStart),
-                  Text(
-                    loc()!.createPage_title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  LargeHeader(
+                    loc()!.createPage_title
                   ),
                 ],
               ),

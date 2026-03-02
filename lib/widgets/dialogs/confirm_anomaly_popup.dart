@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/autocomplete_dropdown.dart';
+import 'package:skavl/widgets/labels/headings.dart';
 
 class ConfirmAnomalyDialog extends StatefulWidget {
   const ConfirmAnomalyDialog({super.key});
@@ -38,7 +39,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(loc()!.anomalyClassifBar_confirm, style: Theme.of(context).textTheme.titleMedium),
+      title: MediumHeader(loc()!.anomalyClassifBar_confirm),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       content: SizedBox(
         width: 500,
