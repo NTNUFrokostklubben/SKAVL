@@ -35,9 +35,9 @@ Future<void> grpcTest({
         ..y = Int64(0)
         ..width = 1024
         ..height = 768)
-      ..screenPixelsPerSourcePixel = 0.5
-      ..prefetchMarginTiles = 1
-      ..queueMissingTiles = false;
+      ..screenPixelsPerSourcePixel = 1
+      ..prefetchMarginTiles = 0
+      ..queueMissingTiles = true;
 
     final planRes = await client.planViewport(planReq);
 
