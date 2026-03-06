@@ -28,3 +28,12 @@ const ProgressReport$json = {
 final $typed_data.Uint8List progressReportDescriptor = $convert.base64Decode(
     'Cg5Qcm9ncmVzc1JlcG9ydBIhCgxwcm9qZWN0X25hbWUYASABKAlSC3Byb2plY3ROYW1lEhoKCH'
     'Byb2dyZXNzGAIgASgCUghwcm9ncmVzcw==');
+
+@$core.Deprecated('Use progressRequestDescriptor instead')
+const ProgressRequest$json = {
+  '1': 'ProgressRequest',
+};
+
+/// Descriptor for `ProgressRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List progressRequestDescriptor =
+    $convert.base64Decode('Cg9Qcm9ncmVzc1JlcXVlc3Q=');
