@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skavl/adapter/grpc_test.dart';
 import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
@@ -88,8 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),
-                    // TODO: Remove this grpc test button for dummy data
-                    TextButton(onPressed: () => grpcTest(host: "127.0.0.1"), child: Text("test grpc"))
                   ],
                 ),
                 const Image(

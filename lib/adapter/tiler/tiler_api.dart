@@ -1,4 +1,4 @@
-import 'package:fixnum/src/int64.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:grpc/grpc.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
 

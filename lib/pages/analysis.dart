@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skavl/widgets/analysis/side-view.dart';
+import 'package:skavl/widgets/analysis/side_view.dart';
 import 'package:skavl/widgets/top_bar.dart';
 
 /// View modes displayed on the toolbar
