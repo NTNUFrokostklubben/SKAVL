@@ -143,6 +143,7 @@ class _SideViewState extends State<SideView> {
                     children: _sceneController.sourceOrder.map((sourceId) {
                       final desc = _sceneController.sourcesById[sourceId]!;
                       final rect = layout.panelRects[sourceId]!;
+                      // TODO: Implement feature for not replacing entire tileref per render to reduce visual "jumping"
                       final tiles = _sceneController.tilesBySourceId[sourceId] ?? const <TileRef>[];
 
                       return Positioned.fromRect(
