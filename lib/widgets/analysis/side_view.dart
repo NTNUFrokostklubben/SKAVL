@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -19,12 +20,22 @@ class _SideViewState extends State<SideView> {
   late final TransformationController _tc;
   late final TileSceneController _sceneController;
 
+  // Listener for TransformationController to trigger tile loading on zoom/pan
   late final void Function() _tcListener;
+
+  // Tile scaling parameters
   int _level = 0;
   int _factor = 1;
   double _ssp = 1.0;
   double _displayTileSize = 512;
 
+  // Debounce parameters for TransformationController viewport updating
+  Timer? _planDebounce;
+  bool _planInFlight = false;
+  int _planGeneration = 0;
+  Size? _lastViewportSize;
+
+  // gRPC client setup
   late final ClientChannel _channel;
   late final TilerServiceClient tilerClient;
 
@@ -62,7 +73,7 @@ class _SideViewState extends State<SideView> {
       _ssp = 1.0 / _factor;
       _displayTileSize = 512 * _factor.toDouble();
 
-
+      _scheduleViewportPlan();
     };
 
     _tc.addListener(_tcListener);
@@ -70,6 +81,7 @@ class _SideViewState extends State<SideView> {
 
   @override
   void dispose() {
+    _planDebounce?.cancel();
     _tc.removeListener(_tcListener);
     _tc.dispose();
     _sceneController.dispose();
@@ -97,6 +109,7 @@ class _SideViewState extends State<SideView> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final viewportSize = constraints.biggest;
+        _lastViewportSize = viewportSize;
 
         return Stack(
             children: [
@@ -105,6 +118,14 @@ class _SideViewState extends State<SideView> {
             builder: (context, child) {
               if (_sceneController.isLoading || _sceneController.sceneLayout == null) {
                 return const Center(child: CircularProgressIndicator());
+              }
+              bool _initialPlanDone = false;
+              if (!_initialPlanDone && _sceneController.sceneLayout != null) {
+                _initialPlanDone = true;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  _scheduleViewportPlan();
+                });
               }
 
               final layout = _sceneController.sceneLayout!;
@@ -155,5 +176,37 @@ class _SideViewState extends State<SideView> {
         );
       },
     );
+  }
+
+  /// Triggers a viewport redraw based on debounced notification from TransformationController
+  ///
+  /// Ensures viewport isn't redrawn every frame and doesnt overload request pipeline.
+  void _scheduleViewportPlan({Duration debounceTime = const Duration(milliseconds: 180)}) {
+    final viewportSize = _lastViewportSize;
+    if (viewportSize == null) return;
+
+    _planDebounce?.cancel();
+    final requestGeneration = ++_planGeneration;
+
+    _planDebounce = Timer(debounceTime, () async {
+      if (!mounted) return;
+      if (requestGeneration != _planGeneration) return;
+      if (_planInFlight) return;
+
+      _planInFlight = true;
+      try {
+        final viewportRect = viewportRectInScene(
+          controller: _tc,
+          viewportSize: viewportSize,
+        );
+
+        await _sceneController.planVisibleTiles(
+          viewportSceneRectPx: viewportRect,
+          screenPixelsPerSourcePixel: _ssp,
+        );
+      } finally {
+        _planInFlight = false;
+      }
+    });
   }
 }

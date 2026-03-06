@@ -29,30 +29,27 @@ class TileLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRect(
-      child: Container(
-        color: Colors.blue,
-        child: SizedBox(
-          width: panelWidthPx,
-          height: panelHeightPx,
-          child: Stack(
-            children: [
-              for (final tile in tiles)
-                if (tile.state == TileState.TILE_STATE_READY &&
-                    (tile.localPath).isNotEmpty)
-                  Positioned(
-                    left: (tile.coord.x) * tileSizePx,
-                    top: (tile.coord.y) * tileSizePx,
-                    width: tileSizePx,
-                    height: tileSizePx,
-                    child: Image.file(
-                      File(tile.localPath),
-                      fit: BoxFit.fill,
-                      filterQuality: FilterQuality.none,
-                      gaplessPlayback: true,
-                    ),
+      child: SizedBox(
+        width: panelWidthPx,
+        height: panelHeightPx,
+        child: Stack(
+          children: [
+            for (final tile in tiles)
+              if (tile.state == TileState.TILE_STATE_READY &&
+                  (tile.localPath).isNotEmpty)
+                Positioned(
+                  left: (tile.coord.x) * tileSizePx,
+                  top: (tile.coord.y) * tileSizePx,
+                  width: tileSizePx,
+                  height: tileSizePx,
+                  child: Image.file(
+                    File(tile.localPath),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.none,
+                    gaplessPlayback: true,
                   ),
-            ],
-          ),
+                ),
+          ],
         ),
       ),
     );
