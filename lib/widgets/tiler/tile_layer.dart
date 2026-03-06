@@ -38,6 +38,7 @@ class TileLayer extends StatelessWidget {
               if (tile.state == TileState.TILE_STATE_READY &&
                   (tile.localPath).isNotEmpty)
                 Positioned(
+                  key: ValueKey("${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}"),
                   left: (tile.coord.x) * tileSizePx,
                   top: (tile.coord.y) * tileSizePx,
                   width: tileSizePx,

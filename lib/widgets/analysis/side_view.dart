@@ -27,7 +27,10 @@ class _SideViewState extends State<SideView> {
   int _level = 0;
   int _factor = 1;
   double _ssp = 1.0;
-  double _displayTileSize = 512;
+
+  // Committed values that are only updated after the debounce
+  int _committedFactor = 1;
+  double _committedDisplayTileSize = 512;
 
   // Debounce parameters for TransformationController viewport updating
   Timer? _planDebounce;
@@ -64,14 +67,13 @@ class _SideViewState extends State<SideView> {
 
     _tcListener = () {
       final scale = _tc.value.getMaxScaleOnAxis();
-      int maxLevel = 4;
+      int maxLevel = 5;
       final minSsp = 1.0 / (1 << maxLevel);
       final sspCont = scale.clamp(minSsp, 1.0);
 
       _level = (log(1 / sspCont) / ln2).round().clamp(0, maxLevel);
       _factor = 1 << _level;
       _ssp = 1.0 / _factor;
-      _displayTileSize = 512 * _factor.toDouble();
 
       _scheduleViewportPlan();
     };
@@ -104,8 +106,6 @@ class _SideViewState extends State<SideView> {
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder, real image sizes will populate this later
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final viewportSize = constraints.biggest;
@@ -150,7 +150,7 @@ class _SideViewState extends State<SideView> {
                         child: TileLayer(
                           panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
                           panelHeightPx: desc.descriptor.sourceHeightPx.toDouble(),
-                          tileSizePx: _displayTileSize,
+                          tileSizePx: _committedDisplayTileSize,
                           tiles: tiles,
                           originX: rect.left,
                           originY: rect.top,
@@ -193,6 +193,9 @@ class _SideViewState extends State<SideView> {
       if (requestGeneration != _planGeneration) return;
       if (_planInFlight) return;
 
+      final requestFactor = _factor;
+      final requestSsp = _ssp;
+
       _planInFlight = true;
       try {
         final viewportRect = viewportRectInScene(
@@ -202,10 +205,14 @@ class _SideViewState extends State<SideView> {
 
         await _sceneController.planVisibleTiles(
           viewportSceneRectPx: viewportRect,
-          screenPixelsPerSourcePixel: _ssp,
+          screenPixelsPerSourcePixel: requestSsp,
         );
       } finally {
         _planInFlight = false;
+        setState(() {
+          _committedFactor = requestFactor;
+          _committedDisplayTileSize = 512 * _committedFactor.toDouble();
+        });
       }
     });
   }
