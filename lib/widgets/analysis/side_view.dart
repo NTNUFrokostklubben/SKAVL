@@ -119,9 +119,9 @@ class _SideViewState extends State<SideView> {
               if (_sceneController.isLoading || _sceneController.sceneLayout == null) {
                 return const Center(child: CircularProgressIndicator());
               }
-              bool _initialPlanDone = false;
-              if (!_initialPlanDone && _sceneController.sceneLayout != null) {
-                _initialPlanDone = true;
+              bool initialPlanDone = false;
+              if (!initialPlanDone && _sceneController.sceneLayout != null) {
+                initialPlanDone = true;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (!mounted) return;
                   _scheduleViewportPlan();
