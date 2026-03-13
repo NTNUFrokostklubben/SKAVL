@@ -3,6 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
 
 /// Basic client implementation to test basic communication to tiler.
+///
 /// Will be replaced in future
 class TilerApi {
   TilerApi({required String host, required int port})

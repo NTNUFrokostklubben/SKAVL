@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:skavl/proto/tiler.pb.dart';
 
 /// Class for pre-determining panel sizes for rendering
-/// Might be deprecated soo, unsure if this will be used in final solution, but for testing it makes sense.
+///
+/// Might be deprecated soon, unsure if this will be used in final solution, but for testing it makes sense.
 class SceneLayout {
   SceneLayout({required this.sceneSize, required this.panelRects});
   final Size sceneSize;

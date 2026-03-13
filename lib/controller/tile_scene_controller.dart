@@ -6,7 +6,7 @@ import '../widgets/tiler/panel_placement.dart';
 /// Controller that holds state for tiles in the viewport.
 ///
 /// Currently only implemented as Side-by-side view, but can be expanded to support other layouts.
-class TileSceneController extends ChangeNotifier{
+class TileSceneController extends ChangeNotifier {
   TileSceneController({required this.tilerClient});
 
   final TilerServiceClient tilerClient;
@@ -14,10 +14,12 @@ class TileSceneController extends ChangeNotifier{
   final Map<String, DescribeSourceResponse> sourcesById = {};
   final List<String> sourceOrder = [];
   final Map<String, List<TileRef>> tilesBySourceId = {};
+  final Map<String, List<TileRef>> previousTilesBySourceId = {};
 
   SceneLayout? sceneLayout;
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   /// Loads the Source descriptors for the given paths and initializes the scene layout.
@@ -30,12 +32,9 @@ class TileSceneController extends ChangeNotifier{
 
     final responses = await Future.wait(
       paths.map(
-            (path) =>
-            tilerClient.describeSource(
-              DescribeSourceRequest(
-                source: SourceRef(sourcePath: path),
-              ),
-            ),
+        (path) => tilerClient.describeSource(
+          DescribeSourceRequest(source: SourceRef(sourcePath: path)),
+        ),
       ),
     );
 
@@ -101,6 +100,7 @@ class TileSceneController extends ChangeNotifier{
   /// Gets requested tiles based on sourceId. viewport size and SSP.
   ///
   /// SSP (screenPixelsPerSourcePixel) is used to determine the level of detail for the tiles.
+  /// Sets old tiles as a cache to prevent flashing when swapping tilesets in the display.
   Future<void> _planOneSource({
     required String sourceId,
     required Rect localViewportRectPx,
@@ -120,6 +120,7 @@ class TileSceneController extends ChangeNotifier{
       ),
     );
 
+    previousTilesBySourceId[sourceId] = tilesBySourceId[sourceId] ?? [];
     tilesBySourceId[sourceId] = response.manifest.tiles;
   }
 }

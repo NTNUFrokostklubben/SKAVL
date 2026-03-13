@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -24,13 +25,13 @@ class _SideViewState extends State<SideView> {
   late final void Function() _tcListener;
 
   // Tile scaling parameters
-  int _level = 0;
   int _factor = 1;
   double _ssp = 1.0;
 
   // Committed values that are only updated after the debounce
   int _committedFactor = 1;
   double _committedDisplayTileSize = 512;
+  double _previousCommittedDisplayTileSize = 512;
 
   // Debounce parameters for TransformationController viewport updating
   Timer? _planDebounce;
@@ -71,8 +72,7 @@ class _SideViewState extends State<SideView> {
       final minSsp = 1.0 / (1 << maxLevel);
       final sspCont = scale.clamp(minSsp, 1.0);
 
-      _level = (log(1 / sspCont) / ln2).round().clamp(0, maxLevel);
-      _factor = 1 << _level;
+      _factor = 1 << (log(1 / sspCont) / ln2).round().clamp(0, maxLevel);
       _ssp = 1.0 / _factor;
 
       _scheduleViewportPlan();
@@ -91,19 +91,6 @@ class _SideViewState extends State<SideView> {
     super.dispose();
   }
 
-  Future<void> fetchVisibleTiles(Size viewportSize) async {
-
-    final viewportRect = viewportRectInScene(
-      controller: _tc,
-      viewportSize: viewportSize,
-    );
-
-    await _sceneController.planVisibleTiles(
-      viewportSceneRectPx: viewportRect,
-      screenPixelsPerSourcePixel: _ssp,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -111,69 +98,62 @@ class _SideViewState extends State<SideView> {
         final viewportSize = constraints.biggest;
         _lastViewportSize = viewportSize;
 
-        return Stack(
-            children: [
-            ListenableBuilder(
-            listenable: _sceneController,
-            builder: (context, child) {
-              if (_sceneController.isLoading || _sceneController.sceneLayout == null) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              bool initialPlanDone = false;
-              if (!initialPlanDone && _sceneController.sceneLayout != null) {
-                initialPlanDone = true;
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (!mounted) return;
-                  _scheduleViewportPlan();
-                });
-              }
-
-              final layout = _sceneController.sceneLayout!;
-
-              return InteractiveViewer(
-                transformationController: _tc,
-                minScale: 0.005,
-                maxScale: 3,
-                boundaryMargin: EdgeInsets.all(double.infinity),
-                constrained: false,
-                child: SizedBox(
-                  width: layout.sceneSize.width,
-                  height: layout.sceneSize.height,
-                  child: Stack(
-                    children: _sceneController.sourceOrder.map((sourceId) {
-                      final desc = _sceneController.sourcesById[sourceId]!;
-                      final rect = layout.panelRects[sourceId]!;
-                      // TODO: Implement feature for not replacing entire tileref per render to reduce visual "jumping"
-                      final tiles = _sceneController.tilesBySourceId[sourceId] ?? const <TileRef>[];
-
-                      return Positioned.fromRect(
-                        rect: rect,
-                        child: TileLayer(
-                          panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
-                          panelHeightPx: desc.descriptor.sourceHeightPx.toDouble(),
-                          tileSizePx: _committedDisplayTileSize,
-                          tiles: tiles,
-                          originX: rect.left,
-                          originY: rect.top,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              );
+        return ListenableBuilder(
+          listenable: _sceneController,
+          builder: (context, child) {
+            // Displays spinner if image cant load (usually tiler not running)
+            if (_sceneController.isLoading ||
+                _sceneController.sceneLayout == null) {
+              return const Center(child: CircularProgressIndicator());
             }
-        ),
-        Positioned(
-          left: 12,
-          top: 12,
-          child: ElevatedButton(
-            onPressed: () => fetchVisibleTiles(viewportSize),
-            child: Text("data"),
-          ),
-        )
-        ,
-        ]
-        ,
+
+            // Callback once initial plan has been set
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) _scheduleViewportPlan();
+            });
+
+            final layout = _sceneController.sceneLayout!;
+
+            return InteractiveViewer(
+              transformationController: _tc,
+              minScale: 0.005,
+              maxScale: 3,
+              boundaryMargin: EdgeInsets.all(double.infinity),
+              constrained: false,
+              child: SizedBox(
+                width: layout.sceneSize.width,
+                height: layout.sceneSize.height,
+                child: Stack(
+                  children: _sceneController.sourceOrder.map((sourceId) {
+                    final desc = _sceneController.sourcesById[sourceId]!;
+                    final rect = layout.panelRects[sourceId]!;
+                    // TODO: Implement feature for not replacing entire tileref per render to reduce visual "jumping"
+                    final tiles =
+                        _sceneController.tilesBySourceId[sourceId] ??
+                        const <TileRef>[];
+                    final prevTiles =
+                        _sceneController.previousTilesBySourceId[sourceId] ??
+                        const <TileRef>[];
+
+                    return Positioned.fromRect(
+                      rect: rect,
+                      child: TileLayer(
+                        panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
+                        panelHeightPx: desc.descriptor.sourceHeightPx
+                            .toDouble(),
+                        tileSizePx: _committedDisplayTileSize,
+                        tiles: tiles,
+                        originX: rect.left,
+                        originY: rect.top,
+                        previousTiles: prevTiles,
+                        previousTileSizePx: _previousCommittedDisplayTileSize,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -182,7 +162,9 @@ class _SideViewState extends State<SideView> {
   /// Triggers a viewport redraw based on debounced notification from TransformationController
   ///
   /// Ensures viewport isn't redrawn every frame and doesnt overload request pipeline.
-  void _scheduleViewportPlan({Duration debounceTime = const Duration(milliseconds: 180)}) {
+  void _scheduleViewportPlan({
+    Duration debounceTime = const Duration(milliseconds: 180),
+  }) {
     final viewportSize = _lastViewportSize;
     if (viewportSize == null) return;
 
@@ -208,12 +190,27 @@ class _SideViewState extends State<SideView> {
           viewportSceneRectPx: viewportRect,
           screenPixelsPerSourcePixel: requestSsp,
         );
+
+        // To reduce hole flash, we wait for all tiles to be ready
+        final readyTiles = _sceneController.sourceOrder
+            .expand((id) => _sceneController.tilesBySourceId[id] ?? [])
+            .where((t) => t.state == TileState.TILE_STATE_READY);
+
+        // Precaching loaded tiles mitigate loading before image fully reads
+        await Future.wait(
+          readyTiles.map(
+            (t) => precacheImage(FileImage(File(t.localPath)), context),
+          ),
+        );
       } finally {
-        _planInFlight = false;
-        setState(() {
-          _committedFactor = requestFactor;
-          _committedDisplayTileSize = 512 * _committedFactor.toDouble();
-        });
+        if (mounted) {
+          _planInFlight = false;
+          setState(() {
+            _committedFactor = requestFactor;
+            _previousCommittedDisplayTileSize = _committedDisplayTileSize;
+            _committedDisplayTileSize = 512 * _committedFactor.toDouble();
+          });
+        }
       }
     });
   }
