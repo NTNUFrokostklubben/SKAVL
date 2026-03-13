@@ -37,6 +37,9 @@ app_localizations*.dart
 # Windows specific
 windows/flutter/generated_plugin*
 
+# Linux specific
+linux/flutter/generated_plugin*
+
 # Symbolication related
 app.*.symbols
 
