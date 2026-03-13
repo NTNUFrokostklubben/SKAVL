@@ -16,15 +16,23 @@ class TileLayer extends StatelessWidget {
     required this.tiles,
     required this.originX,
     required this.originY,
+    this.previousTiles = const [],
+    this.previousTileSizePx,
   });
 
+  // Preplanning based on image source
   final double panelWidthPx;
   final double panelHeightPx;
+
+  // Tile placement
   final double tileSizePx;
   final double originX;
   final double originY;
-
   final Iterable<TileRef> tiles;
+
+  // Tilecache to remove flashing
+  final Iterable<TileRef> previousTiles;
+  final double? previousTileSizePx;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +42,34 @@ class TileLayer extends StatelessWidget {
         height: panelHeightPx,
         child: Stack(
           children: [
+            // Display previous tiles until new tiles are ready to reduce flash
+            for (final tile in previousTiles)
+              if (tile.state == TileState.TILE_STATE_READY &&
+                  tile.localPath.isNotEmpty)
+                Positioned(
+                  key: ValueKey(
+                    "prev_${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+                  ),
+                  left: tile.coord.x * (previousTileSizePx ?? tileSizePx),
+                  top: tile.coord.y * (previousTileSizePx ?? tileSizePx),
+                  width: previousTileSizePx ?? tileSizePx,
+                  height: previousTileSizePx ?? tileSizePx,
+                  child: Image.file(
+                    File(tile.localPath),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.none,
+                    gaplessPlayback: true,
+                  ),
+                ),
+
+            // Display current tiles
             for (final tile in tiles)
               if (tile.state == TileState.TILE_STATE_READY &&
                   (tile.localPath).isNotEmpty)
                 Positioned(
-                  key: ValueKey("${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}"),
+                  key: ValueKey(
+                    "${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+                  ),
                   left: (tile.coord.x) * tileSizePx,
                   top: (tile.coord.y) * tileSizePx,
                   width: tileSizePx,
