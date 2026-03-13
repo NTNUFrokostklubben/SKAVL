@@ -50,3 +50,4 @@ app.*.map.json
 
 # External services included for build
 /services
+/tilecache

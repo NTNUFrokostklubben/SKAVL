@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# This needs to be updated to handle the new CMAKE for each target. Should be updated once linux build target had been added to the project.
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERSION=$(cat "$SCRIPT_DIR/../service-versions.json" | python3 -c "import sys,json; print(json.load(sys.stdin)['tiler'])")
 
