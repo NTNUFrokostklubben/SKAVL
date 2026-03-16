@@ -12,10 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Read Flutter version
+        id: flutter-version
+        run: echo "version=$(grep '^  flutter:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_OUTPUT
+
       - name: Install Flutter
         uses: flutter-actions/setup-flutter@v1
         with:
           channel: stable
+          version: ${{ steps.flutter-version.outputs.version }}
 
       - name: Install Linux build dependencies
         run: |
@@ -50,10 +55,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Read Flutter version
+        id: flutter-version
+        shell: bash
+        run: echo "version=$(grep '^  flutter:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_OUTPUT
+
       - name: Install Flutter
         uses: flutter-actions/setup-flutter@v1
         with:
           channel: stable
+          version: ${{ steps.flutter-version.outputs.version }}
 
       - name: Fetch tiler (Windows)
         shell: pwsh
