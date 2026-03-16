@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:skavl/model/settings_model.dart';
+import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
@@ -49,6 +52,44 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late final ServiceManager _tilerService;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Determine tiler service path based on OS.
+    _tilerService = ServiceManager(
+      Platform.isWindows
+          ? 'services/tiler/server/skavl-tiler.exe'
+          : 'services/tiler/server/skavl-tiler',
+    );
+
+    // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
+    _tilerService.statusStream.listen((status) {
+      if (status == ServiceStatus.notFound) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Tiler service executable not found.'),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+        });
+      }
+    });
+
+    _tilerService.start();
+  }
+
+  @override
+  void dispose() {
+    _tilerService.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyHomePage(title: "title");
@@ -65,10 +106,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,9 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   spacing: 20,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    LargeHeader(
-                      loc()!.welcomePage_SKAVL
-                    ),
+                    LargeHeader(loc()!.welcomePage_SKAVL),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),
                   ],
@@ -95,8 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   image: AssetImage('assets/images/topographic-icon.png'),
                   width: 200,
                 ),
-              ]
-            )
+              ],
+            ),
           ],
         ),
       ),
