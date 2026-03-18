@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:skavl/entity/view_mode.dart';
 
 import '../../controller/tile_scene_controller.dart';
 import '../../proto/tiler.pbgrpc.dart';
@@ -11,7 +12,8 @@ import '../../util/viewport_math.dart';
 import '../tiler/tile_layer.dart';
 
 class SideView extends StatefulWidget {
-  const SideView({super.key});
+  final ViewMode viewMode;
+  const SideView({super.key, required this.viewMode});
 
   @override
   State<SideView> createState() => _SideViewState();
@@ -44,11 +46,15 @@ class _SideViewState extends State<SideView> {
   late final TilerServiceClient tilerClient;
 
   final imagePaths = [
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_001_14822.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_002_14823.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_003_14824.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_004_14825.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_005_14826.tif',
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_001_00001.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_002_00002.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_003_00003.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_004_00004.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_005_00005.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_006_00006.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_007_00007.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_008_00008.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_009_00009.tif",
   ];
 
   @override
@@ -64,11 +70,12 @@ class _SideViewState extends State<SideView> {
     tilerClient = TilerServiceClient(_channel);
 
     _sceneController = TileSceneController(tilerClient: tilerClient);
+    _sceneController.viewMode = widget.viewMode;
     _sceneController.loadSources(imagePaths);
 
     _tcListener = () {
       final scale = _tc.value.getMaxScaleOnAxis();
-      int maxLevel = 5;
+      int maxLevel = 4;
       final minSsp = 1.0 / (1 << maxLevel);
       final sspCont = scale.clamp(minSsp, 1.0);
 
@@ -124,10 +131,10 @@ class _SideViewState extends State<SideView> {
                 width: layout.sceneSize.width,
                 height: layout.sceneSize.height,
                 child: Stack(
-                  children: _sceneController.sourceOrder.map((sourceId) {
+                  children: _sceneController.visibleSourceIds.map((sourceId) {
+                    final rect =
+                        _sceneController.sceneLayout!.panelRects[sourceId]!;
                     final desc = _sceneController.sourcesById[sourceId]!;
-                    final rect = layout.panelRects[sourceId]!;
-                    // TODO: Implement feature for not replacing entire tileref per render to reduce visual "jumping"
                     final tiles =
                         _sceneController.tilesBySourceId[sourceId] ??
                         const <TileRef>[];
@@ -143,8 +150,8 @@ class _SideViewState extends State<SideView> {
                             .toDouble(),
                         tileSizePx: _committedDisplayTileSize,
                         tiles: tiles,
-                        originX: rect.left,
-                        originY: rect.top,
+                        originX: rect.bottom,
+                        originY: rect.right,
                         previousTiles: prevTiles,
                         previousTileSizePx: _previousCommittedDisplayTileSize,
                       ),
