@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skavl/widgets/analysis/side_view.dart';
+import 'package:skavl/widgets/analysis/static_view.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
 import 'package:skavl/entity/view_mode.dart';
@@ -38,8 +38,12 @@ class _AnalysisState extends State<Analysis> {
                 label: Text("Overlay"),
               ),
               NavigationRailDestination(
+                icon: Icon(Icons.grid_view),
+                label: Text("Grid 2x2"),
+              ),
+              NavigationRailDestination(
                 icon: Icon(Icons.grid_3x3),
-                label: Text("Grid"),
+                label: Text("Grid 3x3"),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.view_module),
@@ -63,7 +67,8 @@ class _AnalysisState extends State<Analysis> {
                 SideView(viewMode: ViewMode.horizontal),
                 SideView(viewMode: ViewMode.vertical),
                 Text("Overlay"),
-                Text("GridView"),
+                SideView(viewMode: ViewMode.gridsmall),
+                SideView(viewMode: ViewMode.gridbig),
                 Text("FreeView"),
               ],
             ),

@@ -2,6 +2,7 @@ enum ViewMode {
   horizontal,
   vertical,
   overlay, 
-  grid, 
+  gridsmall,
+  gridbig,
   free,
 }

@@ -46,9 +46,15 @@ class _SideViewState extends State<SideView> {
   late final TilerServiceClient tilerClient;
 
   final imagePaths = [
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_001_00001.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_002_00002.tif",
     r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_003_00003.tif",
     r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_004_00004.tif",
     r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_005_00005.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_006_00006.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_007_00007.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_008_00008.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_009_00009.tif",
   ];
 
   @override
@@ -125,10 +131,10 @@ class _SideViewState extends State<SideView> {
                 width: layout.sceneSize.width,
                 height: layout.sceneSize.height,
                 child: Stack(
-                  children: _sceneController.sourceOrder.map((sourceId) {
+                  children: _sceneController.visibleSourceIds.map((sourceId) {
+                    final rect =
+                        _sceneController.sceneLayout!.panelRects[sourceId]!;
                     final desc = _sceneController.sourcesById[sourceId]!;
-                    final rect = layout.panelRects[sourceId]!;
-                    // TODO: Implement feature for not replacing entire tileref per render to reduce visual "jumping"
                     final tiles =
                         _sceneController.tilesBySourceId[sourceId] ??
                         const <TileRef>[];
@@ -144,8 +150,8 @@ class _SideViewState extends State<SideView> {
                             .toDouble(),
                         tileSizePx: _committedDisplayTileSize,
                         tiles: tiles,
-                        originX: rect.left,
-                        originY: rect.top,
+                        originX: rect.bottom,
+                        originY: rect.right,
                         previousTiles: prevTiles,
                         previousTileSizePx: _previousCommittedDisplayTileSize,
                       ),

@@ -24,13 +24,20 @@ class TileSceneController extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  List<String> get visibleSourceIds =>
+      sceneLayout?.panelRects.keys.toList() ?? [];
+
   void _rebuildLayout() {
     final ordered = sourceOrder.map((id) => sourcesById[id]!).toList();
 
-    if (viewMode == ViewMode.horizontal) {
-      sceneLayout = layoutSideBySide(ordered);
-    } else if (viewMode == ViewMode.vertical) {
+    if (viewMode == ViewMode.horizontal){
+      sceneLayout = layoutHorizontal(ordered);
+    } else if (viewMode == ViewMode.vertical){
       sceneLayout = layoutVertical(ordered);
+    } else if (viewMode == ViewMode.gridsmall){
+      sceneLayout = layoutGridSmall(ordered);
+    } else if (viewMode == ViewMode.gridbig){
+      sceneLayout = layoutGridBig(ordered);
     }
 
     notifyListeners();
@@ -64,9 +71,7 @@ class TileSceneController extends ChangeNotifier {
     }
 
     _rebuildLayout();
-
     _isLoading = false;
-    notifyListeners();
   }
 
   /// Plans visible tiles based on viewport window.
