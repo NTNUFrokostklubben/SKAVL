@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:skavl/entity/view_mode.dart';
 import '../proto/tiler.pbgrpc.dart';
 import '../widgets/tiler/panel_placement.dart';
 
@@ -15,12 +16,25 @@ class TileSceneController extends ChangeNotifier {
   final List<String> sourceOrder = [];
   final Map<String, List<TileRef>> tilesBySourceId = {};
   final Map<String, List<TileRef>> previousTilesBySourceId = {};
+  ViewMode viewMode = ViewMode.horizontal;
 
   SceneLayout? sceneLayout;
 
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+
+  void _rebuildLayout() {
+    final ordered = sourceOrder.map((id) => sourcesById[id]!).toList();
+
+    if (viewMode == ViewMode.horizontal) {
+      sceneLayout = layoutSideBySide(ordered);
+    } else if (viewMode == ViewMode.vertical) {
+      sceneLayout = layoutVertical(ordered);
+    }
+
+    notifyListeners();
+  }
 
   /// Loads the Source descriptors for the given paths and initializes the scene layout.
   ///
@@ -49,8 +63,7 @@ class TileSceneController extends ChangeNotifier {
       tilesBySourceId[sourceId] = <TileRef>[];
     }
 
-    final ordered = sourceOrder.map((id) => sourcesById[id]!).toList();
-    sceneLayout = layoutSideBySide(ordered);
+    _rebuildLayout();
 
     _isLoading = false;
     notifyListeners();

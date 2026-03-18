@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:skavl/proto/tiler.pb.dart';
+import 'dart:math';
 
 /// Class for pre-determining panel sizes for rendering
 ///
@@ -25,4 +25,22 @@ SceneLayout layoutSideBySide(List<DescribeSourceResponse> manifests) {
   }
 
   return SceneLayout(sceneSize: Size(x, maxH), panelRects: rects);
+}
+
+SceneLayout layoutVertical(List<DescribeSourceResponse> manifests) {
+  double y = 0.0;
+  double maxW = 0.0;
+  final rects = <String, Rect>{};
+
+  for (final m in manifests) {
+    final w = m.descriptor.sourceWidthPx.toDouble();
+    final h = m.descriptor.sourceHeightPx.toDouble();
+
+    rects[m.descriptor.sourceId] = Rect.fromLTWH(0.0, y, w, h);
+
+    y += h;
+    if (w > maxW) maxW = w;
+  }
+
+  return SceneLayout(sceneSize: Size(maxW, y), panelRects: rects);
 }

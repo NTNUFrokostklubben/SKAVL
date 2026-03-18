@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:skavl/entity/view_mode.dart';
 
 import '../../controller/tile_scene_controller.dart';
 import '../../proto/tiler.pbgrpc.dart';
@@ -11,7 +12,8 @@ import '../../util/viewport_math.dart';
 import '../tiler/tile_layer.dart';
 
 class SideView extends StatefulWidget {
-  const SideView({super.key});
+  final ViewMode viewMode;
+  const SideView({super.key, required this.viewMode});
 
   @override
   State<SideView> createState() => _SideViewState();
@@ -44,11 +46,9 @@ class _SideViewState extends State<SideView> {
   late final TilerServiceClient tilerClient;
 
   final imagePaths = [
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_001_14822.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_002_14823.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_003_14824.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_004_14825.tif',
-    r'C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\test\HX-14365_073_005_14826.tif',
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_003_00003.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_004_00004.tif",
+    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_005_00005.tif",
   ];
 
   @override
@@ -64,11 +64,12 @@ class _SideViewState extends State<SideView> {
     tilerClient = TilerServiceClient(_channel);
 
     _sceneController = TileSceneController(tilerClient: tilerClient);
+    _sceneController.viewMode = widget.viewMode;
     _sceneController.loadSources(imagePaths);
 
     _tcListener = () {
       final scale = _tc.value.getMaxScaleOnAxis();
-      int maxLevel = 5;
+      int maxLevel = 4;
       final minSsp = 1.0 / (1 << maxLevel);
       final sspCont = scale.clamp(minSsp, 1.0);
 
