@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/widgets/analysis/free_view.dart';
 import 'package:skavl/widgets/analysis/static_view.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
@@ -64,12 +65,12 @@ class _AnalysisState extends State<Analysis> {
             child: IndexedStack(
               index: index,
               children: const [
-                SideView(viewMode: ViewMode.horizontal),
-                SideView(viewMode: ViewMode.vertical),
+                StaticView(viewMode: ViewMode.horizontal),
+                StaticView(viewMode: ViewMode.vertical),
                 Text("Overlay"),
-                SideView(viewMode: ViewMode.gridsmall),
-                SideView(viewMode: ViewMode.gridbig),
-                Text("FreeView"),
+                StaticView(viewMode: ViewMode.gridsmall),
+                StaticView(viewMode: ViewMode.gridbig),
+                FreeView(),
               ],
             ),
           ),

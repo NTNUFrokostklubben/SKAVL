@@ -11,7 +11,6 @@ class TileSceneController extends ChangeNotifier {
   TileSceneController({required this.tilerClient});
 
   final TilerServiceClient tilerClient;
-
   final Map<String, DescribeSourceResponse> sourcesById = {};
   final List<String> sourceOrder = [];
   final Map<String, List<TileRef>> tilesBySourceId = {};
@@ -19,9 +18,7 @@ class TileSceneController extends ChangeNotifier {
   ViewMode viewMode = ViewMode.horizontal;
 
   SceneLayout? sceneLayout;
-
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
 
   List<String> get visibleSourceIds =>
@@ -30,14 +27,16 @@ class TileSceneController extends ChangeNotifier {
   void _rebuildLayout() {
     final ordered = sourceOrder.map((id) => sourcesById[id]!).toList();
 
-    if (viewMode == ViewMode.horizontal){
+    if (viewMode == ViewMode.horizontal) {
       sceneLayout = layoutHorizontal(ordered);
-    } else if (viewMode == ViewMode.vertical){
+    } else if (viewMode == ViewMode.vertical) {
       sceneLayout = layoutVertical(ordered);
-    } else if (viewMode == ViewMode.gridsmall){
+    } else if (viewMode == ViewMode.gridsmall) {
       sceneLayout = layoutGridSmall(ordered);
-    } else if (viewMode == ViewMode.gridbig){
+    } else if (viewMode == ViewMode.gridbig) {
       sceneLayout = layoutGridBig(ordered);
+    } else {
+      sceneLayout = layoutHorizontal(ordered);
     }
 
     notifyListeners();
@@ -80,6 +79,7 @@ class TileSceneController extends ChangeNotifier {
   Future<void> planVisibleTiles({
     required Rect viewportSceneRectPx,
     required double screenPixelsPerSourcePixel,
+    Map<String, Rect>? customRects,
   }) async {
     final layout = sceneLayout;
     if (layout == null) return;
@@ -87,7 +87,7 @@ class TileSceneController extends ChangeNotifier {
     final futures = <Future<void>>[];
 
     for (final sourceId in sourceOrder) {
-      final panelRect = layout.panelRects[sourceId];
+      final panelRect = customRects?[sourceId] ?? layout.panelRects[sourceId];
       final desc = sourcesById[sourceId];
 
       if (panelRect == null || desc == null) continue;

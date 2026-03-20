@@ -4,24 +4,23 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
-import 'package:skavl/entity/view_mode.dart';
+import 'package:skavl/controller/tile_scene_controller.dart';
+import 'package:skavl/proto/tiler.pbgrpc.dart';
+import 'package:skavl/util/viewport_math.dart';
+import 'package:skavl/widgets/tiler/tile_layer.dart';
 
-import '../../controller/tile_scene_controller.dart';
-import '../../proto/tiler.pbgrpc.dart';
-import '../../util/viewport_math.dart';
-import '../tiler/tile_layer.dart';
-
-class StaticView extends StatefulWidget {
-  final ViewMode viewMode;
-  const StaticView({super.key, required this.viewMode});
+class FreeView extends StatefulWidget {
+  const FreeView({super.key});
 
   @override
-  State<StaticView> createState() => _StaticViewState();
+  State<FreeView> createState() => _FreeViewState();
 }
 
-class _StaticViewState extends State<StaticView> {
+class _FreeViewState extends State<FreeView> {
   late final TransformationController _tc;
   late final TileSceneController _sceneController;
+
+  final Map<String, Offset> _positions = {};
 
   // Listener for TransformationController to trigger tile loading on zoom/pan
   late final void Function() _tcListener;
@@ -45,16 +44,7 @@ class _StaticViewState extends State<StaticView> {
   late final ClientChannel _channel;
   late final TilerServiceClient tilerClient;
 
-  // Temp image path
   final imagePaths = [
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_001_00001.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_002_00002.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_003_00003.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_004_00004.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_005_00005.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_006_00006.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_007_00007.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_008_00008.tif",
     r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_009_00009.tif",
   ];
 
@@ -71,8 +61,17 @@ class _StaticViewState extends State<StaticView> {
     tilerClient = TilerServiceClient(_channel);
 
     _sceneController = TileSceneController(tilerClient: tilerClient);
-    _sceneController.viewMode = widget.viewMode;
-    _sceneController.loadSources(imagePaths);
+
+    _sceneController.loadSources(imagePaths).then((_) {
+      setState(() {
+        for (final id in _sceneController.sourceOrder) {
+          _positions[id] = Offset(
+            Random().nextDouble() * 2000,
+            Random().nextDouble() * 2000,
+          );
+        }
+      });
+    });
 
     _tcListener = () {
       final scale = _tc.value.getMaxScaleOnAxis();
@@ -110,8 +109,7 @@ class _StaticViewState extends State<StaticView> {
           listenable: _sceneController,
           builder: (context, child) {
             // Displays spinner if image cant load (usually tiler not running)
-            if (_sceneController.isLoading ||
-                _sceneController.sceneLayout == null) {
+            if (_sceneController.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -133,9 +131,17 @@ class _StaticViewState extends State<StaticView> {
                 height: layout.sceneSize.height,
                 child: Stack(
                   children: _sceneController.visibleSourceIds.map((sourceId) {
-                    final rect =
-                        _sceneController.sceneLayout!.panelRects[sourceId]!;
+
+                    final pos = _positions[sourceId]!;
                     final desc = _sceneController.sourcesById[sourceId]!;
+
+                    final rect = Rect.fromLTWH(
+                      pos.dx,
+                      pos.dy,
+                      desc.descriptor.sourceWidthPx.toDouble(),
+                      desc.descriptor.sourceHeightPx.toDouble(),
+                    );
+
                     final tiles =
                         _sceneController.tilesBySourceId[sourceId] ??
                         const <TileRef>[];
@@ -143,18 +149,29 @@ class _StaticViewState extends State<StaticView> {
                         _sceneController.previousTilesBySourceId[sourceId] ??
                         const <TileRef>[];
 
-                    return Positioned.fromRect(
-                      rect: rect,
-                      child: TileLayer(
-                        panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
-                        panelHeightPx: desc.descriptor.sourceHeightPx
-                            .toDouble(),
-                        tileSizePx: _committedDisplayTileSize,
-                        tiles: tiles,
-                        originX: rect.bottom,
-                        originY: rect.right,
-                        previousTiles: prevTiles,
-                        previousTileSizePx: _previousCommittedDisplayTileSize,
+                    return Positioned(
+                      left: pos.dx,
+                      top: pos.dy,
+                      child: GestureDetector(
+                        onPanUpdate: (details) {
+                          setState(() {
+                            _positions[sourceId] =
+                                _positions[sourceId]! + details.delta;
+                          });
+                        },
+                        child: TileLayer(
+                          panelWidthPx: desc.descriptor.sourceWidthPx
+                              .toDouble(),
+                          panelHeightPx: desc.descriptor.sourceHeightPx
+                              .toDouble(),
+                          tileSizePx: _committedDisplayTileSize,
+                          tiles: tiles,
+                          originX: rect.bottom,
+                          originY: rect.right,
+                          previousTiles: prevTiles,
+                          previousTileSizePx: _previousCommittedDisplayTileSize,
+                          clip: false,
+                        ),
                       ),
                     );
                   }).toList(),
@@ -194,12 +211,27 @@ class _StaticViewState extends State<StaticView> {
           viewportSize: viewportSize,
         );
 
+        final customRects = <String, Rect>{};
+
+        for (final sourceId in _sceneController.sourceOrder) {
+          final pos = _positions[sourceId];
+          final desc = _sceneController.sourcesById[sourceId];
+
+          if (pos == null || desc == null) continue;
+
+          customRects[sourceId] = Rect.fromLTWH(
+            pos.dx,
+            pos.dy,
+            desc.descriptor.sourceWidthPx.toDouble(),
+            desc.descriptor.sourceHeightPx.toDouble(),
+          );
+        }
+
         await _sceneController.planVisibleTiles(
           viewportSceneRectPx: viewportRect,
           screenPixelsPerSourcePixel: requestSsp,
+          customRects: customRects,
         );
-
-        viewportRect.inflate(500);
 
         // To reduce hole flash, we wait for all tiles to be ready
         final readyTiles = _sceneController.sourceOrder
