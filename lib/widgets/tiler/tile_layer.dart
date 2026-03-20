@@ -18,7 +18,6 @@ class TileLayer extends StatelessWidget {
     required this.originY,
     this.previousTiles = const [],
     this.previousTileSizePx,
-    this.clip = true,
   });
 
   // Preplanning based on image source
@@ -35,66 +34,56 @@ class TileLayer extends StatelessWidget {
   final Iterable<TileRef> previousTiles;
   final double? previousTileSizePx;
 
-  // Whether to clip tiles to panel bounds
-  final bool clip;
-
 @override
   Widget build(BuildContext context) {
-    final content = SizedBox(
-      width: panelWidthPx,
-      height: panelHeightPx,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Display previous tiles until new tiles are ready to reduce flash
-          for (final tile in previousTiles)
-            if (tile.state == TileState.TILE_STATE_READY &&
-                tile.localPath.isNotEmpty)
-              Positioned(
-                key: ValueKey(
-                  "prev_${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+    return ClipRect(
+      child: SizedBox(
+        width: panelWidthPx,
+        height: panelHeightPx,
+        child: Stack(
+          children: [
+            // Display previous tiles until new tiles are ready to reduce flash
+            for (final tile in previousTiles)
+              if (tile.state == TileState.TILE_STATE_READY &&
+                  tile.localPath.isNotEmpty)
+                Positioned(
+                  key: ValueKey(
+                    "prev_${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+                  ),
+                  left: tile.coord.x * (previousTileSizePx ?? tileSizePx),
+                  top: tile.coord.y * (previousTileSizePx ?? tileSizePx),
+                  width: previousTileSizePx ?? tileSizePx,
+                  height: previousTileSizePx ?? tileSizePx,
+                  child: Image.file(
+                    File(tile.localPath),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.none,
+                    gaplessPlayback: true,
+                  ),
                 ),
-                left: tile.coord.x * (previousTileSizePx ?? tileSizePx),
-                top: tile.coord.y * (previousTileSizePx ?? tileSizePx),
-                width: previousTileSizePx ?? tileSizePx,
-                height: previousTileSizePx ?? tileSizePx,
-                child: Image.file(
-                  File(tile.localPath),
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.none,
-                  gaplessPlayback: true,
-                ),
-              ),
 
-          // Display current tiles
-          for (final tile in tiles)
-            if (tile.state == TileState.TILE_STATE_READY &&
-                tile.localPath.isNotEmpty)
-              Positioned(
-                key: ValueKey(
-                  "${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+            // Display current tiles
+            for (final tile in tiles)
+              if (tile.state == TileState.TILE_STATE_READY &&
+                  (tile.localPath).isNotEmpty)
+                Positioned(
+                  key: ValueKey(
+                    "${tile.localPath}_${tile.coord.level}_${tile.coord.x}_${tile.coord.y}",
+                  ),
+                  left: (tile.coord.x) * tileSizePx,
+                  top: (tile.coord.y) * tileSizePx,
+                  width: tileSizePx,
+                  height: tileSizePx,
+                  child: Image.file(
+                    File(tile.localPath),
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.none,
+                    gaplessPlayback: true,
+                  ),
                 ),
-                left: tile.coord.x * tileSizePx,
-                top: tile.coord.y * tileSizePx,
-                width: tileSizePx,
-                height: tileSizePx,
-                child: Image.file(
-                  File(tile.localPath),
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.none,
-                  gaplessPlayback: true,
-                ),
-              ),
-        ],
+          ],
+        ),
       ),
     );
-
-    // Clip only when needed (layout views)
-    if (clip) {
-      return ClipRect(child: content);
-    }
-
-    // FreeView -> no clipping
-    return content;
   }
 }
