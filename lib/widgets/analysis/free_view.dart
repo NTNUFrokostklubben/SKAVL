@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
@@ -10,22 +11,18 @@ import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
 import 'package:skavl/theme/colors.dart';
 
-import 'package:vector_math/vector_math_64.dart' show Vector3;
-
 
 // Maybe move this to a seperate class
 class _GridPainter extends CustomPainter {
   const _GridPainter({
     required this.thinColor,
     required this.thickColor,
-    this.smallCellSize = 320.0,
-    this.largeCellSize = 1600.0,
   });
 
-  final Color thinColor;
-  final Color thickColor;
-  final double smallCellSize;
-  final double largeCellSize;
+  final Color thinColor; // Color of the thin lines in the grid
+  final Color thickColor; // color of the thicker lines in the grid
+  final double smallCellSize = 320.0;
+  final double largeCellSize = 1600.0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -227,7 +224,7 @@ class _FreeViewState extends State<FreeView> {
                 transformationController: _tc,
                 minScale: 0.005,
                 maxScale: 4,
-                boundaryMargin: EdgeInsets.all(double.infinity),
+                boundaryMargin: EdgeInsets.zero,
                 constrained: false,
                 panEnabled: _draggingId == null,
                 child: SizedBox(
@@ -244,7 +241,7 @@ class _FreeViewState extends State<FreeView> {
                           thickColor:
                                 Theme.of(context).brightness == Brightness.light
                                 ? MyColors.secondaryBlack
-                                : MyColors.primaryWhite,      
+                                : MyColors.primaryWhite,
                           )),
                       ),
 
