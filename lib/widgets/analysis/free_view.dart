@@ -2,17 +2,21 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
-import 'base_tile_view.dart';
+import 'base_analysis_view.dart';
 import 'package:skavl/theme/grid_painter.dart';
 import 'package:skavl/theme/colors.dart';
 
-class FreeView extends BaseTileView {
+/// A view mode where the user can freely arrange the images in the scene by dragging them around.
+/// This is implemented by maintaining a map of source IDs to their positions in the scene, and
+/// using custom hit testing and coordinate conversion to allow dragging the images with the mouse.
+class FreeView extends BaseAnalysisView {
   const FreeView({super.key});
 
   @override
   State<FreeView> createState() => _FreeViewState();
 }
 
+/// The state for FreeView, which manages the positions of the images and the interaction logic for dragging them around.
 class _FreeViewState extends BaseTileViewState<FreeView> {
   static const double sceneSize = 300000;
 
@@ -73,14 +77,14 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
     return rects;
   }
 
-  // Convert local widget coordinates to scene coordinates using the inverse of the transformation matrix
+  /// Convert local widget coordinates to scene coordinates using the inverse of the transformation matrix
   Offset _toScene(Offset local) {
     final inverse = Matrix4.inverted(tc.value);
     final vec = inverse.transform3(Vector3(local.dx, local.dy, 0));
     return Offset(vec.x, vec.y);
   }
 
-  // Hit test the scene point against the images in reverse order (topmost first) to find which one is being interacted with
+  /// Hit test the scene point against the images in reverse order (topmost first) to find which one is being interacted with
   String? _hitTest(Offset scenePoint) {
     for (final id in sceneController.sourceOrder.reversed) {
       final r = resolveRectSafe(id);

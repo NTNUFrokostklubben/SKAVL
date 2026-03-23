@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A custom painter that draws a grid on the canvas, with thin lines every 320 pixels and thick lines every 1600 pixels.
 class GridPainter extends CustomPainter {
   const GridPainter({required this.thinColor, required this.thickColor});
 

@@ -10,11 +10,14 @@ import 'package:skavl/proto/tiler.pbgrpc.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
 
-abstract class BaseTileView extends StatefulWidget {
-  const BaseTileView({super.key});
+/// The base class for analysis views, which provides common functionality for both StaticView and FreeView.
+/// This includes the gRPC client setup, the tile loading logic based on the viewport, and the common build method that renders the tiles in a stack.
+abstract class BaseAnalysisView extends StatefulWidget {
+  const BaseAnalysisView({super.key});
 }
 
-abstract class BaseTileViewState<T extends BaseTileView> extends State<T> {
+/// The state for BaseAnalysisView, which manages the tile loading and rendering logic.
+abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
   // Controllers
   late final TransformationController tc;
@@ -125,7 +128,7 @@ abstract class BaseTileViewState<T extends BaseTileView> extends State<T> {
     );
   }
 
-
+  /// Builds the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
   List<Widget> buildTiles() {
     return sceneController.sourceOrder.map((sourceId) {
       final rect = resolveRectSafe(sourceId);
@@ -154,6 +157,8 @@ abstract class BaseTileViewState<T extends BaseTileView> extends State<T> {
     }).toList();
   }
 
+  /// Triggers a viewport redraw based on debounced notification from TransformationController
+  /// Ensures viewport isn't redrawn every frame and doesnt overload request pipeline.
   void scheduleViewportPlan({
     Duration debounceTime = const Duration(milliseconds: 180),
   }) {

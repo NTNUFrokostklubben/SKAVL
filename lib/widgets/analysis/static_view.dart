@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/entity/view_mode.dart';
-import 'base_tile_view.dart';
+import 'base_analysis_view.dart';
 
-class StaticView extends BaseTileView {
+/// A view mode where the images are arranged in a fixed layout based on the selected view mode (e.g. horizontal, vertical, grid2x2, grid3x3).
+/// the layout is static and defined by the scene layout in the TileSceneController, which is built based on the view mode and the loaded sources.
+class StaticView extends BaseAnalysisView {
   final ViewMode viewMode;
 
   const StaticView({super.key, required this.viewMode});
@@ -11,6 +13,7 @@ class StaticView extends BaseTileView {
   State<StaticView> createState() => _StaticViewState();
 }
 
+/// The state for StaticView, which initializes the scene layout based on the selected view mode and loads the sources for the images to be displayed.
 class _StaticViewState extends BaseTileViewState<StaticView> {
   final imagePaths = [
     r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_001_00001.tif",
