@@ -34,7 +34,7 @@ class TileLayer extends StatelessWidget {
   final Iterable<TileRef> previousTiles;
   final double? previousTileSizePx;
 
-@override
+  @override
   Widget build(BuildContext context) {
     return ClipRect(
       child: SizedBox(
