@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 import 'package:skavl/model/settings_model.dart';
+import 'package:skavl/proto/anomaly.pbgrpc.dart';
+import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
@@ -14,8 +17,11 @@ import 'package:skavl/widgets/labels/headings.dart';
 void main() {
   runApp(
     /// State system for settings
-    ChangeNotifierProvider(
-      create: (_) => SettingsModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SettingsModel()),
+        ChangeNotifierProvider(create: (_) => AnomalyServiceProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -106,6 +112,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final ClientChannel channel;
+  late final AnomalyDetectorServiceClient anomalyClient;
+
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
@@ -128,6 +137,63 @@ class _MyHomePageState extends State<MyHomePage> {
                     LargeHeader(loc()!.welcomePage_SKAVL),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),
+                    TextButton(
+                      onPressed: () => context
+                          .read<AnomalyServiceProvider>()
+                          .controller
+                          .getProjectInfo(
+                            sosiPath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\TEST-001_Vertikalbilde.sos",
+                            imagePath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\images",
+                            projectName: "test",
+                          ),
+                      child: Text("Check if project is on server"),
+                    ),
+                    TextButton(
+                      onPressed: () => context
+                          .read<AnomalyServiceProvider>()
+                          .controller
+                          .runAnalysis(
+                            projectName: "test",
+                            sosiPath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\TEST-001_Vertikalbilde.sos",
+                            imagePath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\images",
+                          ),
+                      child: Text("Run analysis"),
+                    ),
+                    Divider(),
+                    TextButton(
+                      onPressed: () => context
+                          .read<AnomalyServiceProvider>()
+                          .controller
+                          .getProjectInfo(
+                            sosiPath:
+                                r"C:\Users\Admin\Documents\gdaltest\HX-14365_Vertikalbilde.sos",
+                            imagePath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\NordmøreGSD10",
+                            projectName: "nordmøre",
+                          ),
+                      child: Text(
+                        "Check if real project with watermask is on server",
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => context
+                          .read<AnomalyServiceProvider>()
+                          .controller
+                          .runAnalysis(
+                            sosiPath:
+                                r"C:\Users\Admin\Documents\gdaltest\HX-14365_Vertikalbilde.sos",
+                            imagePath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\NordmøreGSD10",
+                            projectName: "nordmøre",
+                            waterSosiPath:
+                                r"C:\Users\Admin\Documents\bachelor-thesis\Vann_22\Vann_22.SOS",
+                          ),
+                      child: Text("Run analysis"),
+                    ),
                   ],
                 ),
                 const Image(
