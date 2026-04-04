@@ -137,63 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     LargeHeader(loc()!.welcomePage_SKAVL),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),
-                    TextButton(
-                      onPressed: () => context
-                          .read<AnomalyServiceProvider>()
-                          .controller
-                          .getProjectInfo(
-                            sosiPath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\TEST-001_Vertikalbilde.sos",
-                            imagePath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\images",
-                            projectName: "test",
-                          ),
-                      child: Text("Check if project is on server"),
-                    ),
-                    TextButton(
-                      onPressed: () => context
-                          .read<AnomalyServiceProvider>()
-                          .controller
-                          .runAnalysis(
-                            projectName: "test",
-                            sosiPath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\TEST-001_Vertikalbilde.sos",
-                            imagePath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\anomaly-detection-module\test_data\images",
-                          ),
-                      child: Text("Run analysis"),
-                    ),
-                    Divider(),
-                    TextButton(
-                      onPressed: () => context
-                          .read<AnomalyServiceProvider>()
-                          .controller
-                          .getProjectInfo(
-                            sosiPath:
-                                r"C:\Users\Admin\Documents\gdaltest\HX-14365_Vertikalbilde.sos",
-                            imagePath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\NordmøreGSD10",
-                            projectName: "nordmøre",
-                          ),
-                      child: Text(
-                        "Check if real project with watermask is on server",
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => context
-                          .read<AnomalyServiceProvider>()
-                          .controller
-                          .runAnalysis(
-                            sosiPath:
-                                r"C:\Users\Admin\Documents\gdaltest\HX-14365_Vertikalbilde.sos",
-                            imagePath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\ImageDataTest\NordmøreGSD10",
-                            projectName: "nordmøre",
-                            waterSosiPath:
-                                r"C:\Users\Admin\Documents\bachelor-thesis\Vann_22\Vann_22.SOS",
-                          ),
-                      child: Text("Run analysis"),
-                    ),
                   ],
                 ),
                 const Image(
