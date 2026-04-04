@@ -73,21 +73,19 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
       ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
       return;
     }
-    final response = context
+    context
         .read<AnomalyServiceProvider>()
         .controller
         .getProjectInfo(projectName: _titleController.text,
         imagePath: imagePath,
         sosiPath: sosiPath);
-    print(response);
 
-    final detectionResponse = context
+    context
         .read<AnomalyServiceProvider>()
         .controller
         .runAnalysis(projectName: _titleController.text,
         imagePath: imagePath,
         sosiPath: sosiPath);
-    print(detectionResponse);
   }
 
   // Method for picking an image folder

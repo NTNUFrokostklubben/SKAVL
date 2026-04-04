@@ -1,17 +1,22 @@
-
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
 
+/// Anomaly Detector Controller handles the communication with the anomaly detection service.
+///
+/// This class provides methods for common operations such as getting project info, running analysis and manipulating data.
 class AnomalyDetectorController {
   AnomalyDetectorController({required this.anomalyDetectorClient});
 
   final AnomalyDetectorServiceClient anomalyDetectorClient;
 
+  /// Gets the project information from the anomaly detection service.
+  ///
+  /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
   Future<void> getProjectInfo({
     required String projectName,
     required String imagePath,
     required String sosiPath,
   }) async {
-    final response = await anomalyDetectorClient.describeAnomalyProject(
+    await anomalyDetectorClient.describeAnomalyProject(
       DescribeAnomalyProjectRequest(
         projectMetadata: ProjectMetadata(
           sosiFilePath: sosiPath,
@@ -20,9 +25,11 @@ class AnomalyDetectorController {
         ),
       ),
     );
-    print(response);
   }
 
+  /// Sends a start procedure to the anomaly service with supplied data.
+  ///
+  /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
   Future<void> runAnalysis({
     required String imagePath,
     required String sosiPath,
@@ -38,12 +45,11 @@ class AnomalyDetectorController {
       metadata.sosiWaterMaskPath = waterSosiPath;
     }
 
-    final response = await anomalyDetectorClient.detectAnomalySet(
+    await anomalyDetectorClient.detectAnomalySet(
       DetectAnomalySetRequest(
         projectMetadata: metadata,
         startMode: StartMode.START_RESTART,
       ),
     );
-    print(response);
   }
 }
