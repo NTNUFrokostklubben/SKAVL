@@ -62,6 +62,11 @@
     "description": "Confirm"
   },
 
+  "g_project": "Project",
+  "@g_project": {
+    "description": "Project"
+  },
+
   "settings_title": "Settings",
   "@settings_title": {},
 
