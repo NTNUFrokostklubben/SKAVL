@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
+
+import '../entity/project_metadata.dart';
+import '../services/project_file_service.dart';
 
 class CreateNewReportPage extends StatefulWidget {
   const CreateNewReportPage({super.key});
@@ -73,19 +77,62 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
       ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
       return;
     }
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
-        .getProjectInfo(projectName: _titleController.text,
-        imagePath: imagePath,
-        sosiPath: sosiPath);
+    context.read<AnomalyServiceProvider>().controller.getProjectInfo(
+      projectName: _titleController.text,
+      imagePath: imagePath,
+      sosiPath: sosiPath,
+    );
 
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
-        .runAnalysis(projectName: _titleController.text,
-        imagePath: imagePath,
-        sosiPath: sosiPath);
+    context.read<AnomalyServiceProvider>().controller.runAnalysis(
+      projectName: _titleController.text,
+      imagePath: imagePath,
+      sosiPath: sosiPath,
+    );
+  }
+
+  Future<void> _createProject() async {
+    final imagePath = _imageFolderPath;
+    final sosiPath = _sosiFilePath;
+
+    if (_titleController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Missing project name")));
+      return;
+    }
+    if (imagePath == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Missing image folder path")));
+      return;
+    }
+    if (sosiPath == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
+      return;
+    }
+
+    final savePath = await FilePicker.saveFile(
+      dialogTitle: 'Save project',
+      fileName: '${_titleController.text}.skavl',
+      type: FileType.custom,
+      allowedExtensions: ['skavl'],
+    );
+
+    if (savePath == null) return; // user cancelled
+
+    final project = ProjectMetadata(
+      projectName: _titleController.text,
+      sosiFilePath: sosiPath,
+      imageFolderPath: imagePath,
+    );
+
+    await ProjectFileService().saveToFile(savePath, project);
+    if (!mounted) return;
+
+    context.read<ProjectManagerService>().setProject(project, savePath);
+
   }
 
   // Method for picking an image folder
@@ -109,19 +156,10 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    final containerWidth = MediaQuery
-        .of(context)
-        .size
-        .width * 0.9;
+    final containerWidth = MediaQuery.of(context).size.width * 0.9;
     final titleStart =
-        (MediaQuery
-            .of(context)
-            .size
-            .width - containerWidth) * 0.5;
-    final containerHeight = MediaQuery
-        .of(context)
-        .size
-        .height * 0.8;
+        (MediaQuery.of(context).size.width - containerWidth) * 0.5;
+    final containerHeight = MediaQuery.of(context).size.height * 0.8;
 
     return Scaffold(
       body: Center(
@@ -169,14 +207,14 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         children: [
                           UploadBox(
                             text:
-                            _imageFolderPath ??
+                                _imageFolderPath ??
                                 loc()!.createPage_uploadPlaneImages,
                             onTap: _pickImageFolder,
                             width: containerWidth * 0.5 - 20,
                           ),
                           UploadBox(
                             text:
-                            _sosiFilePath ??
+                                _sosiFilePath ??
                                 loc()!.createPage_uploadSOSIFile,
                             onTap: _pickSosiFile,
                             width: containerWidth * 0.5 - 20,
@@ -223,26 +261,21 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
 
                           // Button to test anomaly detection, commented out spinner for now.
                           ElevatedButton(
-                            onPressed: _startAnomalyDetection,
+                            onPressed: _createProject,
                             child: Row(
                               spacing: 8,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   loc()!.createPage_createReportButton,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
                                   color:
-                                  Theme
-                                      .of(context)
-                                      .brightness ==
-                                      Brightness.light
+                                      Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? MyColors.secondaryBlack
                                       : MyColors.primaryWhite,
                                 ),

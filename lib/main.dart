@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 import 'package:skavl/model/settings_model.dart';
-import 'package:skavl/proto/anomaly.pbgrpc.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
@@ -114,8 +112,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final ClientChannel channel;
-  late final AnomalyDetectorServiceClient anomalyClient;
 
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
@@ -139,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     LargeHeader(loc()!.welcomePage_SKAVL),
                     LongButton(loc()!.welcomePage_openFormer),
                     LongButton(loc()!.welcomePage_createNewButton),
+                    // Text(context.watch<ProjectManagerService>().loadedProject!.projectName)
                   ],
                 ),
                 const Image(
