@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 
 import '../l10n/app_localizations.dart';
-import '../theme/colors.dart';
 
 class BottomStatusBar extends StatelessWidget {
   final BuildContext foreignContext;
