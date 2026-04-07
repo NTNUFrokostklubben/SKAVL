@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 import 'package:skavl/model/settings_model.dart';
+import 'package:skavl/proto/anomaly.pbgrpc.dart';
+import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
@@ -14,8 +17,11 @@ import 'package:skavl/widgets/labels/headings.dart';
 void main() {
   runApp(
     /// State system for settings
-    ChangeNotifierProvider(
-      create: (_) => SettingsModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SettingsModel()),
+        ChangeNotifierProvider(create: (_) => AnomalyServiceProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -106,6 +112,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final ClientChannel channel;
+  late final AnomalyDetectorServiceClient anomalyClient;
+
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }

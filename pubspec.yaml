@@ -37,6 +37,7 @@ dependencies:
   fixnum: ^1.1.1
   path: ^1.9.1
   vector_math: ^2.1.4
+  file_picker: ^11.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
