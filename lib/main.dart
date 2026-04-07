@@ -5,6 +5,7 @@ import 'package:grpc/grpc.dart';
 import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
@@ -20,6 +21,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsModel()),
+        ChangeNotifierProvider(create: (_) => ProjectManagerService()),
         ChangeNotifierProvider(create: (_) => AnomalyServiceProvider()),
       ],
       child: const MyApp(),
