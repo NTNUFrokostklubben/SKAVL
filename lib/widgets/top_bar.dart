@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
 import 'package:skavl/pages/analysis.dart';
+import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/create_new_report.dart';
 import 'package:skavl/pages/settings.dart';
 import 'package:skavl/services/project_file_service.dart';
@@ -146,7 +147,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, () => _saveProject(context)),
                         menuItem(loc()!.topbar_saveAs, () => _saveAs(context)),
-                        menuItem(loc()!.topbar_newProject, () {}),
+                        menuItem(loc()!.topbar_newProject, () {
+                          navigateTo(context, CreateNewProject());
+                        }),
                         menuItem(loc()!.topbar_openProject, () => _openProject(context)),
                         submenu(loc()!.topbar_openRecent, []),
                         submenu(loc()!.g_share, [

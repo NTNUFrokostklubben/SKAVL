@@ -153,9 +153,19 @@
     "description": "Upload SOSI file - text"
   },
 
+  "createPage_uploadWaterSOSIFile": "Upload SOSI water polygon file",
+  "@createPage_uploadWaterSOSIFile": {
+    "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
   "createPage_createReportButton": "Create report",
   "@createPage_createReportButton": {
     "description": "Create report - button text"
+  },
+
+  "newprojectPage_title": "Create new project",
+  "@newprojectPage_title": {
+    "description": "Create new project - title"
   },
 
   "loadingDialog_analyzing": "Analyzing your aereal images",

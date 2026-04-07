@@ -155,9 +155,19 @@
     "description": "Last opp SOSI fil - text"
   },
 
+  "createPage_uploadWaterSOSIFile": "Last opp SOSI vannpolygon fil",
+  "@createPage_uploadWaterSOSIFile": {
+    "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
   "createPage_createReportButton": "Lag rapport",
   "@createPage_createReportButton": {
     "description": "Lag rapport - button text"
+  },
+
+  "newprojectPage_title": "Opprett nytt prosjekt",
+  "@newprojectPage_title": {
+    "description": "Create new project - title"
   },
 
   "loadingDialog_analyzing": "Analyserer luftbildene dine",
