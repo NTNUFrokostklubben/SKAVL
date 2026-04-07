@@ -7,6 +7,7 @@ import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
+import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
@@ -147,7 +148,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: AnomalyClassifBar(),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnomalyClassifBar(),
+          BottomStatusBar(foreignContext: context,)
+        ],
+      ),
     );
   }
 }
