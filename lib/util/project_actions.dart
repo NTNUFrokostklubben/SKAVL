@@ -1,6 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/main.dart';
+import 'package:skavl/util/navigation_util.dart';
 
 import '../services/project_file_service.dart';
 import '../services/project_manager_service.dart';
@@ -63,5 +65,16 @@ class ProjectActions {
     if (projectPath == null) return;
 
     await ProjectFileService().saveToFile(projectPath, currentProject);
+  }
+
+  /// Closes current project and navigates back to the home page
+  ///
+  /// Might have to implement some check for stopping current analysis before closing
+  static Future<void> closeProject(BuildContext context) async {
+    final projectState = context.read<ProjectManagerService>();
+    if (!projectState.hasProject) return;
+
+    projectState.clearProject();
+    navigateTo(context, MainPage());
   }
 }

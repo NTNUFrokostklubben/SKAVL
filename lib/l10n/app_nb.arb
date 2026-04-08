@@ -16,6 +16,11 @@
     "description": "Share something"
   },
 
+  "g_close": "Lukk",
+  "@g_close": {
+    "description": "Close something"
+  },
+
   "g_file": "Fil",
   "@g_file": {
     "description": "Used as a menu item for file, but also as file in general"

@@ -88,9 +88,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         menuItem("Analysis page", () {
                           navigateTo(context, Analysis());
                         }),
-                        menuItem("Project Overview page", () {
-                          navigateTo(context, ProjectOverview());
-                        }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),
                         menuItem(loc()!.topbar_saveAs, () => ProjectActions.saveAs(context)),
@@ -102,7 +99,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         submenu(loc()!.g_share, [
                           menuItem(loc()!.g_share, () {}),
                         ]),
-                        menuItem(loc()!.topbar_newWindow, () {}),
+                        menuItem("${loc()!.g_close} ${loc()!.g_project}", () => ProjectActions.closeProject(context)),
                         menuItem(loc()!.g_quit, () {}),
                       ],
                       child: MenuAcceleratorLabel(
