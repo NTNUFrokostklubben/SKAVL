@@ -1,8 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
-import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
@@ -50,44 +48,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
     LoadingDialog.hide(context);
   }
 
-  // Temporary method for testing anomaly detection start based on selected params
-  Future<void> _startAnomalyDetection() async {
-    final imagePath = _imageFolderPath;
-    final sosiPath = _sosiFilePath;
-
-    if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing project name")));
-      return;
-    }
-    if (imagePath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing image folder path")));
-      return;
-    }
-    if (sosiPath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
-      return;
-    }
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
-        .getProjectInfo(projectName: _titleController.text,
-        imagePath: imagePath,
-        sosiPath: sosiPath);
-
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
-        .runAnalysis(projectName: _titleController.text,
-        imagePath: imagePath,
-        sosiPath: sosiPath);
-  }
-
   // Method for picking an image folder
   Future<void> _pickImageFolder() async {
     final path = await FilePicker.getDirectoryPath();
@@ -109,19 +69,10 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    final containerWidth = MediaQuery
-        .of(context)
-        .size
-        .width * 0.9;
+    final containerWidth = MediaQuery.of(context).size.width * 0.9;
     final titleStart =
-        (MediaQuery
-            .of(context)
-            .size
-            .width - containerWidth) * 0.5;
-    final containerHeight = MediaQuery
-        .of(context)
-        .size
-        .height * 0.8;
+        (MediaQuery.of(context).size.width - containerWidth) * 0.5;
+    final containerHeight = MediaQuery.of(context).size.height * 0.8;
 
     return Scaffold(
       body: Center(
@@ -169,14 +120,14 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                         children: [
                           UploadBox(
                             text:
-                            _imageFolderPath ??
+                                _imageFolderPath ??
                                 loc()!.createPage_uploadPlaneImages,
                             onTap: _pickImageFolder,
                             width: containerWidth * 0.5 - 20,
                           ),
                           UploadBox(
                             text:
-                            _sosiFilePath ??
+                                _sosiFilePath ??
                                 loc()!.createPage_uploadSOSIFile,
                             onTap: _pickSosiFile,
                             width: containerWidth * 0.5 - 20,
@@ -193,37 +144,8 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // ElevatedButton(
-                          //   onPressed: startLoadingModal,
-                          //   child: Row(
-                          //     spacing: 8,
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       Text(
-                          //         loc()!.createPage_createReportButton,
-                          //         style: Theme
-                          //             .of(context)
-                          //             .textTheme
-                          //             .bodyMedium,
-                          //       ),
-                          //       Icon(
-                          //         Icons.arrow_forward_ios_outlined,
-                          //         size: 20,
-                          //         color:
-                          //         Theme
-                          //             .of(context)
-                          //             .brightness ==
-                          //             Brightness.light
-                          //             ? MyColors.secondaryBlack
-                          //             : MyColors.primaryWhite,
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-
-                          // Button to test anomaly detection, commented out spinner for now.
                           ElevatedButton(
-                            onPressed: _startAnomalyDetection,
+                            onPressed: startLoadingModal,
                             child: Row(
                               spacing: 8,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -249,6 +171,7 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                               ],
                             ),
                           ),
+
                         ],
                       ),
                     ),

@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 import 'package:skavl/model/settings_model.dart';
-import 'package:skavl/proto/anomaly.pbgrpc.dart';
+import 'package:skavl/pages/create_new_project.dart';
+import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
-import 'package:skavl/widgets/anomaly_classif_bar.dart';
+import 'package:skavl/util/navigation_util.dart';
+import 'package:skavl/util/project_actions.dart';
+import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
 import 'package:skavl/widgets/long_button.dart';
@@ -20,6 +23,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsModel()),
+        ChangeNotifierProvider(create: (_) => ProjectManagerService()),
         ChangeNotifierProvider(create: (_) => AnomalyServiceProvider()),
       ],
       child: const MyApp(),
@@ -98,6 +102,12 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final projectManager = context.watch<ProjectManagerService>();
+
+    if (projectManager.loadedProject != null) {
+      return ProjectOverview();
+    }
+
     return MyHomePage(title: "title");
   }
 }
@@ -112,9 +122,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final ClientChannel channel;
-  late final AnomalyDetectorServiceClient anomalyClient;
-
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
@@ -135,8 +142,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     LargeHeader(loc()!.welcomePage_SKAVL),
-                    LongButton(loc()!.welcomePage_openFormer),
-                    LongButton(loc()!.welcomePage_createNewButton),
+                    LongButton(
+                      loc()!.welcomePage_openFormer,
+                      onPressed: () => ProjectActions.openProject(context),
+                    ),
+                    LongButton(
+                      loc()!.welcomePage_createNewButton,
+                      onPressed: () => navigateTo(context, CreateNewProject()),
+                    ),
                   ],
                 ),
                 const Image(
@@ -148,7 +161,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: AnomalyClassifBar(),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BottomStatusBar(),
+        ],
+      ),
     );
   }
 }

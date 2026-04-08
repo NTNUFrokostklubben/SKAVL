@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
 import 'package:skavl/pages/analysis.dart';
+import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/create_new_report.dart';
 import 'package:skavl/pages/settings.dart';
+import 'package:skavl/util/project_actions.dart';
 
 import '../util/navigation_util.dart';
-
 
 /// A custom top bar widget that implements the PreferredSizeWidget interface,
 ///  allowing it to be used as an AppBar in a Scaffold.
@@ -15,31 +16,32 @@ import '../util/navigation_util.dart';
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext foreignContext;
   final double height = 25;
+
   const TopBar({super.key, required this.foreignContext});
 
   AppLocalizations? loc() {
     return AppLocalizations.of(foreignContext);
   }
 
-/// Returns a ButtonStyle for menu items, with fixed and minimum sizes based on the height property.
-/// This style ensures that all menu items have a consistent size, improving the overall appearance of the menu.
-/// The fixedSize is set to a width of 200 and a height slightly larger than the defined height, while the minimumSize
-///  ensures that menu items do not shrink below the specified dimensions.
+  /// Returns a ButtonStyle for menu items, with fixed and minimum sizes based on the height property.
+  /// This style ensures that all menu items have a consistent size, improving the overall appearance of the menu.
+  /// The fixedSize is set to a width of 200 and a height slightly larger than the defined height, while the minimumSize
+  ///  ensures that menu items do not shrink below the specified dimensions.
   ButtonStyle menuItemStyle() {
     return ButtonStyle(
-      fixedSize: WidgetStateProperty.all(Size(200, height+5)),
+      fixedSize: WidgetStateProperty.all(Size(200, height + 5)),
       minimumSize: WidgetStateProperty.all(Size(25, height)),
     );
   }
 
-/// Creates a MenuItemButton with the given text and onPressed callback.
-/// The button is styled using the menuItemStyle method to ensure consistent sizing.
-/// The text is displayed with an accelerator label, allowing for keyboard shortcuts
-///  to be easily identified by the user.
+  /// Creates a MenuItemButton with the given text and onPressed callback.
+  /// The button is styled using the menuItemStyle method to ensure consistent sizing.
+  /// The text is displayed with an accelerator label, allowing for keyboard shortcuts
+  ///  to be easily identified by the user.
   MenuItemButton menuItem(String text, void Function() onPressed) {
     return MenuItemButton(
       onPressed: onPressed,
-       style :menuItemStyle(),
+      style: menuItemStyle(),
       child: MenuAcceleratorLabel('&$text'), // child
     );
   }
@@ -50,17 +52,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   ///  to be easily identified by the user.
   SubmenuButton submenu(String text, List<Widget> children) {
     return SubmenuButton(
-      style :menuItemStyle(),
+      style: menuItemStyle(),
       menuChildren: children,
       child: MenuAcceleratorLabel('&$text'), // Parent
     );
   }
 
-  
-
-/// Builds the top bar widget, which consists of a row of menu buttons (File, Edit, View, Help).
-/// Each menu button is a SubmenuButton that contains a list of menu items or submenus,
-/// allowing for easy navigation and access to various features of the application.
+  /// Builds the top bar widget, which consists of a row of menu buttons (File, Edit, View, Help).
+  ///
+  /// Each menu button is a SubmenuButton that contains a list of menu items or submenus,
+  /// allowing for easy navigation and access to various features of the application.
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -77,57 +78,64 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   children: <Widget>[
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        menuItem(loc()!.g_home, (){
-                          navigateTo(context, MyHomePage(title: "title"));
+                        menuItem(loc()!.g_home, () {
+                          navigateTo(context, MainPage());
                         }),
-                        menuItem("Upload page", (){
+                        menuItem("Upload page", () {
                           navigateTo(context, CreateNewReportPage());
                         }),
-                        menuItem("Analysis page", (){
+                        menuItem("Analysis page", () {
                           navigateTo(context, Analysis());
                         }),
                         PopupMenuDivider(),
-                        menuItem(loc()!.g_save, (){}),
-                        menuItem(loc()!.topbar_saveAs, (){}),
-                        menuItem(loc()!.topbar_newProject, (){}),
-                        menuItem(loc()!.topbar_openProject, (){}),
+                        menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),
+                        menuItem(loc()!.topbar_saveAs, () => ProjectActions.saveAs(context)),
+                        menuItem(loc()!.topbar_newProject, () {
+                          navigateTo(context, CreateNewProject());
+                        }),
+                        menuItem(loc()!.topbar_openProject, () => ProjectActions.openProject(context)),
                         submenu(loc()!.topbar_openRecent, []),
                         submenu(loc()!.g_share, [
-                          menuItem(loc()!.g_share, (){}),
-                          ]
-                        ),
-                        menuItem(loc()!.topbar_newWindow, (){}),
-                        menuItem(loc()!.g_quit, (){}),
+                          menuItem(loc()!.g_share, () {}),
+                        ]),
+                        menuItem("${loc()!.g_close} ${loc()!.g_project}", () => ProjectActions.closeProject(context)),
+                        menuItem(loc()!.g_quit, () {}),
                       ],
-                      child:  MenuAcceleratorLabel('&${loc()!.g_file}'), // Parent
+                      child: MenuAcceleratorLabel(
+                        '&${loc()!.g_file}',
+                      ), // Parent
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        menuItem(loc()!.g_settings, (){
+                        menuItem(loc()!.g_settings, () {
                           navigateTo(context, Settings());
                         }),
                       ],
-                      child:  MenuAcceleratorLabel('&${loc()!.g_edit}'), // Parent
+                      child: MenuAcceleratorLabel(
+                        '&${loc()!.g_edit}',
+                      ), // Parent
+                    ),
+                    SubmenuButton(
+                      menuChildren: <Widget>[],
+                      child: MenuAcceleratorLabel(
+                        '&${loc()!.g_view}',
+                      ), // Parent
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                       
+                        menuItem(loc()!.topbar_about, () {
+                          showAboutDialog(
+                            context: foreignContext,
+                            applicationName: 'Skavl',
+                            applicationVersion: '0.1.0',
+                            applicationLegalese: '© 2026 Bouvetøya AS',
+                          );
+                        }),
                       ],
-                      child:  MenuAcceleratorLabel('&${loc()!.g_view}'), // Parent
+                      child: MenuAcceleratorLabel(
+                        '&${loc()!.g_help}',
+                      ), // Parent
                     ),
-                    SubmenuButton(
-                      menuChildren: <Widget>[
-                       menuItem(loc()!.topbar_about, (){
-                         showAboutDialog(
-                                context: foreignContext,
-                                applicationName: 'Skavl',
-                                applicationVersion: '0.1.0',
-                                applicationLegalese: '© 2026 Bouvetøya AS',
-                              );
-                       }),
-                      ],
-                      child:  MenuAcceleratorLabel('&${loc()!.g_help}'), // Parent
-                    ), 
                   ],
                 ),
               ),
@@ -138,11 +146,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-
-
   @override
   Size get preferredSize =>
       Size(MediaQuery.of(foreignContext).size.width, height);
 }
-
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/model/settings_model.dart';
+import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 
@@ -97,6 +98,7 @@ class Settings extends StatelessWidget {
         ),
       ),
       appBar: TopBar(foreignContext: context),
+      bottomNavigationBar: BottomStatusBar(),
     );
   }
 }

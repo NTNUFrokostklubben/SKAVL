@@ -16,9 +16,19 @@
     "description": "Share something"
   },
 
+  "g_close": "Lukk",
+  "@g_close": {
+    "description": "Close something"
+  },
+
   "g_file": "Fil",
   "@g_file": {
     "description": "Used as a menu item for file, but also as file in general"
+  },
+
+  "g_browse": "Bla Gjennom",
+  "@g_browse": {
+    "description": "Used for browsing, mainly for upload buttons"
   },
 
   "g_settings": "Innstillinger",
@@ -60,6 +70,16 @@
   "g_confirm": "Bekreft",
   "@g_cancel": {
     "description": "Bekreft"
+  },
+
+  "g_project": "Prosjekt",
+  "@g_project": {
+    "description": "Project"
+  },
+
+  "g_noImagesProcessed": "Ingen bilder analysert enda",
+  "@g_noImagesProcessed": {
+    "description": "No images processed - text when no images have been processed yet"
   },
 
   "settings_title": "Innstillinger",
@@ -140,19 +160,54 @@
     "description": "Tittel - input field"
   },
 
-  "createPage_uploadPlaneImages": "Last opp flybilder",
+  "createPage_uploadPlaneImages": "Flybildemappe",
   "@createPage_uploadPlaneImages": {
     "description": "Last opp flybilder - text"
   },
 
-  "createPage_uploadSOSIFile": "Last opp SOSI fil",
+  "createPage_uploadSOSIFile": "Dekningspolygon SOSI",
   "@createPage_uploadSOSIFile": {
     "description": "Last opp SOSI fil - text"
+  },
+
+  "createPage_uploadWaterSOSIFile": "Vannpolygon SOSI",
+  "@createPage_uploadWaterSOSIFile": {
+    "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
+  "createPage_noFile": "Ingen fil valgt",
+  "@createPage_noFile": {
+    "description": "Ingen fil valgt - text when no file is chosen"
+  },
+
+  "createPage_noFolder": "Ingen mappe valgt",
+  "@createPage_noFolder": {
+    "description": "Ingen mappe valgt - text when no folder is chosen"
   },
 
   "createPage_createReportButton": "Lag rapport",
   "@createPage_createReportButton": {
     "description": "Lag rapport - button text"
+  },
+
+  "newprojectPage_title": "Opprett nytt prosjekt",
+  "@newprojectPage_title": {
+    "description": "Create new project - title"
+  },
+
+  "newprojectPage_Missingproject": "Mangler prosjektnavn",
+  "@newprojectPage_Missingproject": {
+    "description": "Missing project name from form"
+  },
+
+  "newprojectPage_Missingaerial": "Mangler flybildemappe",
+  "@newprojectPage_Missingaerial": {
+    "description": "Missing aerial images from form"
+  },
+
+  "newprojectPage_Missingsosi": "Mangler dekningspolygon SOSI",
+  "@newprojectPage_Missingsosi": {
+    "description": "Missing polygon SOSI from form"
   },
 
   "loadingDialog_analyzing": "Analyserer luftbildene dine",
@@ -183,6 +238,31 @@
   "anomalyClassifBar_searchCreate": "Søk eller opprett avvikstype",
   "@anomalyClassifBar_searchCreate": {
     "description": "Søk eller opprett avvikstype - text input hint"
+  },
+
+  "projectOverview_projectName": "Prosjektnavn",
+  "@projectOverview_projectName": {
+    "description": "Project name - label for project name in project overview"
+  },
+
+  "projectOverview_noWaterSosi": "Ingen SOSI fil for vann knyttet til prosjekt",
+  "@projectOverview_noWaterSosi": {
+    "description": "Sosi water polygon file is missing - text when no water sosi file is linked to project"
+  },
+
+  "projectOverview_imagesPresent": "Antall bilder i mappe",
+  "@projectOverview_imagesPresent": {
+    "description": "Number of images present in folder"
+  },
+
+  "projectOverview_imagesProcessed": "Antall bilder analysert",
+  "@projectOverview_imagesProcessed": {
+    "description": "Number of images processed"
+  },
+
+  "projectOverview_lastImageProcessed": "Siste bilde analysert",
+  "@projectOverview_lastImageProcessed": {
+    "description": "Last image that has been processed"
   }
 
 }
