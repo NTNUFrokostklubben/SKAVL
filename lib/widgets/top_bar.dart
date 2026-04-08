@@ -4,6 +4,7 @@ import 'package:skavl/main.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/create_new_report.dart';
+import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/pages/settings.dart';
 import 'package:skavl/util/project_actions.dart';
 
@@ -79,13 +80,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     SubmenuButton(
                       menuChildren: <Widget>[
                         menuItem(loc()!.g_home, () {
-                          navigateTo(context, MyHomePage(title: "title"));
+                          navigateTo(context, MainPage());
                         }),
                         menuItem("Upload page", () {
                           navigateTo(context, CreateNewReportPage());
                         }),
                         menuItem("Analysis page", () {
                           navigateTo(context, Analysis());
+                        }),
+                        menuItem("Project Overview page", () {
+                          navigateTo(context, ProjectOverview());
                         }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),

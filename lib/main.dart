@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/pages/create_new_project.dart';
+import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/util/project_actions.dart';
-import 'package:skavl/widgets/anomaly_classif_bar.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'l10n/app_localizations.dart';
@@ -102,6 +102,12 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final projectManager = context.watch<ProjectManagerService>();
+
+    if (projectManager.loadedProject != null) {
+      return ProjectOverview();
+    }
+
     return MyHomePage(title: "title");
   }
 }
@@ -158,8 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnomalyClassifBar(),
-          BottomStatusBar(foreignContext: context),
+          BottomStatusBar(),
         ],
       ),
     );

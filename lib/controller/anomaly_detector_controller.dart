@@ -11,12 +11,11 @@ class AnomalyDetectorController {
   /// Gets the project information from the anomaly detection service.
   ///
   /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
-  Future<void> getProjectInfo({
+  Future<DescribeAnomalyProjectResponse> getProjectInfo({
     required String projectName,
     required String imagePath,
     required String sosiPath,
-  }) async {
-    await anomalyDetectorClient.describeAnomalyProject(
+  }) async => await anomalyDetectorClient.describeAnomalyProject(
       DescribeAnomalyProjectRequest(
         projectMetadata: ProjectMetadata(
           sosiFilePath: sosiPath,
@@ -25,12 +24,11 @@ class AnomalyDetectorController {
         ),
       ),
     );
-  }
 
   /// Sends a start procedure to the anomaly service with supplied data.
   ///
   /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
-  Future<void> runAnalysis({
+  Future<DetectAnomalySetResponse> runAnalysis({
     required String imagePath,
     required String sosiPath,
     required String projectName,
@@ -45,7 +43,7 @@ class AnomalyDetectorController {
       metadata.sosiWaterMaskPath = waterSosiPath;
     }
 
-    await anomalyDetectorClient.detectAnomalySet(
+    return await anomalyDetectorClient.detectAnomalySet(
       DetectAnomalySetRequest(
         projectMetadata: metadata,
         startMode: StartMode.START_RESTART,

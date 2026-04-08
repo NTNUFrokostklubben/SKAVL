@@ -139,7 +139,7 @@ class _CreateNewProjectState extends State<CreateNewProject> {
 
                   Spacer(),
 
-                  // Create report button
+                  // Create project button
                   Align(
                     alignment: Alignment.centerRight,
                     child: SizedBox(
@@ -177,7 +177,7 @@ class _CreateNewProjectState extends State<CreateNewProject> {
         ),
       ),
       appBar: TopBar(foreignContext: context),
-      bottomNavigationBar: BottomStatusBar(foreignContext: context),
+      bottomNavigationBar: BottomStatusBar(),
     );
   }
 }

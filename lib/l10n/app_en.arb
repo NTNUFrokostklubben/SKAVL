@@ -72,6 +72,11 @@
     "description": "Project"
   },
 
+  "g_noImagesProcessed": "No images processed",
+  "@g_noImagesProcessed": {
+    "description": "No images processed - text when no images have been processed yet"
+  },
+
   "settings_title": "Settings",
   "@settings_title": {},
 
@@ -226,6 +231,31 @@
   "anomalyClassifBar_searchCreate": "Search or create anomaly type",
   "@anomalyClassifBar_searchCreate": {
     "description": "Search or create anomaly type - text input hint"
+  },
+
+  "projectOverview_projectName": "Project name",
+  "@projectOverview_projectName": {
+    "description": "Project name - label for project name in project overview"
+  },
+
+  "projectOverview_noWaterSosi": "No water polygon SOSI associated with project",
+  "@projectOverview_noWaterSosi": {
+    "description": "Sosi water polygon file is missing - text when no water sosi file is linked to project"
+  },
+
+  "projectOverview_imagesPresent": "Number of images in folder",
+  "@projectOverview_imagesPresent": {
+    "description": "Number of images present in folder"
+  },
+
+  "projectOverview_imagesProcessed": "Number of images analyzed",
+  "@projectOverview_imagesProcessed": {
+    "description": "Number of images processed"
+  },
+
+  "projectOverview_lastImageProcessed": "Latest image analyzed",
+  "@projectOverview_lastImageProcessed": {
+    "description": "Last image that has been processed"
   }
 
 

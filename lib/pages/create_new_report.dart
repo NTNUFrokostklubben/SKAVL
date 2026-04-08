@@ -1,8 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
-import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
@@ -48,42 +46,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
 
     // Hide dialog
     LoadingDialog.hide(context);
-  }
-
-  // Temporary method for testing anomaly detection start based on selected params
-  Future<void> _startAnomalyDetection() async {
-    final imagePath = _imageFolderPath;
-    final sosiPath = _sosiFilePath;
-
-    if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing project name")));
-      return;
-    }
-    if (imagePath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing image folder path")));
-      return;
-    }
-    if (sosiPath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
-      return;
-    }
-    context.read<AnomalyServiceProvider>().controller.getProjectInfo(
-      projectName: _titleController.text,
-      imagePath: imagePath,
-      sosiPath: sosiPath,
-    );
-
-    context.read<AnomalyServiceProvider>().controller.runAnalysis(
-      projectName: _titleController.text,
-      imagePath: imagePath,
-      sosiPath: sosiPath,
-    );
   }
 
   // Method for picking an image folder

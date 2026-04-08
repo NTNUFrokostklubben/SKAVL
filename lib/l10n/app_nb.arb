@@ -72,6 +72,11 @@
     "description": "Project"
   },
 
+  "g_noImagesProcessed": "Ingen bilder analysert enda",
+  "@g_noImagesProcessed": {
+    "description": "No images processed - text when no images have been processed yet"
+  },
+
   "settings_title": "Innstillinger",
   "@settings_title": {},
 
@@ -228,6 +233,31 @@
   "anomalyClassifBar_searchCreate": "Søk eller opprett avvikstype",
   "@anomalyClassifBar_searchCreate": {
     "description": "Søk eller opprett avvikstype - text input hint"
+  },
+
+  "projectOverview_projectName": "Prosjektnavn",
+  "@projectOverview_projectName": {
+    "description": "Project name - label for project name in project overview"
+  },
+
+  "projectOverview_noWaterSosi": "Ingen SOSI fil for vann knyttet til prosjekt",
+  "@projectOverview_noWaterSosi": {
+    "description": "Sosi water polygon file is missing - text when no water sosi file is linked to project"
+  },
+
+  "projectOverview_imagesPresent": "Antall bilder i mappe",
+  "@projectOverview_imagesPresent": {
+    "description": "Number of images present in folder"
+  },
+
+  "projectOverview_imagesProcessed": "Antall bilder analysert",
+  "@projectOverview_imagesProcessed": {
+    "description": "Number of images processed"
+  },
+
+  "projectOverview_lastImageProcessed": "Siste bilde analysert",
+  "@projectOverview_lastImageProcessed": {
+    "description": "Last image that has been processed"
   }
 
 }

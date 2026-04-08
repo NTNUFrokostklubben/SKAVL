@@ -98,7 +98,7 @@ class Settings extends StatelessWidget {
         ),
       ),
       appBar: TopBar(foreignContext: context),
-      bottomNavigationBar: BottomStatusBar(foreignContext: context),
+      bottomNavigationBar: BottomStatusBar(),
     );
   }
 }
