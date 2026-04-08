@@ -1,14 +1,11 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/create_new_report.dart';
 import 'package:skavl/pages/settings.dart';
-import 'package:skavl/services/project_file_service.dart';
-import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/util/project_actions.dart';
 
 import '../util/navigation_util.dart';
 
@@ -61,61 +58,8 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  /// Opens a project from file and sets the context
-  Future<void> _openProject(BuildContext context) async {
-
-    final projectState = context.read<ProjectManagerService>();
-
-    final loadedFile = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['skavl'],
-    );
-    if (loadedFile == null) return;
-
-    final filepath = loadedFile.files.single.path;
-    if (filepath == null) return;
-
-    final project = await ProjectFileService().loadFromFile(filepath);
-    projectState.setProject(project, filepath);
-  }
-
-  /// Saves current project to specified file
-  Future<void> _saveAs(BuildContext context) async {
-    final projectState = context.read<ProjectManagerService>();
-    if (!projectState.hasProject) return;
-
-    final savePath = await FilePicker.saveFile(
-      dialogTitle: 'Save project',
-      fileName: '${projectState.loadedProject?.projectName}.skavl',
-      type: FileType.custom,
-      allowedExtensions: ['skavl'],
-    );
-    if (savePath == null) return;
-
-    final currentProject = projectState.loadedProject;
-    if (currentProject == null) return;
-
-    await ProjectFileService().saveToFile(savePath, currentProject);
-
-    final project = await ProjectFileService().loadFromFile(savePath);
-    projectState.setProject(project, savePath);
-  }
-  
-  Future<void> _saveProject(BuildContext context) async {
-    final projectState = context.read<ProjectManagerService>();
-    if (!projectState.hasProject) return;
-    
-    final currentProject = projectState.loadedProject;
-    if (currentProject == null) return;
-
-    final projectPath = projectState.filePath;
-    if (projectPath == null) return;
-    
-    await ProjectFileService().saveToFile(projectPath, currentProject);
-  }
-
-
   /// Builds the top bar widget, which consists of a row of menu buttons (File, Edit, View, Help).
+  ///
   /// Each menu button is a SubmenuButton that contains a list of menu items or submenus,
   /// allowing for easy navigation and access to various features of the application.
   @override
@@ -144,12 +88,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                           navigateTo(context, Analysis());
                         }),
                         PopupMenuDivider(),
-                        menuItem(loc()!.g_save, () => _saveProject(context)),
-                        menuItem(loc()!.topbar_saveAs, () => _saveAs(context)),
+                        menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),
+                        menuItem(loc()!.topbar_saveAs, () => ProjectActions.saveAs(context)),
                         menuItem(loc()!.topbar_newProject, () {
                           navigateTo(context, CreateNewProject());
                         }),
-                        menuItem(loc()!.topbar_openProject, () => _openProject(context)),
+                        menuItem(loc()!.topbar_openProject, () => ProjectActions.openProject(context)),
                         submenu(loc()!.topbar_openRecent, []),
                         submenu(loc()!.g_share, [
                           menuItem(loc()!.g_share, () {}),

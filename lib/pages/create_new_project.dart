@@ -49,21 +49,21 @@ class _CreateNewProjectState extends State<CreateNewProject> {
     final sosiWaterPath = _sosiWaterFilePath;
 
     if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingproject)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loc()!.newprojectPage_Missingproject)),
+      );
       return;
     }
     if (imagePath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingaerial)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loc()!.newprojectPage_Missingaerial)),
+      );
       return;
     }
     if (sosiPath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingsosi)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loc()!.newprojectPage_Missingsosi)),
+      );
       return;
     }
 
@@ -92,7 +92,6 @@ class _CreateNewProjectState extends State<CreateNewProject> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -101,7 +100,7 @@ class _CreateNewProjectState extends State<CreateNewProject> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LargeHeader(loc()!.newprojectPage_title),
-            SizedBox(height: 32,),
+            SizedBox(height: 32),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -113,7 +112,7 @@ class _CreateNewProjectState extends State<CreateNewProject> {
                       labelText: loc()!.createPage_titleInput,
                     ),
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 16),
 
                   // Upload boxes
                   UploadButton(
@@ -141,40 +140,36 @@ class _CreateNewProjectState extends State<CreateNewProject> {
                   Spacer(),
 
                   // Create report button
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 48,
-                        child: ElevatedButton(
-                          onPressed: _createProject,
-                          child: Row(
-                            spacing: 16,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                loc()!.newprojectPage_title,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium,
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                size: 20,
-                                color:
-                                    Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? MyColors.secondaryBlack
-                                    : MyColors.primaryWhite,
-                              ),
-                            ],
-                          ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: _createProject,
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc()!.newprojectPage_title,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              size: 20,
+                              color:
+                                  Theme.of(context).brightness == Brightness.light
+                                  ? MyColors.secondaryBlack
+                                  : MyColors.primaryWhite,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 48,)
+
+                  SizedBox(height: 8),
                 ],
               ),
             ),
