@@ -2,14 +2,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
-import 'package:skavl/services/anomaly_service_provider.dart';
+import 'package:skavl/main.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
+import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
-import 'package:skavl/widgets/upload.dart';
-import 'package:skavl/widgets/dialogs/loading_popup.dart';
+import 'package:skavl/widgets/upload_button.dart';
 
 import '../entity/project_metadata.dart';
 import '../services/project_file_service.dart';
@@ -51,19 +51,19 @@ class _CreateNewProjectState extends State<CreateNewProject> {
     if (_titleController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Missing project name")));
+      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingproject)));
       return;
     }
     if (imagePath == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Missing image folder path")));
+      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingaerial)));
       return;
     }
     if (sosiPath == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
+      ).showSnackBar(SnackBar(content: Text(loc()!.newprojectPage_Missingsosi)));
       return;
     }
 
@@ -87,150 +87,95 @@ class _CreateNewProjectState extends State<CreateNewProject> {
     if (!mounted) return;
 
     context.read<ProjectManagerService>().setProject(project, savePath);
-  }
-
-  // Method for picking an image folder
-  Future<void> _pickImageFolder() async {
-    final path = await FilePicker.getDirectoryPath();
-    if (path != null) {
-      setState(() => _imageFolderPath = path);
-    }
-  }
-
-  // Method for picking SOSI file, needs to be refactored to set param so it can be reused for water mask sosi.
-  Future<String?> _pickSosiFile() async {
-    final result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['sos'],
-    );
-    if (result != null) {
-      return result.files.single.path;
-    }
-    return null;
+    navigateTo(context, MainPage());
   }
 
   @override
   Widget build(BuildContext context) {
-    final containerWidth = MediaQuery.of(context).size.width * 0.9;
 
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: LargeHeader(loc()!.newprojectPage_title),
-            ),
+            LargeHeader(loc()!.newprojectPage_title),
+            SizedBox(height: 32,),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                spacing: 16,
+                children: [
+                  TextField(
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      labelText: loc()!.createPage_titleInput,
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  SizedBox(height: 16,),
+
+                  // Upload boxes
+                  UploadButton(
+                    label: loc()!.createPage_uploadPlaneImages,
+                    isRequired: true,
+                    selectedPath: _imageFolderPath,
+                    onPathSelected: (value) =>
+                        setState(() => _imageFolderPath = value),
+                    isFolder: true,
+                  ),
+                  UploadButton(
+                    label: loc()!.createPage_uploadSOSIFile,
+                    isRequired: true,
+                    selectedPath: _sosiFilePath,
+                    onPathSelected: (value) =>
+                        setState(() => _sosiFilePath = value),
+                  ),
+                  UploadButton(
+                    label: loc()!.createPage_uploadWaterSOSIFile,
+                    selectedPath: _sosiWaterFilePath,
+                    onPathSelected: (value) =>
+                        setState(() => _sosiWaterFilePath = value),
+                  ),
+
+                  Spacer(),
+
+                  // Create report button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
-                        controller: _titleController,
-                        decoration: InputDecoration(
-                          labelText: loc()!.createPage_titleInput,
-                        ),
-                      ),
-
-                      // Upload boxes
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: UploadBox(
-                              text:
-                                  _imageFolderPath ??
-                                  loc()!.createPage_uploadPlaneImages,
-                              onTap: _pickImageFolder,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: UploadBox(
-                                text:
-                                    _sosiFilePath ??
-                                    loc()!.createPage_uploadSOSIFile,
-                                onTap: () async {
-                                  final path = await _pickSosiFile();
-                                  if (path != null) {
-                                    setState(() {
-                                      _sosiFilePath = path;
-                                    });
-                                  }
-                                },
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: _createProject,
+                          child: Row(
+                            spacing: 16,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                loc()!.newprojectPage_title,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium,
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: UploadBox(
-                                text:
-                                    _sosiWaterFilePath ??
-                                    loc()!.createPage_uploadSOSIFile,
-                                onTap: () async {
-                                  final path = await _pickSosiFile();
-                                  if (path != null) {
-                                    setState(() {
-                                      _sosiWaterFilePath = path;
-                                    });
-                                  }
-                                },
+                              Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 20,
+                                color:
+                                    Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? MyColors.secondaryBlack
+                                    : MyColors.primaryWhite,
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-
-                      Spacer(),
-
-                      // Create report button
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: _createProject,
-                              child: Row(
-                                spacing: 8,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    loc()!.createPage_createReportButton,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium,
-                                  ),
-                                  Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    size: 20,
-                                    color:
-                                        Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? MyColors.secondaryBlack
-                                        : MyColors.primaryWhite,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
+                  SizedBox(height: 48,)
+                ],
               ),
             ),
           ],

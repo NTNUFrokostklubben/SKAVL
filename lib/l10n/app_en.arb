@@ -21,6 +21,11 @@
     "description": "Used as a menu item for file, but also as file in general"
   },
 
+  "g_browse": "Browse",
+  "@g_browse": {
+    "description": "Used for browsing, mainly for upload buttons"
+  },
+
   "g_settings": "Settings",
   "@g_settings": {
     "description": "Used as a menu item for settings, but also as settings in general"
@@ -143,19 +148,29 @@
     "description": "Title - input field"
   },
 
-  "createPage_uploadPlaneImages": "Upload plane images",
+  "createPage_uploadPlaneImages": "Aerial image folder",
   "@createPage_uploadPlaneImages": {
     "description": "Upload plane images - text"
   },
 
-  "createPage_uploadSOSIFile": "Upload SOSI file",
+  "createPage_uploadSOSIFile": "Coverage SOSI",
   "@createPage_uploadSOSIFile": {
     "description": "Upload SOSI file - text"
   },
 
-  "createPage_uploadWaterSOSIFile": "Upload SOSI water polygon file",
+  "createPage_uploadWaterSOSIFile": "Water polygon SOSI",
   "@createPage_uploadWaterSOSIFile": {
     "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
+  "createPage_noFile": "No file selected",
+  "@createPage_noFile": {
+    "description": "Ingen fil valgt - text when no file is chosen"
+  },
+
+  "createPage_noFolder": "No folder selected",
+  "@createPage_noFolder": {
+    "description": "Ingen mappe valgt - text when no folder is chosen"
   },
 
   "createPage_createReportButton": "Create report",
@@ -166,6 +181,21 @@
   "newprojectPage_title": "Create new project",
   "@newprojectPage_title": {
     "description": "Create new project - title"
+  },
+
+  "newprojectPage_Missingproject": "Missing project name",
+  "@newprojectPage_Missingproject": {
+    "description": "Missing project name from form"
+  },
+
+  "newprojectPage_Missingaerial": "Missing aerial image folder",
+  "@newprojectPage_Missingaerial": {
+    "description": "Missing aerial images from form"
+  },
+
+  "newprojectPage_Missingsosi": "Mangler coverage polygon SOSI",
+  "@newprojectPage_Missingsosi": {
+    "description": "Missing polygon SOSI from form"
   },
 
   "loadingDialog_analyzing": "Analyzing your aereal images",

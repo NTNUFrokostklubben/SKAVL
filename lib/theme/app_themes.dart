@@ -17,7 +17,7 @@ class AppThemes {
       titleSmall: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       bodyMedium: const TextStyle(fontSize: 16),
       bodySmall: const TextStyle(fontSize: 12),
-      labelLarge: const TextStyle(fontSize: 14)
+      labelLarge: const TextStyle(fontSize: 16)
     ),
 
     // PAGE TRANSITION THEME

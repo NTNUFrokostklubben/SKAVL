@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';

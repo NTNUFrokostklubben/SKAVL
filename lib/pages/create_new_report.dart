@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
-import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
-
-import '../entity/project_metadata.dart';
-import '../services/project_file_service.dart';
 
 class CreateNewReportPage extends StatefulWidget {
   const CreateNewReportPage({super.key});
@@ -88,51 +84,6 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
       imagePath: imagePath,
       sosiPath: sosiPath,
     );
-  }
-
-  Future<void> _createProject() async {
-    final imagePath = _imageFolderPath;
-    final sosiPath = _sosiFilePath;
-
-    if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing project name")));
-      return;
-    }
-    if (imagePath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing image folder path")));
-      return;
-    }
-    if (sosiPath == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Missing SOSI file")));
-      return;
-    }
-
-    final savePath = await FilePicker.saveFile(
-      dialogTitle: 'Save project',
-      fileName: '${_titleController.text}.skavl',
-      type: FileType.custom,
-      allowedExtensions: ['skavl'],
-    );
-
-    if (savePath == null) return; // user cancelled
-
-    final project = ProjectMetadata(
-      projectName: _titleController.text,
-      sosiFilePath: sosiPath,
-      imageFolderPath: imagePath,
-    );
-
-    await ProjectFileService().saveToFile(savePath, project);
-    if (!mounted) return;
-
-    context.read<ProjectManagerService>().setProject(project, savePath);
-
   }
 
   // Method for picking an image folder
@@ -231,57 +182,34 @@ class _CreateNewReportPageState extends State<CreateNewReportPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // ElevatedButton(
-                          //   onPressed: startLoadingModal,
-                          //   child: Row(
-                          //     spacing: 8,
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       Text(
-                          //         loc()!.createPage_createReportButton,
-                          //         style: Theme
-                          //             .of(context)
-                          //             .textTheme
-                          //             .bodyMedium,
-                          //       ),
-                          //       Icon(
-                          //         Icons.arrow_forward_ios_outlined,
-                          //         size: 20,
-                          //         color:
-                          //         Theme
-                          //             .of(context)
-                          //             .brightness ==
-                          //             Brightness.light
-                          //             ? MyColors.secondaryBlack
-                          //             : MyColors.primaryWhite,
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-
-                          // Button to test anomaly detection, commented out spinner for now.
                           ElevatedButton(
-                            onPressed: _createProject,
+                            onPressed: startLoadingModal,
                             child: Row(
                               spacing: 8,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   loc()!.createPage_createReportButton,
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .bodyMedium,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
                                   size: 20,
                                   color:
-                                      Theme.of(context).brightness ==
-                                          Brightness.light
+                                  Theme
+                                      .of(context)
+                                      .brightness ==
+                                      Brightness.light
                                       ? MyColors.secondaryBlack
                                       : MyColors.primaryWhite,
                                 ),
                               ],
                             ),
                           ),
+
                         ],
                       ),
                     ),

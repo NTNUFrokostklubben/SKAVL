@@ -21,6 +21,11 @@
     "description": "Used as a menu item for file, but also as file in general"
   },
 
+  "g_browse": "Bla Gjennom",
+  "@g_browse": {
+    "description": "Used for browsing, mainly for upload buttons"
+  },
+
   "g_settings": "Innstillinger",
   "@g_settings": {
     "description": "Used as a menu item for settings, but also as settings in general"
@@ -145,19 +150,29 @@
     "description": "Tittel - input field"
   },
 
-  "createPage_uploadPlaneImages": "Last opp flybilder",
+  "createPage_uploadPlaneImages": "Flybildemappe",
   "@createPage_uploadPlaneImages": {
     "description": "Last opp flybilder - text"
   },
 
-  "createPage_uploadSOSIFile": "Last opp SOSI fil",
+  "createPage_uploadSOSIFile": "Dekningspolygon SOSI",
   "@createPage_uploadSOSIFile": {
     "description": "Last opp SOSI fil - text"
   },
 
-  "createPage_uploadWaterSOSIFile": "Last opp SOSI vannpolygon fil",
+  "createPage_uploadWaterSOSIFile": "Vannpolygon SOSI",
   "@createPage_uploadWaterSOSIFile": {
     "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
+  "createPage_noFile": "Ingen fil valgt",
+  "@createPage_noFile": {
+    "description": "Ingen fil valgt - text when no file is chosen"
+  },
+
+  "createPage_noFolder": "Ingen mappe valgt",
+  "@createPage_noFolder": {
+    "description": "Ingen mappe valgt - text when no folder is chosen"
   },
 
   "createPage_createReportButton": "Lag rapport",
@@ -168,6 +183,21 @@
   "newprojectPage_title": "Opprett nytt prosjekt",
   "@newprojectPage_title": {
     "description": "Create new project - title"
+  },
+
+  "newprojectPage_Missingproject": "Mangler prosjektnavn",
+  "@newprojectPage_Missingproject": {
+    "description": "Missing project name from form"
+  },
+
+  "newprojectPage_Missingaerial": "Mangler flybildemappe",
+  "@newprojectPage_Missingaerial": {
+    "description": "Missing aerial images from form"
+  },
+
+  "newprojectPage_Missingsosi": "Mangler dekningspolygon SOSI",
+  "@newprojectPage_Missingsosi": {
+    "description": "Missing polygon SOSI from form"
   },
 
   "loadingDialog_analyzing": "Analyserer luftbildene dine",
