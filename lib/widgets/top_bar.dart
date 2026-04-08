@@ -4,7 +4,6 @@ import 'package:skavl/main.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/create_new_report.dart';
-import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/pages/settings.dart';
 import 'package:skavl/util/project_actions.dart';
 
