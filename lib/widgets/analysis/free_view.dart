@@ -1,13 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'base_analysis_view.dart';
+import 'package:skavl/entity/project_metadata.dart';
+import 'package:skavl/entity/view_mode.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/grid_painter.dart';
 import 'package:skavl/theme/colors.dart';
 
-/// A view mode where the user can freely arrange the images in the scene by dragging them around.
-/// This is implemented by maintaining a map of source IDs to their positions in the scene, and
+/// View mode where the user can freely arrange the images in the scene by dragging them around.
+///
+/// Implemented by maintaining a map of source IDs to their positions in the scene,
 /// using custom hit testing and coordinate conversion to allow dragging the images with the mouse.
 class FreeView extends BaseAnalysisView {
   const FreeView({super.key});
@@ -16,15 +21,12 @@ class FreeView extends BaseAnalysisView {
   State<FreeView> createState() => _FreeViewState();
 }
 
-/// The state for FreeView, which manages the positions of the images and the interaction logic for dragging them around.
 class _FreeViewState extends BaseTileViewState<FreeView> {
   static const double sceneSize = 300000;
 
-  // Temp image paths and positions for free arrangement (in a real app, these would be dynamic)
-  final imagePaths = [
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_008_00008.tif",
-    r"C:\Users\sigbe\Documents\Skoleaar_25_26\Semester_6\Bachelor\HX_14365_NORDMORE_GSD10\RGB\HX-14365_001_009_00009.tif",
-  ];
+  late final ProjectManagerService _projectManager;
+  int? _lastPage;
+  double? _lastSensitivity;
 
   final Map<String, Offset> positions = {};
   String? draggingId;
@@ -32,14 +34,39 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
   //----------------------------------
 
   @override
-  List<String> getImagePaths() => imagePaths;
-
-  @override
   void initState() {
     super.initState();
-    sceneController.loadSources(imagePaths).then((_) {
+    _projectManager = context.read<ProjectManagerService>();
+    _projectManager.addListener(_onProjectChanged);
+
+    final project = _projectManager.loadedProject;
+    if (project != null) _loadCurrentPage(project);
+  }
+
+  @override
+  void dispose() {
+    _projectManager.removeListener(_onProjectChanged);
+    super.dispose();
+  }
+
+  void _onProjectChanged() {
+    if (!mounted) return;
+    final project = _projectManager.loadedProject;
+    if (project == null) return;
+    if (project.currentPage == _lastPage && project.sensitivity == _lastSensitivity) return;
+    _loadCurrentPage(project);
+  }
+
+  void _loadCurrentPage(ProjectMetadata project) {
+    final paths = getWindowPaths(project, ViewMode.free.imageCount);
+    if (paths.isEmpty) return;
+    _lastPage = project.currentPage;
+    _lastSensitivity = project.sensitivity;
+
+    sceneController.loadSources(paths).then((_) {
       if (!mounted) return;
       setState(() {
+        positions.clear();
         for (final id in sceneController.sourceOrder) {
           positions[id] = Offset(
             Random().nextDouble() * 2000,
@@ -49,6 +76,9 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
       });
     });
   }
+
+  @override
+  List<String> getImagePaths() => [];
 
   // Return a big rect for the whole scene since we handle custom positioning in resolveRectSafe
   @override

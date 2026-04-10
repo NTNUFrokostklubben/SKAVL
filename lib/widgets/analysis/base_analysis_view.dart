@@ -4,8 +4,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:path/path.dart' as path;
 
 import 'package:skavl/controller/tile_scene_controller.dart';
+import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
@@ -52,7 +54,29 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
   Widget buildViewport(Widget child); // Wrap the scene (used for grid / gestures / etc.)
 
-  // --------------------------------------------------
+  /// Returns [count] full paths centred on the current page.
+  ///
+  /// Uses [project.allSets] as the ordering source — the same object references
+  /// appear in [anomaliesInRange], so indexOf is reliable regardless of filenames.
+  List<String> getWindowPaths(ProjectMetadata project, int count) {
+    final anomalies = project.anomaliesInRange;
+    if (anomalies.isEmpty || project.currentPage >= anomalies.length) return [];
+
+    final center = anomalies[project.currentPage];
+    final centerIdx = project.allSets.indexOf(center);
+    if (centerIdx == -1) return [];
+
+    final folder = project.imageFolderPath;
+    final before = count ~/ 2;
+    final after  = count - before - 1;
+    final from = (centerIdx - before).clamp(0, project.allSets.length - 1);
+    final to   = (centerIdx + after).clamp(0, project.allSets.length - 1);
+
+    return project.allSets
+        .sublist(from, to + 1)
+        .map((s) => path.join(folder, s.imageName))
+        .toList();
+  }
 
   @override
   void initState() {
@@ -110,6 +134,10 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
               return const Center(child: CircularProgressIndicator());
             }
 
+            if (sceneController.sourceOrder.isEmpty) {
+              return const Center(child: Text('No anomalies match the current sensitivity.'));
+            }
+
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (mounted) scheduleViewportPlan();
             });
@@ -129,7 +157,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     );
   }
 
-  /// Builds the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
+  /// Build the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
   List<Widget> buildTiles() {
     return sceneController.sourceOrder.map((sourceId) {
       final rect = resolveRectSafe(sourceId);
@@ -158,7 +186,8 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     }).toList();
   }
 
-  /// Triggers a viewport redraw based on debounced notification from TransformationController
+  /// Trigger viewport redraw based on debounced notification from TransformationController.
+  ///
   /// Ensures viewport isn't redrawn every frame and doesnt overload request pipeline.
   void scheduleViewportPlan({
     Duration debounceTime = const Duration(milliseconds: 180),

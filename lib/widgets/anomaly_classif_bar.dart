@@ -16,6 +16,7 @@ class AnomalyClassifBar extends StatefulWidget {
 
 class _AnomalyClassifBar extends State<AnomalyClassifBar> {
 
+  ProjectManagerService? _projectManager;
 
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
@@ -24,7 +25,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   late double _currentSliderValue;
   late TextEditingController _sensitivityController;
   late TextEditingController _imageController;
-  int _currentImage = 1;
 
   @override
   void initState() {
@@ -34,23 +34,67 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     _sensitivityController = TextEditingController(
       text: _currentSliderValue.toStringAsFixed(3),
     );
-    _imageController = TextEditingController(text: _currentImage.toString());
+    final initialPage = projectManager.loadedProject?.currentPage ?? 0;
+    _imageController = TextEditingController(text: (initialPage + 1).toString());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final pm = context.read<ProjectManagerService>();
+    if (pm != _projectManager) {
+      _projectManager?.removeListener(_onProviderChanged);
+      _projectManager = pm;
+      _projectManager!.addListener(_onProviderChanged);
+      _syncFromProvider();
+    }
+  }
+
+  /// Syncs current page with project that's loaded.
+  ///
+  /// Needed for sensitivity and page changes
+  void _syncFromProvider() {
+    final project = _projectManager?.loadedProject;
+    final sensitivity = project?.sensitivity ?? 0.5;
+    final page = project?.currentPage ?? 0;
+
+    if (_currentSliderValue != sensitivity) {
+      _currentSliderValue = sensitivity;
+      _sensitivityController.text = sensitivity.toStringAsFixed(3);
+    }
+    final pageText = (page + 1).toString();
+    if (_imageController.text != pageText) {
+      _imageController.text = pageText;
+    }
+  }
+
+  void _onProviderChanged() {
+    if (mounted) {
+      _syncFromProvider();
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    _projectManager?.removeListener(_onProviderChanged);
     _sensitivityController.dispose();
     _imageController.dispose();
     super.dispose();
   }
 
+  /// Saves sensitivity from slider to the project.
   Future<void> _saveSensitivity(double value) async {
-    final projectManager = context.read<ProjectManagerService>();
-    final project = projectManager.loadedProject;
-    final filePath = projectManager.filePath;
+    final project = _projectManager?.loadedProject;
+    final filePath = _projectManager?.filePath;
     if (project == null || filePath == null) return;
-    final updated = project.copyWith(sensitivity: value);
-    projectManager.setProject(updated, filePath);
+
+    // Clamp currentPage to new range so it stays valid after sensitivity change
+    final newRange = project.allSets.where((s) => s.anomalyConf >= value).toList();
+    final newPage = newRange.isEmpty ? 0 : project.currentPage.clamp(0, newRange.length - 1);
+
+    final updated = project.copyWith(sensitivity: value, currentPage: newPage);
+    _projectManager?.setProject(updated, filePath);
     await ProjectFileService().saveToFile(filePath, updated);
   }
 
@@ -67,56 +111,53 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     }
   }
 
+  /// Saves to the project file what page is currently being processed.
+  ///
+  /// Used for when you leave the page and come back as well as for retentive navigation.
+  Future<void> _savePage(int zeroIndexedPage) async {
+    final project = _projectManager?.loadedProject;
+    final filePath = _projectManager?.filePath;
+    if (project == null || filePath == null) return;
+    final updated = project.copyWith(currentPage: zeroIndexedPage);
+    _projectManager?.setProject(updated, filePath);
+    await ProjectFileService().saveToFile(filePath, updated);
+  }
+
   Future<void> openAnomalyConfirmDialog() async {
     ConfirmAnomalyDialog.show(context);
     if (!mounted) return;
   }
 
   void _arrowBackPressed(int totalImages) {
-    setState(() {
-      if (_currentImage > 1) {
-        _currentImage--;
-      } else {
-        _currentImage = totalImages;
-      }
-      _imageController.text = _currentImage.toString();
-    });
+    final currentPage = _projectManager?.loadedProject?.currentPage ?? 0;
+    final newPage = currentPage > 0 ? currentPage - 1 : totalImages - 1;
+    _savePage(newPage);
   }
 
   void _arrowForwardPressed(int totalImages) {
-    setState(() {
-      if (_currentImage < totalImages) {
-        _currentImage++;
-      } else {
-        _currentImage = 1;
-      }
-      _imageController.text = _currentImage.toString();
-    });
+    final currentPage = _projectManager?.loadedProject?.currentPage ?? 0;
+    final newPage = currentPage < totalImages - 1 ? currentPage + 1 : 0;
+    _savePage(newPage);
   }
 
   void _updateImageFromText(String value, int totalImages) {
     final parsed = int.tryParse(value);
-
     if (parsed != null && parsed >= 1 && parsed <= totalImages) {
-      setState(() {
-        _currentImage = parsed;
-        _imageController.text = _currentImage.toString();
-      });
+      _savePage(parsed - 1); // display is 1-indexed, storage is 0-indexed
     } else {
-      _imageController.text = _currentImage.toString();
+      final currentPage = _projectManager?.loadedProject?.currentPage ?? 0;
+      _imageController.text = (currentPage + 1).toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final projectManager = context.watch<ProjectManagerService>();
-    final totalImages = projectManager.loadedProject?.anomaliesInRange.length ?? 0;
+    final totalImages = _projectManager?.loadedProject?.anomaliesInRange.length ?? 0;
     return BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           // Slider for anomaly classification threshold
-
           Row(
             children: [
               SizedBox(
@@ -135,9 +176,9 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   onChangeEnd: _saveSensitivity,
                 ),
               ),
-              
+
               const SizedBox(width: 12),
-              
+
               // Text input for anomaly classification threshold
               SizedBox(
                 width: 80,
@@ -152,10 +193,10 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
             ],
           ),
 
-        SizedBox(width: 50),
-        
-        // Confirm annomaly classification button
-        Padding(
+          SizedBox(width: 50),
+
+          // Confirm anomaly classification button
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -177,27 +218,26 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
             ),
           ),
 
-        SizedBox(width: 50),
+          SizedBox(width: 50),
 
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-
-              ElevatedButton(
-                onPressed: () => _arrowBackPressed(totalImages),
-                child: Icon(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () => _arrowBackPressed(totalImages),
+                  child: Icon(
                     Icons.arrow_back,
                     size: 20,
                     color: Theme.of(context).brightness == Brightness.light
                         ? MyColors.secondaryBlack
                         : MyColors.primaryWhite,
                   ),
-              ),
-              
-              SizedBox(width: 20),
+                ),
 
-              Container(
+                SizedBox(width: 20),
+
+                Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
                     vertical: 4,
@@ -228,7 +268,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                               horizontal: 0,
                               vertical: 0,
                             ),
-
                           ),
                         ),
                       ),
@@ -237,21 +276,21 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   ),
                 ),
 
-              SizedBox(width: 20),
+                SizedBox(width: 20),
 
-              ElevatedButton(
-                onPressed: () => _arrowForwardPressed(totalImages),
-                child: Icon(
-                  Icons.arrow_forward,
-                  size: 20,
-                  color: Theme.of(context).brightness == Brightness.light
+                ElevatedButton(
+                  onPressed: () => _arrowForwardPressed(totalImages),
+                  child: Icon(
+                    Icons.arrow_forward,
+                    size: 20,
+                    color: Theme.of(context).brightness == Brightness.light
                         ? MyColors.secondaryBlack
                         : MyColors.primaryWhite,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          )
         ],
       ),
     );
