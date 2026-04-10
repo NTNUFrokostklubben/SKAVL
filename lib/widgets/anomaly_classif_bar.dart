@@ -16,7 +16,6 @@ class AnomalyClassifBar extends StatefulWidget {
 
 class _AnomalyClassifBar extends State<AnomalyClassifBar> {
 
-  late final projectManager = context.read<ProjectManagerService>();
 
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
@@ -26,11 +25,11 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   late TextEditingController _sensitivityController;
   late TextEditingController _imageController;
   int _currentImage = 1;
-  final int _totalImages = 789;
 
   @override
   void initState() {
     super.initState();
+    final projectManager = context.read<ProjectManagerService>();
     _currentSliderValue = projectManager.loadedProject?.sensitivity ?? 0.5;
     _sensitivityController = TextEditingController(
       text: _currentSliderValue.toStringAsFixed(3),
@@ -46,6 +45,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   }
 
   Future<void> _saveSensitivity(double value) async {
+    final projectManager = context.read<ProjectManagerService>();
     final project = projectManager.loadedProject;
     final filePath = projectManager.filePath;
     if (project == null || filePath == null) return;
@@ -72,20 +72,20 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     if (!mounted) return;
   }
 
-  void _arrowBackPressed() {
+  void _arrowBackPressed(int totalImages) {
     setState(() {
       if (_currentImage > 1) {
         _currentImage--;
       } else {
-        _currentImage = _totalImages;
+        _currentImage = totalImages;
       }
       _imageController.text = _currentImage.toString();
     });
   }
 
-  void _arrowForwardPressed() {
+  void _arrowForwardPressed(int totalImages) {
     setState(() {
-      if (_currentImage < _totalImages) {
+      if (_currentImage < totalImages) {
         _currentImage++;
       } else {
         _currentImage = 1;
@@ -94,22 +94,23 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     });
   }
 
-  void _updateImageFromText(String value) {
+  void _updateImageFromText(String value, int totalImages) {
     final parsed = int.tryParse(value);
 
-    if (parsed != null && parsed >= 1 && parsed <= _totalImages) {
+    if (parsed != null && parsed >= 1 && parsed <= totalImages) {
       setState(() {
         _currentImage = parsed;
         _imageController.text = _currentImage.toString();
       });
     } else {
-      // Reset if invalid
       _imageController.text = _currentImage.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final projectManager = context.watch<ProjectManagerService>();
+    final totalImages = projectManager.loadedProject?.anomaliesInRange.length ?? 0;
     return BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -184,7 +185,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
             children: [
 
               ElevatedButton(
-                onPressed: _arrowBackPressed,
+                onPressed: () => _arrowBackPressed(totalImages),
                 child: Icon(
                     Icons.arrow_back,
                     size: 20,
@@ -218,7 +219,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                           controller: _imageController,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
-                          onSubmitted: _updateImageFromText,
+                          onSubmitted: (v) => _updateImageFromText(v, totalImages),
                           decoration: const InputDecoration(
                             filled: false,
                             isDense: true,
@@ -231,7 +232,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                           ),
                         ),
                       ),
-                      Text(" / $_totalImages"),
+                      Text(" / $totalImages"),
                     ],
                   ),
                 ),
@@ -239,7 +240,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
               SizedBox(width: 20),
 
               ElevatedButton(
-                onPressed: _arrowForwardPressed,
+                onPressed: () => _arrowForwardPressed(totalImages),
                 child: Icon(
                   Icons.arrow_forward,
                   size: 20,
