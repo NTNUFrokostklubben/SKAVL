@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/widgets/dialogs/confirm_anomaly_popup.dart';
+
+import '../services/project_file_service.dart';
+import '../services/project_manager_service.dart';
 
 class AnomalyClassifBar extends StatefulWidget {
   const AnomalyClassifBar({super.key});
@@ -12,19 +16,22 @@ class AnomalyClassifBar extends StatefulWidget {
 
 class _AnomalyClassifBar extends State<AnomalyClassifBar> {
 
+  late final projectManager = context.read<ProjectManagerService>();
+
   AppLocalizations? loc() {
     return AppLocalizations.of(context);
   }
 
-  double _currentSliderValue = 0.5;
+  late double _currentSliderValue;
   late TextEditingController _sensitivityController;
   late TextEditingController _imageController;
   int _currentImage = 1;
-  final int _totalImages = 789;  
+  final int _totalImages = 789;
 
   @override
   void initState() {
     super.initState();
+    _currentSliderValue = projectManager.loadedProject?.sensitivity ?? 0.5;
     _sensitivityController = TextEditingController(
       text: _currentSliderValue.toStringAsFixed(3),
     );
@@ -36,6 +43,28 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     _sensitivityController.dispose();
     _imageController.dispose();
     super.dispose();
+  }
+
+  Future<void> _saveSensitivity(double value) async {
+    final project = projectManager.loadedProject;
+    final filePath = projectManager.filePath;
+    if (project == null || filePath == null) return;
+    final updated = project.copyWith(sensitivity: value);
+    projectManager.setProject(updated, filePath);
+    await ProjectFileService().saveToFile(filePath, updated);
+  }
+
+  void _updateSensitivityFromText(String value) {
+    final parsed = double.tryParse(value);
+    if (parsed != null && parsed >= 0 && parsed <= 1) {
+      setState(() {
+        _currentSliderValue = parsed;
+        _sensitivityController.text = parsed.toStringAsFixed(3);
+      });
+      _saveSensitivity(parsed);
+    } else {
+      _sensitivityController.text = _currentSliderValue.toStringAsFixed(3);
+    }
   }
 
   Future<void> openAnomalyConfirmDialog() async {
@@ -102,6 +131,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                       _sensitivityController.text = value.toStringAsFixed(3);
                     });
                   },
+                  onChangeEnd: _saveSensitivity,
                 ),
               ),
               
@@ -115,7 +145,7 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  onChanged: _updateImageFromText,
+                  onSubmitted: _updateSensitivityFromText,
                 ),
               ),
             ],

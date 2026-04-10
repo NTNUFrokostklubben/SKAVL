@@ -11,6 +11,7 @@ import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
 
 /// The base class for analysis views, which provides common functionality for both StaticView and FreeView.
+///
 /// This includes the gRPC client setup, the tile loading logic based on the viewport, and the common build method that renders the tiles in a stack.
 abstract class BaseAnalysisView extends StatefulWidget {
   const BaseAnalysisView({super.key});
