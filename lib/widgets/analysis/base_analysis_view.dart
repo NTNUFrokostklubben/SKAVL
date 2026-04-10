@@ -45,6 +45,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   int planGeneration = 0;
   Size? lastViewportSize;
 
+  // Fit-to-scene on load
+  bool pendingFitToScene = false;
+
   late final void Function() tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
 
   Rect getSceneRect(); // Scene bounds (used for sizing the canvas)
@@ -139,7 +142,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) scheduleViewportPlan();
+              if (!mounted) return;
+              if (pendingFitToScene) fitViewportToScene();
+              scheduleViewportPlan();
             });
 
             final sceneRect = getSceneRect();
@@ -184,6 +189,35 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
         ),
       );
     }).toList();
+  }
+
+  /// Fits the viewport to show the full scene, centered, at 90% of the fit-to-contain scale.
+  ///
+  /// Called once after sources load so the primary image is visible on first render.
+  void fitViewportToScene() {
+    final viewportSize = lastViewportSize;
+    if (viewportSize == null) return;
+
+    Rect sceneRect;
+    try {
+      sceneRect = getSceneRect();
+    } catch (_) {
+      return;
+    }
+    if (sceneRect.isEmpty) return;
+
+    pendingFitToScene = false;
+
+    final scaleX = viewportSize.width / sceneRect.width;
+    final scaleY = viewportSize.height / sceneRect.height;
+    final scale = min(scaleX, scaleY) * 0.9;
+
+    final dx = (viewportSize.width - sceneRect.width * scale) / 2 - sceneRect.left * scale;
+    final dy = (viewportSize.height - sceneRect.height * scale) / 2 - sceneRect.top * scale;
+
+    tc.value = Matrix4.identity()
+      ..translate(dx, dy, 0.0)
+      ..scale(scale);
   }
 
   /// Trigger viewport redraw based on debounced notification from TransformationController.

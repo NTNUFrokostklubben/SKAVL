@@ -93,6 +93,7 @@ class AnomalySet extends $pb.GeneratedMessage {
   factory AnomalySet({
     $core.String? imageName,
     $core.double? anomalyConfidence,
+    AnomalyTypes? anomalyType,
     $core.int? lineNumber,
     $core.int? imageNumber,
     UtmCoordinate? geotiffCoordinate,
@@ -100,6 +101,7 @@ class AnomalySet extends $pb.GeneratedMessage {
     final result = create();
     if (imageName != null) result.imageName = imageName;
     if (anomalyConfidence != null) result.anomalyConfidence = anomalyConfidence;
+    if (anomalyType != null) result.anomalyType = anomalyType;
     if (lineNumber != null) result.lineNumber = lineNumber;
     if (imageNumber != null) result.imageNumber = imageNumber;
     if (geotiffCoordinate != null) result.geotiffCoordinate = geotiffCoordinate;
@@ -122,9 +124,11 @@ class AnomalySet extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'imageName')
     ..aD(2, _omitFieldNames ? '' : 'anomalyConfidence')
-    ..aI(3, _omitFieldNames ? '' : 'lineNumber')
-    ..aI(4, _omitFieldNames ? '' : 'imageNumber')
-    ..aOM<UtmCoordinate>(5, _omitFieldNames ? '' : 'geotiffCoordinate',
+    ..aE<AnomalyTypes>(3, _omitFieldNames ? '' : 'anomalyType',
+        enumValues: AnomalyTypes.values)
+    ..aI(4, _omitFieldNames ? '' : 'lineNumber')
+    ..aI(5, _omitFieldNames ? '' : 'imageNumber')
+    ..aOM<UtmCoordinate>(6, _omitFieldNames ? '' : 'geotiffCoordinate',
         subBuilder: UtmCoordinate.create)
     ..hasRequiredFields = false;
 
@@ -165,33 +169,42 @@ class AnomalySet extends $pb.GeneratedMessage {
   void clearAnomalyConfidence() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.int get lineNumber => $_getIZ(2);
+  AnomalyTypes get anomalyType => $_getN(2);
   @$pb.TagNumber(3)
-  set lineNumber($core.int value) => $_setSignedInt32(2, value);
+  set anomalyType(AnomalyTypes value) => $_setField(3, value);
   @$pb.TagNumber(3)
-  $core.bool hasLineNumber() => $_has(2);
+  $core.bool hasAnomalyType() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLineNumber() => $_clearField(3);
+  void clearAnomalyType() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.int get imageNumber => $_getIZ(3);
+  $core.int get lineNumber => $_getIZ(3);
   @$pb.TagNumber(4)
-  set imageNumber($core.int value) => $_setSignedInt32(3, value);
+  set lineNumber($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasImageNumber() => $_has(3);
+  $core.bool hasLineNumber() => $_has(3);
   @$pb.TagNumber(4)
-  void clearImageNumber() => $_clearField(4);
+  void clearLineNumber() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  UtmCoordinate get geotiffCoordinate => $_getN(4);
+  $core.int get imageNumber => $_getIZ(4);
   @$pb.TagNumber(5)
-  set geotiffCoordinate(UtmCoordinate value) => $_setField(5, value);
+  set imageNumber($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
-  $core.bool hasGeotiffCoordinate() => $_has(4);
+  $core.bool hasImageNumber() => $_has(4);
   @$pb.TagNumber(5)
-  void clearGeotiffCoordinate() => $_clearField(5);
-  @$pb.TagNumber(5)
-  UtmCoordinate ensureGeotiffCoordinate() => $_ensure(4);
+  void clearImageNumber() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  UtmCoordinate get geotiffCoordinate => $_getN(5);
+  @$pb.TagNumber(6)
+  set geotiffCoordinate(UtmCoordinate value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasGeotiffCoordinate() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearGeotiffCoordinate() => $_clearField(6);
+  @$pb.TagNumber(6)
+  UtmCoordinate ensureGeotiffCoordinate() => $_ensure(5);
 }
 
 /// List of images processed with their confidence levels

@@ -55,6 +55,7 @@ class _StaticViewState extends BaseTileViewState<StaticView> {
     _lastPage = project.currentPage;
     _lastSensitivity = project.sensitivity;
     sceneController.viewMode = widget.viewMode;
+    pendingFitToScene = true;
     sceneController.loadSources(paths);
   }
 

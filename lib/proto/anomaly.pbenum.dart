@@ -34,5 +34,31 @@ class StartMode extends $pb.ProtobufEnum {
   const StartMode._(super.value, super.name);
 }
 
+/// Enum for types of anomalies currently in the project
+class AnomalyTypes extends $pb.ProtobufEnum {
+  static const AnomalyTypes UNDEFINED =
+      AnomalyTypes._(0, _omitEnumNames ? '' : 'UNDEFINED');
+  static const AnomalyTypes COLOR_AVERAGE =
+      AnomalyTypes._(1, _omitEnumNames ? '' : 'COLOR_AVERAGE');
+  static const AnomalyTypes WATER_MASK =
+      AnomalyTypes._(2, _omitEnumNames ? '' : 'WATER_MASK');
+  static const AnomalyTypes ARTIFACT =
+      AnomalyTypes._(3, _omitEnumNames ? '' : 'ARTIFACT');
+
+  static const $core.List<AnomalyTypes> values = <AnomalyTypes>[
+    UNDEFINED,
+    COLOR_AVERAGE,
+    WATER_MASK,
+    ARTIFACT,
+  ];
+
+  static final $core.List<AnomalyTypes?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static AnomalyTypes? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const AnomalyTypes._(super.value, super.name);
+}
+
 const $core.bool _omitEnumNames =
     $core.bool.fromEnvironment('protobuf.omit_enum_names');

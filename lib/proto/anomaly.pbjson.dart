@@ -28,6 +28,22 @@ const StartMode$json = {
 final $typed_data.Uint8List startModeDescriptor = $convert.base64Decode(
     'CglTdGFydE1vZGUSEQoNU1RBUlRfUkVTVEFSVBAAEhIKDlNUQVJUX0NPTlRJTlVFEAE=');
 
+@$core.Deprecated('Use anomalyTypesDescriptor instead')
+const AnomalyTypes$json = {
+  '1': 'AnomalyTypes',
+  '2': [
+    {'1': 'UNDEFINED', '2': 0},
+    {'1': 'COLOR_AVERAGE', '2': 1},
+    {'1': 'WATER_MASK', '2': 2},
+    {'1': 'ARTIFACT', '2': 3},
+  ],
+};
+
+/// Descriptor for `AnomalyTypes`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List anomalyTypesDescriptor = $convert.base64Decode(
+    'CgxBbm9tYWx5VHlwZXMSDQoJVU5ERUZJTkVEEAASEQoNQ09MT1JfQVZFUkFHRRABEg4KCldBVE'
+    'VSX01BU0sQAhIMCghBUlRJRkFDVBAD');
+
 @$core.Deprecated('Use utmCoordinateDescriptor instead')
 const UtmCoordinate$json = {
   '1': 'UtmCoordinate',
@@ -54,11 +70,19 @@ const AnomalySet$json = {
       '5': 1,
       '10': 'anomalyConfidence'
     },
-    {'1': 'line_number', '3': 3, '4': 1, '5': 5, '10': 'lineNumber'},
-    {'1': 'image_number', '3': 4, '4': 1, '5': 5, '10': 'imageNumber'},
+    {
+      '1': 'anomaly_type',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.skavl.anomaly.v1.AnomalyTypes',
+      '10': 'anomalyType'
+    },
+    {'1': 'line_number', '3': 4, '4': 1, '5': 5, '10': 'lineNumber'},
+    {'1': 'image_number', '3': 5, '4': 1, '5': 5, '10': 'imageNumber'},
     {
       '1': 'geotiff_coordinate',
-      '3': 5,
+      '3': 6,
       '4': 1,
       '5': 11,
       '6': '.skavl.anomaly.v1.UtmCoordinate',
@@ -70,10 +94,11 @@ const AnomalySet$json = {
 /// Descriptor for `AnomalySet`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List anomalySetDescriptor = $convert.base64Decode(
     'CgpBbm9tYWx5U2V0Eh0KCmltYWdlX25hbWUYASABKAlSCWltYWdlTmFtZRItChJhbm9tYWx5X2'
-    'NvbmZpZGVuY2UYAiABKAFSEWFub21hbHlDb25maWRlbmNlEh8KC2xpbmVfbnVtYmVyGAMgASgF'
-    'UgpsaW5lTnVtYmVyEiEKDGltYWdlX251bWJlchgEIAEoBVILaW1hZ2VOdW1iZXISTgoSZ2VvdG'
-    'lmZl9jb29yZGluYXRlGAUgASgLMh8uc2thdmwuYW5vbWFseS52MS5VdG1Db29yZGluYXRlUhFn'
-    'ZW90aWZmQ29vcmRpbmF0ZQ==');
+    'NvbmZpZGVuY2UYAiABKAFSEWFub21hbHlDb25maWRlbmNlEkEKDGFub21hbHlfdHlwZRgDIAEo'
+    'DjIeLnNrYXZsLmFub21hbHkudjEuQW5vbWFseVR5cGVzUgthbm9tYWx5VHlwZRIfCgtsaW5lX2'
+    '51bWJlchgEIAEoBVIKbGluZU51bWJlchIhCgxpbWFnZV9udW1iZXIYBSABKAVSC2ltYWdlTnVt'
+    'YmVyEk4KEmdlb3RpZmZfY29vcmRpbmF0ZRgGIAEoCzIfLnNrYXZsLmFub21hbHkudjEuVXRtQ2'
+    '9vcmRpbmF0ZVIRZ2VvdGlmZkNvb3JkaW5hdGU=');
 
 @$core.Deprecated('Use anomalyResponseDescriptor instead')
 const AnomalyResponse$json = {

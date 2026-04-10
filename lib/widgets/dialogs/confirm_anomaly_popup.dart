@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/autocomplete_dropdown.dart';
 import 'package:skavl/widgets/labels/headings.dart';
@@ -21,6 +23,8 @@ class ConfirmAnomalyDialog extends StatefulWidget {
 
 class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
 
+  late final ProjectManagerService? _projectManager;
+
   // TODO: how do we make the dropdown options dynamic when the users add new anomaly types in terms of language? 
 
   List<String> anomalyTypes = [
@@ -37,7 +41,19 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _projectManager = context.read<ProjectManagerService>();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    final project = _projectManager?.loadedProject;
+    final imageName = project != null
+        ? project.anomaliesInRange[project.currentPage].imageName
+        : '';
+
     return AlertDialog(
       title: MediumHeader(loc()!.anomalyClassifBar_confirm),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -47,7 +63,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${loc()!.confirmAnomaly_imageName} : HX-123-456' , style: Theme.of(context).textTheme.bodyMedium),
+            Text('${loc()!.confirmAnomaly_imageName} : $imageName' , style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 20),
 
             Text(

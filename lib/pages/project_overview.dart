@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/entity/anomaly_def.dart';
+import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/fieldlabels.dart';
 import 'package:skavl/widgets/labels/headings.dart';
@@ -163,32 +165,51 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
             Spacer(),
             // Run analysis button
-            Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () => _startAnomalyDetection(projectManager),
-                  child: Row(
-                    spacing: 16,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Run anomaly analysis",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? MyColors.secondaryBlack
-                            : MyColors.primaryWhite,
-                      ),
-                    ],
+            Row(
+              spacing: 18,
+              children: [
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _startAnomalyDetection(projectManager),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Run anomaly analysis",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => navigateTo(context, Analysis()),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Analyze images",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20,
+                          color: Theme.of(context).brightness == Brightness.light
+                              ? MyColors.secondaryBlack
+                              : MyColors.primaryWhite,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
