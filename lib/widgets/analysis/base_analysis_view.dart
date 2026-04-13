@@ -11,6 +11,7 @@ import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 /// The base class for analysis views, which provides common functionality for both StaticView and FreeView.
 ///
@@ -100,6 +101,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     // Transformation listener
     tcListener = () {
       final scale = tc.value.getMaxScaleOnAxis();
+      print(tc.value.getMaxScaleOnAxis());
 
       int maxLevel = 4;
       final minSsp = 1.0 / (1 << maxLevel);
@@ -216,8 +218,8 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     final dy = (viewportSize.height - sceneRect.height * scale) / 2 - sceneRect.top * scale;
 
     tc.value = Matrix4.identity()
-      ..translate(dx, dy, 0.0)
-      ..scale(scale);
+      ..translateByVector3(Vector3(dx, dy, 0.0))
+      ..scaleByVector3(Vector3.all(scale));
   }
 
   /// Trigger viewport redraw based on debounced notification from TransformationController.
