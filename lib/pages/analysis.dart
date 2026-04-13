@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/widgets/analysis/free_view.dart';
 import 'package:skavl/widgets/analysis/static_view.dart';
+import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/anomaly_classif_bar.dart';
 import 'package:skavl/entity/view_mode.dart';
@@ -76,7 +77,13 @@ class _AnalysisState extends State<Analysis> {
           ),
         ],
       ),
-      bottomNavigationBar: AnomalyClassifBar(),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnomalyClassifBar(),
+          BottomStatusBar()
+        ],
+      ),
     );
   }
 }

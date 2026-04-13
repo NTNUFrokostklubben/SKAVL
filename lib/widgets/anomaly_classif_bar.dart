@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/widgets/dialogs/confirm_anomaly_popup.dart';
 
+import '../entity/anomaly_def.dart';
+import '../entity/anomaly_set.dart';
 import '../services/project_file_service.dart';
 import '../services/project_manager_service.dart';
 
@@ -124,8 +127,23 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
   }
 
   Future<void> openAnomalyConfirmDialog() async {
-    ConfirmAnomalyDialog.show(context);
-    if (!mounted) return;
+    final result = await ConfirmAnomalyDialog.show(context);
+    if (!mounted || result == null) return;
+
+    final ProjectMetadata project = _projectManager!.loadedProject!;
+    final String filePath = _projectManager!.filePath!;
+    final AnomalySet current = project.anomaliesInRange[project.currentPage];
+    final int index = project.allSets.indexOf(current);
+
+    final updatedSets = List<AnomalySet>.from(project.allSets);
+    updatedSets[index] = current.copyWith(
+      anomalyDef: result.anomalyDef,
+      userClassification: result.userClassification,
+    );
+
+    final ProjectMetadata updated = project.copyWith(allSets: updatedSets);
+    _projectManager!.setProject(updated, filePath);
+    await ProjectFileService().saveToFile(filePath, updated);
   }
 
   void _arrowBackPressed(int totalImages) {
@@ -150,9 +168,19 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final totalImages = _projectManager?.loadedProject?.anomaliesInRange.length ?? 0;
+
+    final current = totalImages > 0
+        ? _projectManager!.loadedProject!.anomaliesInRange[_projectManager!.loadedProject!.currentPage]
+        : null;
+    final statusText = switch (current?.anomalyDef) {
+      AnomalyDef.anomaly => loc()!.anomalyClassifBar_anomaly,
+      AnomalyDef.noAnomaly => loc()!.anomalyClassifBar_noAnomaly,
+      _ => loc()!.anomalyClassifBar_unClassified,
+    };
     return BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -197,28 +225,21 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
 
           // Confirm anomaly classification button
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
                   onPressed: openAnomalyConfirmDialog,
-                  child: Row(
-                    spacing: 8,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        loc()!.anomalyClassifBar_confirm,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      )
-                    ],
+                  child: Text(
+                    loc()!.anomalyClassifBar_confirm,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
+                Text(statusText, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
           ),
-
-          SizedBox(width: 50),
 
           Padding(
             padding: const EdgeInsets.all(8.0),

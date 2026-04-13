@@ -230,6 +230,16 @@
     "description": "Bilde navn - subtext"
   },
 
+  "confirmAnomaly_anomaly": "Avvik",
+  "@confirmAnomaly_anomaly": {
+    "description": "Anomaly"
+  },
+
+  "confirmAnomaly_noAnomaly": "Ingen Avvik",
+  "@confirmAnomaly_noAnomaly": {
+    "description": "No Anomaly"
+  },
+
   "anomalyClassifBar_anomalyType": "Avvik type",
   "@anomalyClassifBar_anomalyType": {
     "description": "Avvik type - title"
@@ -238,6 +248,22 @@
   "anomalyClassifBar_searchCreate": "Søk eller opprett avvikstype",
   "@anomalyClassifBar_searchCreate": {
     "description": "Søk eller opprett avvikstype - text input hint"
+  },
+
+
+  "anomalyClassifBar_unClassified": "Uklassifisert",
+  "@anomalyClassifBar_unClassified": {
+    "description": "Unclassified - text for unclassified"
+  },
+
+  "anomalyClassifBar_anomaly": "Klassifisert: Avvik",
+  "@anomalyClassifBar_anomaly": {
+    "description": "Confirmed anomaly"
+  },
+
+  "anomalyClassifBar_noAnomaly": "Klassifisert: Ikke avvik",
+  "@anomalyClassifBar_noAnomaly": {
+    "description": "Confirmed no anomaly"
   },
 
   "projectOverview_projectName": "Prosjektnavn",

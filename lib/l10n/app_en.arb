@@ -227,6 +227,16 @@
   "@confirmAnomaly_imageName": {
     "description": "Image name - subtext"
   },
+
+  "confirmAnomaly_anomaly": "Anomaly",
+  "@confirmAnomaly_anomaly": {
+    "description": "Anomaly"
+  },
+
+  "confirmAnomaly_noAnomaly": "No Anomaly",
+  "@confirmAnomaly_noAnomaly": {
+    "description": "No Anomaly"
+  },
     
   "anomalyClassifBar_anomalyType": "Anomaly type",
   "@anomalyClassifBar_anomalyType": {
@@ -236,6 +246,21 @@
   "anomalyClassifBar_searchCreate": "Search or create anomaly type",
   "@anomalyClassifBar_searchCreate": {
     "description": "Search or create anomaly type - text input hint"
+  },
+
+  "anomalyClassifBar_unClassified": "Unclassified",
+  "@anomalyClassifBar_unClassified": {
+    "description": "Unclassified - text for unclassified"
+  },
+
+  "anomalyClassifBar_anomaly": "Classified: Anomaly ",
+  "@anomalyClassifBar_anomaly": {
+    "description": "Confirmed anomaly"
+  },
+
+  "anomalyClassifBar_noAnomaly": "Classified: No anomaly",
+  "@anomalyClassifBar_noAnomaly": {
+    "description": "Confirmed no anomaly"
   },
 
   "projectOverview_projectName": "Project name",

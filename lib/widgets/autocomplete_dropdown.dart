@@ -5,6 +5,8 @@ class AutocompleteDropdown extends StatelessWidget {
   final List<String> options;
   final ValueChanged<String> onSelected;
   final ValueChanged<String> onCreate;
+  final TextEditingController controller;
+  final FocusNode focusNode;
 
   // A custom autocomplete dropdown that allows users to search for existing options or create new ones.
   const AutocompleteDropdown({
@@ -12,13 +14,16 @@ class AutocompleteDropdown extends StatelessWidget {
     required this.options,
     required this.onSelected,
     required this.onCreate,
+    required this.controller,
+    required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return Autocomplete<String>(
+      textEditingController: controller,
+      focusNode: focusNode,
       optionsBuilder: (TextEditingValue textEditingValue) {
-
         // If the search field is empty, show all options
         if (textEditingValue.text.isEmpty) {
           return options;
