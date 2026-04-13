@@ -4,13 +4,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:path/path.dart' as path;
 
 import 'package:skavl/controller/tile_scene_controller.dart';
+import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 /// The base class for analysis views, which provides common functionality for both StaticView and FreeView.
+///
 /// This includes the gRPC client setup, the tile loading logic based on the viewport, and the common build method that renders the tiles in a stack.
 abstract class BaseAnalysisView extends StatefulWidget {
   const BaseAnalysisView({super.key});
@@ -42,6 +46,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   int planGeneration = 0;
   Size? lastViewportSize;
 
+  // Fit-to-scene on load
+  bool pendingFitToScene = false;
+
   late final void Function() tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
 
   Rect getSceneRect(); // Scene bounds (used for sizing the canvas)
@@ -51,7 +58,29 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
   Widget buildViewport(Widget child); // Wrap the scene (used for grid / gestures / etc.)
 
-  // --------------------------------------------------
+  /// Returns [count] full paths centred on the current page.
+  ///
+  /// Uses [project.allSets] as the ordering source — the same object references
+  /// appear in [anomaliesInRange], so indexOf is reliable regardless of filenames.
+  List<String> getWindowPaths(ProjectMetadata project, int count) {
+    final anomalies = project.anomaliesInRange;
+    if (anomalies.isEmpty || project.currentPage >= anomalies.length) return [];
+
+    final center = anomalies[project.currentPage];
+    final centerIdx = project.allSets.indexOf(center);
+    if (centerIdx == -1) return [];
+
+    final folder = project.imageFolderPath;
+    final before = count ~/ 2;
+    final after  = count - before - 1;
+    final from = (centerIdx - before).clamp(0, project.allSets.length - 1);
+    final to   = (centerIdx + after).clamp(0, project.allSets.length - 1);
+
+    return project.allSets
+        .sublist(from, to + 1)
+        .map((s) => path.join(folder, s.imageName))
+        .toList();
+  }
 
   @override
   void initState() {
@@ -109,8 +138,14 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
               return const Center(child: CircularProgressIndicator());
             }
 
+            if (sceneController.sourceOrder.isEmpty) {
+              return const Center(child: Text('No anomalies match the current sensitivity.'));
+            }
+
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) scheduleViewportPlan();
+              if (!mounted) return;
+              if (pendingFitToScene) fitViewportToScene();
+              scheduleViewportPlan();
             });
 
             final sceneRect = getSceneRect();
@@ -128,7 +163,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     );
   }
 
-  /// Builds the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
+  /// Build the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
   List<Widget> buildTiles() {
     return sceneController.sourceOrder.map((sourceId) {
       final rect = resolveRectSafe(sourceId);
@@ -157,7 +192,37 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     }).toList();
   }
 
-  /// Triggers a viewport redraw based on debounced notification from TransformationController
+  /// Fits the viewport to show the full scene, centered, at 90% of the fit-to-contain scale.
+  ///
+  /// Called once after sources load so the primary image is visible on first render.
+  void fitViewportToScene() {
+    final viewportSize = lastViewportSize;
+    if (viewportSize == null) return;
+
+    Rect sceneRect;
+    try {
+      sceneRect = getSceneRect();
+    } catch (_) {
+      return;
+    }
+    if (sceneRect.isEmpty) return;
+
+    pendingFitToScene = false;
+
+    final scaleX = viewportSize.width / sceneRect.width;
+    final scaleY = viewportSize.height / sceneRect.height;
+    final scale = min(scaleX, scaleY) * 0.9;
+
+    final dx = (viewportSize.width - sceneRect.width * scale) / 2 - sceneRect.left * scale;
+    final dy = (viewportSize.height - sceneRect.height * scale) / 2 - sceneRect.top * scale;
+
+    tc.value = Matrix4.identity()
+      ..translateByVector3(Vector3(dx, dy, 0.0))
+      ..scaleByVector3(Vector3.all(scale));
+  }
+
+  /// Trigger viewport redraw based on debounced notification from TransformationController.
+  ///
   /// Ensures viewport isn't redrawn every frame and doesnt overload request pipeline.
   void scheduleViewportPlan({
     Duration debounceTime = const Duration(milliseconds: 180),

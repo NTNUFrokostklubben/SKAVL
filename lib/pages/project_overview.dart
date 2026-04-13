@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/entity/anomaly_def.dart';
+import 'package:skavl/pages/analysis.dart';
+import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/fieldlabels.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 
+import '../entity/anomaly_set.dart';
 import '../l10n/app_localizations.dart';
-import '../proto/anomaly.pb.dart';
+import '../proto/anomaly.pb.dart' as proto;
 import '../services/anomaly_service_provider.dart';
 import '../theme/colors.dart';
 import '../widgets/top_bar.dart';
@@ -19,10 +24,12 @@ class ProjectOverview extends StatefulWidget {
 }
 
 class _ProjectOverviewState extends State<ProjectOverview> {
-  DescribeAnomalyProjectResponse? _projectInfo;
+  proto.DescribeAnomalyProjectResponse? _projectInfo;
   bool _isLoading = true;
 
-  // Temporary method for testing anomaly detection start based on selected params
+  /// Run entire analysis from data and parses it to project file.
+  ///
+  /// Will need to do incremental writes eventually to allow partial project completion.
   Future<void> _startAnomalyDetection(
     ProjectManagerService projectManager,
   ) async {
@@ -36,7 +43,25 @@ class _ProjectOverviewState extends State<ProjectOverview> {
           projectName: projectManager.loadedProject!.projectName,
           imagePath: imagePath,
           sosiPath: sosiPath,
-        );
+          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath!
+        )
+        .then((response) {
+          final sets = response.anomalyResponse.anomalySets
+              .map(
+                (s) => AnomalySet(
+                  imageName: s.imageName,
+                  anomalyConf: s.anomalyConfidence,
+                  lineNumber: s.lineNumber,
+                  imageNumber: s.imageNumber,
+                  anomalyDef: AnomalyDef.undefined,
+                ),
+              )
+              .toList();
+
+          final updated = projectManager.loadedProject!.copyWith(allSets: sets);
+          projectManager.setProject(updated, projectManager.filePath!);
+          ProjectFileService().saveToFile(projectManager.filePath!, updated);
+        });
   }
 
   Future<void> _loadProjectInfo() async {
@@ -140,32 +165,51 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
             Spacer(),
             // Run analysis button
-            Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () => _startAnomalyDetection(projectManager),
-                  child: Row(
-                    spacing: 16,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Run anomaly analysis",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? MyColors.secondaryBlack
-                            : MyColors.primaryWhite,
-                      ),
-                    ],
+            Row(
+              spacing: 18,
+              children: [
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _startAnomalyDetection(projectManager),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Run anomaly analysis",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => navigateTo(context, Analysis()),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Analyze images",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 20,
+                          color: Theme.of(context).brightness == Brightness.light
+                              ? MyColors.secondaryBlack
+                              : MyColors.primaryWhite,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

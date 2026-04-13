@@ -12,15 +12,15 @@ class SceneLayout {
   final Map<String, Rect> panelRects;
 }
 
-// Layout for a side by side horizontal view
+/// Horizontally stacked image layout.
+///
+/// Will only populate grid fully if there are enough images before and after.
 SceneLayout layoutHorizontal(List<DescribeSourceResponse> manifests) {
   double x = 0.0;
   double maxH = 0.0;
   final rects = <String, Rect>{};
 
-  final manifestsDisplay = manifests.take(3).toList(); // Temp, change later
-
-  for (final m in manifestsDisplay) {
+  for (final m in manifests) {
     final w = m.descriptor.sourceWidthPx.toDouble();
     final h = m.descriptor.sourceHeightPx.toDouble();
     rects[m.descriptor.sourceId] = Rect.fromLTWH(x, 0.0, w, h);
@@ -31,14 +31,14 @@ SceneLayout layoutHorizontal(List<DescribeSourceResponse> manifests) {
   return SceneLayout(sceneSize: Size(x, maxH), panelRects: rects);
 }
 
-// Layout for a side by side vertical view
+/// Vertically stacked images, top to bottom.
+///
+/// Will only populate grid fully if there are enough images before and after.
 SceneLayout layoutVertical(List<DescribeSourceResponse> manifests) {
   double y = 0.0;
   double maxW = 0.0;
   final rects = <String, Rect>{};
-  final manifestsDisplay = manifests.take(3).toList();
-
-  for (final m in manifestsDisplay) {
+  for (final m in manifests) {
     final w = m.descriptor.sourceWidthPx.toDouble();
     final h = m.descriptor.sourceHeightPx.toDouble();
 
@@ -51,18 +51,18 @@ SceneLayout layoutVertical(List<DescribeSourceResponse> manifests) {
   return SceneLayout(sceneSize: Size(maxW, y), panelRects: rects);
 }
 
-// Layout for a 2x2 grid view
+/// 2x2 image grid layout.
+///
+/// Will only populate grid fully if there are enough images before and after.
 SceneLayout layoutGridSmall(List<DescribeSourceResponse> manifests) {
-  final selected = manifests.take(4).toList();
-
-  if (selected.isEmpty) {
+  if (manifests.isEmpty) {
     return SceneLayout(sceneSize: Size.zero, panelRects: {});
   }
 
   double maxW = 0.0;
   double maxH = 0.0;
 
-  for (final m in selected) {
+  for (final m in manifests) {
     final w = m.descriptor.sourceWidthPx.toDouble();
     final h = m.descriptor.sourceHeightPx.toDouble();
 
@@ -72,8 +72,8 @@ SceneLayout layoutGridSmall(List<DescribeSourceResponse> manifests) {
 
   final rects = <String, Rect>{};
 
-  for (int i = 0; i < selected.length; i++) {
-    final m = selected[i];
+  for (int i = 0; i < manifests.length; i++) {
+    final m = manifests[i];
 
     final col = i % 2;
     final row = i ~/ 2;
@@ -89,11 +89,11 @@ SceneLayout layoutGridSmall(List<DescribeSourceResponse> manifests) {
   return SceneLayout(sceneSize: Size(2 * maxW, 2 * maxH), panelRects: rects);
 }
 
-// Layout for a 3x3 grid view
+/// 3x3 image grid layout.
+///
+/// Will only populate grid fully if there are enough images before and after.
 SceneLayout layoutGridBig(List<DescribeSourceResponse> manifests) {
-  final selected = manifests.take(9).toList();
-
-  if (selected.isEmpty) {
+  if (manifests.isEmpty) {
     return SceneLayout(sceneSize: Size.zero, panelRects: {});
   }
 
@@ -103,7 +103,7 @@ SceneLayout layoutGridBig(List<DescribeSourceResponse> manifests) {
   double maxW = 0.0;
   double maxH = 0.0;
 
-  for (final m in selected) {
+  for (final m in manifests) {
     final w = m.descriptor.sourceWidthPx.toDouble();
     final h = m.descriptor.sourceHeightPx.toDouble();
 
@@ -113,8 +113,8 @@ SceneLayout layoutGridBig(List<DescribeSourceResponse> manifests) {
 
   final rects = <String, Rect>{};
 
-  for (int i = 0; i < selected.length; i++) {
-    final m = selected[i];
+  for (int i = 0; i < manifests.length; i++) {
+    final m = manifests[i];
 
     final col = i % cols;
     final row = i ~/ cols;
