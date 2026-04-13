@@ -101,7 +101,6 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     // Transformation listener
     tcListener = () {
       final scale = tc.value.getMaxScaleOnAxis();
-      print(tc.value.getMaxScaleOnAxis());
 
       int maxLevel = 4;
       final minSsp = 1.0 / (1 << maxLevel);
