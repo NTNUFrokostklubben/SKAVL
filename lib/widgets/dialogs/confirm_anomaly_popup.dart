@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/services/anomaly_type_history_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/autocomplete_dropdown.dart';
@@ -32,7 +33,7 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
 
   // TODO: how do we make the dropdown options dynamic when the users add new anomaly types in terms of language?
 
-  List<String> anomalyTypes = ['Type 1', 'Type 2', 'Type 3', 'Type 4'];
+  List<String> anomalyTypes = [];
 
   String? selectedAnomaly;
 
@@ -57,6 +58,18 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
       text: selectedAnomaly ?? '',
     );
     _classificationFocusNode = FocusNode();
+
+    _loadAnomalyTypes();
+  }
+
+  /// Fetches anomaly types from the history file to populate dropdown.
+  Future<void> _loadAnomalyTypes() async {
+    await AnomalyTypeHistoryService().load();
+    if (mounted) {
+      setState(() {
+        anomalyTypes = AnomalyTypeHistoryService().anomalyTypes.toList();
+      });
+    }
   }
 
   @override
@@ -153,9 +166,11 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
         ),
 
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             final text = _classificationController.text.trim();
             if (text.isEmpty) return;
+            await AnomalyTypeHistoryService().add(text);
+            if (!context.mounted) return;
             Navigator.of(context).pop(
               AnomalyClassification(
                 anomalyDef: _selectedDef,
