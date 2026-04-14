@@ -115,3 +115,12 @@ if(NOT EXISTS "${TILER_DEST}")
     USE_SOURCE_PERMISSIONS
     COMPONENT Runtime)
 endif()
+
+# Bundle skavl-anomaly service alongside executable
+set(ANOMALY_DEST "${CMAKE_INSTALL_PREFIX}/services/skavl-anomaly")
+if(NOT EXISTS "${ANOMALY_DEST}")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/../services/skavl-anomaly"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/services"
+    USE_SOURCE_PERMISSIONS
+    COMPONENT Runtime)
+endif()

@@ -289,6 +289,16 @@
   "projectOverview_lastImageProcessed": "Siste bilde analysert",
   "@projectOverview_lastImageProcessed": {
     "description": "Last image that has been processed"
+  },
+
+  "projectOverview_runAnalysis": "Kjør avviksanalyse",
+  "@projectOverview_runAnalysis": {
+    "description": "Run anomaly analysis"
+  },
+
+  "projectOverview_classifyImages": "Klassifiser flybilder",
+  "@projectOverview_classifyImages": {
+    "description": "Classify anomalies"
   }
 
 }
