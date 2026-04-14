@@ -178,7 +178,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Run anomaly analysis",
+                          loc.projectOverview_runAnalysis,
                           style: Theme.of(context).textTheme.bodyMedium,
                         )
                       ],
@@ -195,7 +195,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Analyze images",
+                          loc.projectOverview_classifyImages,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Icon(

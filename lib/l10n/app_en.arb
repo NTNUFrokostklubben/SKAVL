@@ -286,6 +286,16 @@
   "projectOverview_lastImageProcessed": "Latest image analyzed",
   "@projectOverview_lastImageProcessed": {
     "description": "Last image that has been processed"
+  },
+
+  "projectOverview_runAnalysis": "Run anomaly analysis",
+  "@projectOverview_runAnalysis": {
+    "description": "Run anomaly analysis"
+  },
+
+  "projectOverview_classifyImages": "Classify images",
+  "@projectOverview_classifyImages": {
+    "description": "Classify anomalies"
   }
 
 

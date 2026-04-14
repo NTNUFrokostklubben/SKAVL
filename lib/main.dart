@@ -118,7 +118,7 @@ class _MainPageState extends State<MainPage> {
       }
     });
 
-    _anomalyService.start();
+    _anomalyService.start(args: ["server", "--port", "50052"]);
   }
 
   @override

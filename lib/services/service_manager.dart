@@ -24,7 +24,7 @@ class ServiceManager {
   }
 
   /// Starts service from stored executable path and monitors its status.
-  Future<void> start() async {
+  Future<void> start({List<String> args = const []}) async {
     final exe = File(_exePath);
     if (!await exe.exists()) {
       _statusController.add(ServiceStatus.notFound);
@@ -34,7 +34,7 @@ class ServiceManager {
     _statusController.add(ServiceStatus.starting);
     _process = await Process.start(
       _exePath,
-      [],
+      args,
       workingDirectory: File(_exePath).parent.path,
     );
     _statusController.add(ServiceStatus.running);
