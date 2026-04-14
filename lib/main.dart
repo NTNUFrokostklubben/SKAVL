@@ -63,6 +63,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late final ServiceManager _tilerService;
+  late final ServiceManager _anomalyService;
 
   @override
   void initState() {
@@ -73,6 +74,14 @@ class _MainPageState extends State<MainPage> {
       Platform.isWindows
           ? 'services/tiler/server/skavl-tiler.exe'
           : 'services/tiler/server/skavl-tiler',
+    );
+
+    // Determine anomaly service path based on OS.
+    // TODO: Linux not supported yet as sosi driver is not included. Add this later
+    _anomalyService = ServiceManager(
+      Platform.isWindows
+          ? 'services/skavl-anomaly/server/skavl-anomaly-detection-server.exe'
+          : 'services/skavl-anomaly/server/skavl-anomaly-detection-server',
     );
 
     // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
@@ -92,6 +101,24 @@ class _MainPageState extends State<MainPage> {
     });
 
     _tilerService.start();
+
+    // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
+    _anomalyService.statusStream.listen((status) {
+      if (status == ServiceStatus.notFound) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Skavl Anomaly service executable not found.'),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+        });
+      }
+    });
+
+    _anomalyService.start();
   }
 
   @override
