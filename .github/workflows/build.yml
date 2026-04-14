@@ -60,6 +60,10 @@ jobs:
         shell: pwsh
         run: scripts\fetch_tiler.ps1
 
+      - name: Fetch anomaly detector (Windows)
+        shell: pwsh
+        run: scripts\fetch_anomaly_detector.ps1
+
       - name: Flutter pub get
         run: flutter pub get
 
