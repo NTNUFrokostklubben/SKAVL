@@ -106,3 +106,21 @@ install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
 install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
   CONFIGURATIONS Profile;Release
   COMPONENT Runtime)
+
+# Bundle tiler service alongside executable - only copy if not already present. Fetch-script deletes dir when fetching new version of service
+set(TILER_DEST "${CMAKE_INSTALL_PREFIX}/services/tiler")
+if(NOT EXISTS "${TILER_DEST}")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/../services/tiler"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/services"
+    USE_SOURCE_PERMISSIONS
+    COMPONENT Runtime)
+endif()
+
+# Bundle skavl-anomaly service alongside executable
+set(ANOMALY_DEST "${CMAKE_INSTALL_PREFIX}/services/skavl-anomaly")
+if(NOT EXISTS "${ANOMALY_DEST}")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/../services/skavl-anomaly"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/services"
+    USE_SOURCE_PERMISSIONS
+    COMPONENT Runtime)
+endif()

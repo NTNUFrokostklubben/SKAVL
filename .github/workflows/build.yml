@@ -1,0 +1,74 @@
+name: build-pr-check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+jobs:
+  linux-build:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.21.0
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev cmake pkg-config
+
+      - name: Fetch tiler (Linux)
+        run: bash scripts/fetch_tiler.sh
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Generate localizations
+        run: flutter gen-l10n
+
+      - name: Build Flutter Linux
+        run: flutter build linux --release
+
+  windows-build:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.21.0
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+
+      - name: Fetch tiler (Windows)
+        shell: pwsh
+        run: scripts\fetch_tiler.ps1
+
+      - name: Fetch anomaly detector (Windows)
+        shell: pwsh
+        run: scripts\fetch_anomaly_detector.ps1
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Generate localizations
+        run: flutter gen-l10n
+
+      - name: Build Flutter Windows
+        run: flutter build windows --release

@@ -2,15 +2,51 @@
 
 Main application for SKAVL
 
-## Getting Started
+## Running / Building
 
-This project is a starting point for a Flutter application.
+In general the app will be runnable by running.
+```shell
+flutter pub get
+flutter gen-l10n
+```
 
-A few resources to get you started if this is your first Flutter project:
+However not all functionality of the software will work without including certain submodules from other repositories.
+There are scripts in this repo for fetching the latest version of each submodule implemented in this application.
+These submodules should never be changed as they have pinned versions. 
+If you want to change the functionality of a module you can clone the repo for the module, change the functionality, 
+make a local build and place it under the services folder as if it was a script fetched module.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Submodule dependencies**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [skavl-tiler](https://github.com/NTNUFrokostklubben/skavl-tiler)
+
+### Windows
+
+To get the submodule you must run the `scripts/fetch_tiler.ps1` script.
+This will download latest built stable windows release for the tiler and place it under `services/tiler` along with a version tag.
+This script can be re-run to download newer version if they are present.
+
+Once this is done, the tiler process should start automatically when the flutter application starts.
+
+### Linux
+
+To get the submodule you must run the `scripts/fetch_tiler.sh1` script.
+This will download latest built stable linux release for the tiler and place it under `services/tiler` along with a version tag.
+This script can be re-run to download newer version if they are present.
+
+Once this is done, the tiler process should start automatically when the flutter application starts.
+
+
+
+
+## l10n
+Added i10n localization to the application. Currently main.dart provides an example of the syntax in scaffold for the title of the application.
+app_en.arb and app_nb.arb both define localization strings, any new string must be added to both, description is necessary.
+To get the functions for localization run "flutter gen-l10n". 
+
+for the localization .arb files we use the structure of "identifier_string", where identifier prefix describes the scope of the localization string. "g_" prefix is used for global/generic. Description should reflect usage of word and be generic for generic strings, such as "share something" and not "share via email". specification must be in a scope such as "topbar_share".
+
+
+## License
+Open-source: AGPL-3.0 (see LICENSE)
+Commercial: available on inquiry (see COMMERCIAL.md)

@@ -1,0 +1,302 @@
+{
+  "@@locale": "en",
+
+  "g_save": "Save",
+  "@g_save": {
+    "description": "Save something"
+  },
+  
+  "g_quit": "Quit",
+  "@g_quit": {
+    "description": "Quit something"
+  },
+
+  "g_share" : "Share",
+  "@g_share": {
+    "description": "Share something"
+  },
+
+  "g_close": "Close",
+  "@g_close": {
+    "description": "Close something"
+  },
+
+  "g_file": "File",
+  "@g_file": {
+    "description": "Used as a menu item for file, but also as file in general"
+  },
+
+  "g_browse": "Browse",
+  "@g_browse": {
+    "description": "Used for browsing, mainly for upload buttons"
+  },
+
+  "g_settings": "Settings",
+  "@g_settings": {
+    "description": "Used as a menu item for settings, but also as settings in general"
+  },
+
+  "g_edit": "Edit",
+  "@g_edit": {
+    "description": "Edit something"
+  },
+
+  "g_view": "View",
+  "@g_view": {
+    "description": "View something"
+  },
+
+  "g_help": "Help",
+  "@g_help": {
+    "description": "Help menu item, but also used as help in general"
+  },
+  
+  "g_enloc": "English",
+  "@g_enloc": {},
+
+  "g_nbloc": "Norwegian",
+  "@g_nbloc": {},
+
+  "g_home": "Home",
+  "@g_home": {
+    "description": "Home"
+  },
+
+  "g_cancel": "Cancel",
+  "@g_cancel": {
+    "description": "Cancel"
+  },
+
+  "g_confirm": "Confirm",
+  "@g_confirm": {
+    "description": "Confirm"
+  },
+
+  "g_project": "Project",
+  "@g_project": {
+    "description": "Project"
+  },
+
+  "g_noImagesProcessed": "No images processed",
+  "@g_noImagesProcessed": {
+    "description": "No images processed - text when no images have been processed yet"
+  },
+
+  "settings_title": "Settings",
+  "@settings_title": {},
+
+  "settings_language": "Language",
+  "@settings_language": {},
+
+  "settings_theme": "Colour theme",
+  "@settings_theme": {},
+
+  "settings_darkMode": "Dark mode",
+  "@settings_darkMode": {},
+
+  "settings_lightMode": "Light mode",
+  "@settings_lightMode": {},
+
+  "settings_systemMode": "System mode",
+  "@settings_systemMode": {},
+
+  "topbar_about" : "About",
+  "@topbar_about": {
+    "description": "About menu item"
+  },
+  
+  "topbar_saveAs": " Save as",
+  "@topbar_saveAs": {
+    "description": "Save something as something specific"
+  },
+  
+  "topbar_newProject": "New Project",
+  "@topbar_newProject": {
+    "description": "New Project menu item"
+  },
+  "topbar_newWindow": "New Window",
+  "@topbar_newWindow": {
+    "description": "New Window menu item"
+  },
+  "topbar_openProject": "Open Project",
+  "@topbar_openProject": {
+    "description": "Open File menu item"
+  },
+
+  "topbar_openRecent": "Open Recent project",
+  "@topbar_openRecent": {
+    "description": "Open Recent menu item"
+  },
+
+  "anomalyClassifBar_confirm": "Confirm Anomaly",
+  "@anomalyClassifBar_confirm": {
+    "description": "Confirm Anomaly"
+  },
+ 
+  "welcomePage_SKAVL": "Welcome to SKAVL!",
+  "@welcomePage_SKAVL": {
+    "description": "Welcome text to SKAVL - title"
+  },
+
+  "welcomePage_openFormer": "Open former anomaly analysis",
+  "@welcomePage_openFormer": {
+     "description": "Open former anomaly analysis - button text"
+  },
+
+  "welcomePage_createNewButton": "Create new anomaly analysis",
+  "@welcomePage_createNewButton": {
+    "description": "Create new anomaly analysis - button text"
+  },
+
+  "createPage_title": "Create new anomaly detection report",
+  "@createPage_title": {
+    "description": "Create new anomaly detection report - title"
+  },
+
+  "createPage_titleInput": "Title",
+  "@createPage_titleInput": {
+    "description": "Title - input field"
+  },
+
+  "createPage_uploadPlaneImages": "Aerial image folder",
+  "@createPage_uploadPlaneImages": {
+    "description": "Upload plane images - text"
+  },
+
+  "createPage_uploadSOSIFile": "Coverage SOSI",
+  "@createPage_uploadSOSIFile": {
+    "description": "Upload SOSI file - text"
+  },
+
+  "createPage_uploadWaterSOSIFile": "Water polygon SOSI",
+  "@createPage_uploadWaterSOSIFile": {
+    "description": "Last opp SOSI vannpolygon fil - text"
+  },
+
+  "createPage_noFile": "No file selected",
+  "@createPage_noFile": {
+    "description": "Ingen fil valgt - text when no file is chosen"
+  },
+
+  "createPage_noFolder": "No folder selected",
+  "@createPage_noFolder": {
+    "description": "Ingen mappe valgt - text when no folder is chosen"
+  },
+
+  "createPage_createReportButton": "Create report",
+  "@createPage_createReportButton": {
+    "description": "Create report - button text"
+  },
+
+  "newprojectPage_title": "Create new project",
+  "@newprojectPage_title": {
+    "description": "Create new project - title"
+  },
+
+  "newprojectPage_Missingproject": "Missing project name",
+  "@newprojectPage_Missingproject": {
+    "description": "Missing project name from form"
+  },
+
+  "newprojectPage_Missingaerial": "Missing aerial image folder",
+  "@newprojectPage_Missingaerial": {
+    "description": "Missing aerial images from form"
+  },
+
+  "newprojectPage_Missingsosi": "Mangler coverage polygon SOSI",
+  "@newprojectPage_Missingsosi": {
+    "description": "Missing polygon SOSI from form"
+  },
+
+  "loadingDialog_analyzing": "Analyzing your aereal images",
+  "@loadingDialog_analyzing": {
+    "description": "Analyzing your aereal images - title"
+  },
+
+  "loadingDialog_grabCoffee": "This is a great time to grab a coffee (or 15 idk...)!",
+  "@loadingDialog_grabCoffee": {
+    "description": "Grab a coffee - subtext"
+  },
+
+  "loadingDialog_semanticsLabel": "Linear progress indicator",
+  "@loadingDialog_semanticsLabel": {
+    "description": "Linear progress indicator - semantics label"
+  },
+
+  "confirmAnomaly_imageName": "Image name",
+  "@confirmAnomaly_imageName": {
+    "description": "Image name - subtext"
+  },
+
+  "confirmAnomaly_anomaly": "Anomaly",
+  "@confirmAnomaly_anomaly": {
+    "description": "Anomaly"
+  },
+
+  "confirmAnomaly_noAnomaly": "No Anomaly",
+  "@confirmAnomaly_noAnomaly": {
+    "description": "No Anomaly"
+  },
+    
+  "anomalyClassifBar_anomalyType": "Anomaly type",
+  "@anomalyClassifBar_anomalyType": {
+    "description": "Anomaly type - title"
+  },
+
+  "anomalyClassifBar_searchCreate": "Search or create anomaly type",
+  "@anomalyClassifBar_searchCreate": {
+    "description": "Search or create anomaly type - text input hint"
+  },
+
+  "anomalyClassifBar_unClassified": "Unclassified",
+  "@anomalyClassifBar_unClassified": {
+    "description": "Unclassified - text for unclassified"
+  },
+
+  "anomalyClassifBar_anomaly": "Classified: Anomaly ",
+  "@anomalyClassifBar_anomaly": {
+    "description": "Confirmed anomaly"
+  },
+
+  "anomalyClassifBar_noAnomaly": "Classified: No anomaly",
+  "@anomalyClassifBar_noAnomaly": {
+    "description": "Confirmed no anomaly"
+  },
+
+  "projectOverview_projectName": "Project name",
+  "@projectOverview_projectName": {
+    "description": "Project name - label for project name in project overview"
+  },
+
+  "projectOverview_noWaterSosi": "No water polygon SOSI associated with project",
+  "@projectOverview_noWaterSosi": {
+    "description": "Sosi water polygon file is missing - text when no water sosi file is linked to project"
+  },
+
+  "projectOverview_imagesPresent": "Number of images in folder",
+  "@projectOverview_imagesPresent": {
+    "description": "Number of images present in folder"
+  },
+
+  "projectOverview_imagesProcessed": "Number of images analyzed",
+  "@projectOverview_imagesProcessed": {
+    "description": "Number of images processed"
+  },
+
+  "projectOverview_lastImageProcessed": "Latest image analyzed",
+  "@projectOverview_lastImageProcessed": {
+    "description": "Last image that has been processed"
+  },
+
+  "projectOverview_runAnalysis": "Run anomaly analysis",
+  "@projectOverview_runAnalysis": {
+    "description": "Run anomaly analysis"
+  },
+
+  "projectOverview_classifyImages": "Classify images",
+  "@projectOverview_classifyImages": {
+    "description": "Classify anomalies"
+  }
+
+
+}

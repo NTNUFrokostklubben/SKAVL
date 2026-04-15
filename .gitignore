@@ -32,6 +32,13 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+app_localizations*.dart
+
+# Windows specific
+windows/flutter/generated_plugin*
+
+# Linux specific
+linux/flutter/generated_plugin*
 
 # Symbolication related
 app.*.symbols
@@ -43,3 +50,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# External services included for build
+/services
+/tilecache
