@@ -31,8 +31,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
   ///
   /// Will need to do incremental writes eventually to allow partial project completion.
   Future<void> _startAnomalyDetection(
-    ProjectManagerService projectManager,
-  ) async {
+      ProjectManagerService projectManager,) async {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
@@ -62,6 +61,15 @@ class _ProjectOverviewState extends State<ProjectOverview> {
           projectManager.setProject(updated, projectManager.filePath!);
           ProjectFileService().saveToFile(projectManager.filePath!, updated);
         });
+  }
+
+  Future<void> _testProgress() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final result = await context
+        .read<AnomalyServiceProvider>()
+        .controller
+        .getProgress(projectName: projectManager.loadedProject!.projectName);
+    print(result);
   }
 
   Future<void> _loadProjectInfo() async {
@@ -205,6 +213,26 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                               ? MyColors.secondaryBlack
                               : MyColors.primaryWhite,
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _testProgress(),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Test progress fetch",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium,
+                        )
                       ],
                     ),
                   ),
