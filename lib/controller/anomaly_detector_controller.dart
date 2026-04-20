@@ -32,15 +32,15 @@ class AnomalyDetectorController {
     required String imagePath,
     required String sosiPath,
     required String projectName,
-    String waterSosiPath = "",
+    String? waterSosiPath = "",
   }) async {
     final metadata = ProjectMetadata()
       ..projectName = projectName
       ..imageFolderPath = imagePath
       ..sosiFilePath = sosiPath;
 
-    if (waterSosiPath.isNotEmpty) {
-      metadata.sosiWaterMaskPath = waterSosiPath;
+    if (waterSosiPath?.isNotEmpty ?? false) {
+      metadata.sosiWaterMaskPath = waterSosiPath!;
     }
 
     return await anomalyDetectorClient.detectAnomalySet(

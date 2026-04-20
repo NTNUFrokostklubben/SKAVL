@@ -43,7 +43,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
           projectName: projectManager.loadedProject!.projectName,
           imagePath: imagePath,
           sosiPath: sosiPath,
-          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath!
+          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath
         )
         .then((response) {
           final sets = response.anomalyResponse.anomalySets

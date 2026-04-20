@@ -9,6 +9,7 @@ import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/util/navigation_util.dart';
+import 'package:skavl/util/network_util.dart';
 import 'package:skavl/util/project_actions.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
@@ -100,8 +101,6 @@ class _MainPageState extends State<MainPage> {
       }
     });
 
-    _tilerService.start();
-
     // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
     _anomalyService.statusStream.listen((status) {
       if (status == ServiceStatus.notFound) {
@@ -118,12 +117,26 @@ class _MainPageState extends State<MainPage> {
       }
     });
 
-    _anomalyService.start(args: ["server", "--port", "50052"]);
+    _initServices();
+  }
+
+  /// Starts tiler and anomaly service
+  ///
+  /// Checks if ports are in use, if they are it means a zombie process or standalone server is running.
+  /// Skips starting the service if port is in use as code will hook into already running instance.
+  Future<void> _initServices() async {
+    if (!await NetworkUtil.isPortInUse(50051)) {
+      _tilerService.start();
+    }
+    if (!await NetworkUtil.isPortInUse(50052)) {
+      _anomalyService.start(args: ["server", "--port", "50052"]);
+    }
   }
 
   @override
   void dispose() {
     _tilerService.dispose();
+    _anomalyService.dispose();
     super.dispose();
   }
 
@@ -190,9 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomStatusBar(),
-        ],
+        children: [BottomStatusBar()],
       ),
     );
   }
