@@ -148,13 +148,19 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
               scheduleViewportPlan();
             });
 
+            final windowSize = sceneController.sourceOrder.length;
+            final highlightIdx = (windowSize ~/ 2).clamp(0, windowSize - 1);
+
             final sceneRect = getSceneRect();
             final tileStack = SizedBox(
               width: sceneRect.width,
               height: sceneRect.height,
-              child: Stack(children: buildTiles()),
+              child: Stack(children: buildTiles(
+                highlightedSourceId: sceneController.sourceOrder.isNotEmpty
+                    ? sceneController.sourceOrder[highlightIdx]
+                    : null,
+              )),
             );
-
             // The subclass is responsible for wrapping with InteractiveViewer
             return buildViewport(tileStack);
           },
@@ -164,7 +170,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   }
 
   /// Build the list of tile layers for the current scene, based on the loaded sources and their corresponding tiles.
-  List<Widget> buildTiles() {
+  List<Widget> buildTiles({String? highlightedSourceId}) {
     return sceneController.sourceOrder.map((sourceId) {
       final rect = resolveRectSafe(sourceId);
       if (rect == null) return const SizedBox.shrink();
@@ -185,6 +191,8 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
           tiles: tiles,
           originX: rect.left,
           originY: rect.top,
+          highlighted: sourceId == highlightedSourceId,
+          factor: committedFactor,
           previousTiles: prevTiles,
           previousTileSizePx: previousCommittedTileSize,
         ),

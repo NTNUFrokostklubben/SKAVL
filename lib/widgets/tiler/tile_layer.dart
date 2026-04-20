@@ -16,6 +16,8 @@ class TileLayer extends StatelessWidget {
     required this.tiles,
     required this.originX,
     required this.originY,
+    required this.highlighted,
+    required this.factor,
     this.previousTiles = const [],
     this.previousTileSizePx,
   });
@@ -33,6 +35,10 @@ class TileLayer extends StatelessWidget {
   // Tilecache to remove flashing
   final Iterable<TileRef> previousTiles;
   final double? previousTileSizePx;
+
+  // Draws a border around the currently highlighted tile's source
+  final bool highlighted;
+  final int factor;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +87,16 @@ class TileLayer extends StatelessWidget {
                     gaplessPlayback: true,
                   ),
                 ),
+
+            // Highlight current image tile
+            if (highlighted)
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red, width: (5.0 * factor)),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
