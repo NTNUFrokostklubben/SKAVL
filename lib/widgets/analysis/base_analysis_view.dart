@@ -192,6 +192,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
           originX: rect.left,
           originY: rect.top,
           highlighted: sourceId == highlightedSourceId,
+          factor: committedFactor,
           previousTiles: prevTiles,
           previousTileSizePx: previousCommittedTileSize,
         ),
