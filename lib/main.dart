@@ -82,6 +82,7 @@ class _MainPageState extends State<MainPage> {
       Platform.isWindows
           ? 'services/skavl-anomaly/server/skavl-anomaly-detection-server.exe'
           : 'services/skavl-anomaly/server/skavl-anomaly-detection-server',
+      autoRestart: false
     );
 
     // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.

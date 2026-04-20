@@ -267,3 +267,38 @@ final $typed_data.Uint8List detectAnomalySetResponseDescriptor =
     $convert.base64Decode(
         'ChhEZXRlY3RBbm9tYWx5U2V0UmVzcG9uc2USTAoQYW5vbWFseV9yZXNwb25zZRgBIAEoCzIhLn'
         'NrYXZsLmFub21hbHkudjEuQW5vbWFseVJlc3BvbnNlUg9hbm9tYWx5UmVzcG9uc2U=');
+
+@$core.Deprecated('Use getProgressRequestDescriptor instead')
+const GetProgressRequest$json = {
+  '1': 'GetProgressRequest',
+  '2': [
+    {'1': 'project_name', '3': 1, '4': 1, '5': 9, '10': 'projectName'},
+  ],
+};
+
+/// Descriptor for `GetProgressRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getProgressRequestDescriptor = $convert.base64Decode(
+    'ChJHZXRQcm9ncmVzc1JlcXVlc3QSIQoMcHJvamVjdF9uYW1lGAEgASgJUgtwcm9qZWN0TmFtZQ'
+    '==');
+
+@$core.Deprecated('Use getProgressResponseDescriptor instead')
+const GetProgressResponse$json = {
+  '1': 'GetProgressResponse',
+  '2': [
+    {'1': 'project_name', '3': 1, '4': 1, '5': 9, '10': 'projectName'},
+    {
+      '1': 'last_processed_image',
+      '3': 2,
+      '4': 1,
+      '5': 5,
+      '10': 'lastProcessedImage'
+    },
+    {'1': 'total_images', '3': 3, '4': 1, '5': 5, '10': 'totalImages'},
+  ],
+};
+
+/// Descriptor for `GetProgressResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getProgressResponseDescriptor = $convert.base64Decode(
+    'ChNHZXRQcm9ncmVzc1Jlc3BvbnNlEiEKDHByb2plY3RfbmFtZRgBIAEoCVILcHJvamVjdE5hbW'
+    'USMAoUbGFzdF9wcm9jZXNzZWRfaW1hZ2UYAiABKAVSEmxhc3RQcm9jZXNzZWRJbWFnZRIhCgx0'
+    'b3RhbF9pbWFnZXMYAyABKAVSC3RvdGFsSW1hZ2Vz');

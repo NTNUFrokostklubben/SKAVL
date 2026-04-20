@@ -663,6 +663,145 @@ class DetectAnomalySetResponse extends $pb.GeneratedMessage {
   AnomalyResponse ensureAnomalyResponse() => $_ensure(0);
 }
 
+/// Progress reporting service
+/// Takes project name and queries the sqlite to check what the last processed image index is.
+class GetProgressRequest extends $pb.GeneratedMessage {
+  factory GetProgressRequest({
+    $core.String? projectName,
+  }) {
+    final result = create();
+    if (projectName != null) result.projectName = projectName;
+    return result;
+  }
+
+  GetProgressRequest._();
+
+  factory GetProgressRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetProgressRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetProgressRequest',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'skavl.anomaly.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'projectName')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProgressRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProgressRequest copyWith(void Function(GetProgressRequest) updates) =>
+      super.copyWith((message) => updates(message as GetProgressRequest))
+          as GetProgressRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetProgressRequest create() => GetProgressRequest._();
+  @$core.override
+  GetProgressRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetProgressRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetProgressRequest>(create);
+  static GetProgressRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get projectName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set projectName($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasProjectName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProjectName() => $_clearField(1);
+}
+
+/// Response from progress report.
+/// Includes project name for verification against currently loaded project, last processed image index and total images.
+class GetProgressResponse extends $pb.GeneratedMessage {
+  factory GetProgressResponse({
+    $core.String? projectName,
+    $core.int? lastProcessedImage,
+    $core.int? totalImages,
+  }) {
+    final result = create();
+    if (projectName != null) result.projectName = projectName;
+    if (lastProcessedImage != null)
+      result.lastProcessedImage = lastProcessedImage;
+    if (totalImages != null) result.totalImages = totalImages;
+    return result;
+  }
+
+  GetProgressResponse._();
+
+  factory GetProgressResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetProgressResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetProgressResponse',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'skavl.anomaly.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'projectName')
+    ..aI(2, _omitFieldNames ? '' : 'lastProcessedImage')
+    ..aI(3, _omitFieldNames ? '' : 'totalImages')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProgressResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetProgressResponse copyWith(void Function(GetProgressResponse) updates) =>
+      super.copyWith((message) => updates(message as GetProgressResponse))
+          as GetProgressResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetProgressResponse create() => GetProgressResponse._();
+  @$core.override
+  GetProgressResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetProgressResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetProgressResponse>(create);
+  static GetProgressResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get projectName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set projectName($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasProjectName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProjectName() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get lastProcessedImage => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set lastProcessedImage($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLastProcessedImage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLastProcessedImage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get totalImages => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set totalImages($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasTotalImages() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTotalImages() => $_clearField(3);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

@@ -33,19 +33,34 @@ class ReportServiceClient extends $grpc.Client {
 
   ReportServiceClient(super.channel, {super.options, super.interceptors});
 
-  /// Generates a report based on the provided anomaly sets and metadata
-  $grpc.ResponseFuture<$0.ReportGenerationResponse> generateReport(
+  /// Generates a unclassified report based on the provided anomaly sets and metadata
+  $grpc.ResponseFuture<$0.ReportGenerationResponse> generateReportUnclassified(
     $0.ReportGenerationRequest request, {
     $grpc.CallOptions? options,
   }) {
-    return $createUnaryCall(_$generateReport, request, options: options);
+    return $createUnaryCall(_$generateReportUnclassified, request,
+        options: options);
+  }
+
+  /// Generates a classified report based on the provided anomaly sets and metadata
+  $grpc.ResponseFuture<$0.ReportGenerationResponse> generateReportClassified(
+    $0.ReportGenerationRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$generateReportClassified, request,
+        options: options);
   }
 
   // method descriptors
 
-  static final _$generateReport = $grpc.ClientMethod<$0.ReportGenerationRequest,
-          $0.ReportGenerationResponse>(
-      '/skavl.report.v1.ReportService/GenerateReport',
+  static final _$generateReportUnclassified = $grpc.ClientMethod<
+          $0.ReportGenerationRequest, $0.ReportGenerationResponse>(
+      '/skavl.report.v1.ReportService/GenerateReportUnclassified',
+      ($0.ReportGenerationRequest value) => value.writeToBuffer(),
+      $0.ReportGenerationResponse.fromBuffer);
+  static final _$generateReportClassified = $grpc.ClientMethod<
+          $0.ReportGenerationRequest, $0.ReportGenerationResponse>(
+      '/skavl.report.v1.ReportService/GenerateReportClassified',
       ($0.ReportGenerationRequest value) => value.writeToBuffer(),
       $0.ReportGenerationResponse.fromBuffer);
 }
@@ -57,8 +72,17 @@ abstract class ReportServiceBase extends $grpc.Service {
   ReportServiceBase() {
     $addMethod($grpc.ServiceMethod<$0.ReportGenerationRequest,
             $0.ReportGenerationResponse>(
-        'GenerateReport',
-        generateReport_Pre,
+        'GenerateReportUnclassified',
+        generateReportUnclassified_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.ReportGenerationRequest.fromBuffer(value),
+        ($0.ReportGenerationResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ReportGenerationRequest,
+            $0.ReportGenerationResponse>(
+        'GenerateReportClassified',
+        generateReportClassified_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
@@ -66,12 +90,21 @@ abstract class ReportServiceBase extends $grpc.Service {
         ($0.ReportGenerationResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.ReportGenerationResponse> generateReport_Pre(
+  $async.Future<$0.ReportGenerationResponse> generateReportUnclassified_Pre(
       $grpc.ServiceCall $call,
       $async.Future<$0.ReportGenerationRequest> $request) async {
-    return generateReport($call, await $request);
+    return generateReportUnclassified($call, await $request);
   }
 
-  $async.Future<$0.ReportGenerationResponse> generateReport(
+  $async.Future<$0.ReportGenerationResponse> generateReportUnclassified(
+      $grpc.ServiceCall call, $0.ReportGenerationRequest request);
+
+  $async.Future<$0.ReportGenerationResponse> generateReportClassified_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.ReportGenerationRequest> $request) async {
+    return generateReportClassified($call, await $request);
+  }
+
+  $async.Future<$0.ReportGenerationResponse> generateReportClassified(
       $grpc.ServiceCall call, $0.ReportGenerationRequest request);
 }

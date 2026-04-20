@@ -50,4 +50,12 @@ class AnomalyDetectorController {
       ),
     );
   }
+
+  Future<GetProgressResponse> getProgress({
+    required String projectName
+  }) async => await anomalyDetectorClient.getProgress(
+      GetProgressRequest(
+        projectName: projectName
+      ),
+    );
 }

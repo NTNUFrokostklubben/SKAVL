@@ -31,8 +31,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
   ///
   /// Will need to do incremental writes eventually to allow partial project completion.
   Future<void> _startAnomalyDetection(
-    ProjectManagerService projectManager,
-  ) async {
+      ProjectManagerService projectManager,) async {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
@@ -40,28 +39,38 @@ class _ProjectOverviewState extends State<ProjectOverview> {
         .read<AnomalyServiceProvider>()
         .controller
         .runAnalysis(
-          projectName: projectManager.loadedProject!.projectName,
-          imagePath: imagePath,
-          sosiPath: sosiPath,
-          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath!
-        )
+        projectName: projectManager.loadedProject!.projectName,
+        imagePath: imagePath,
+        sosiPath: sosiPath,
+        waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath!
+    )
         .then((response) {
-          final sets = response.anomalyResponse.anomalySets
-              .map(
-                (s) => AnomalySet(
-                  imageName: s.imageName,
-                  anomalyConf: s.anomalyConfidence,
-                  lineNumber: s.lineNumber,
-                  imageNumber: s.imageNumber,
-                  anomalyDef: AnomalyDef.undefined,
-                ),
-              )
-              .toList();
+      final sets = response.anomalyResponse.anomalySets
+          .map(
+            (s) =>
+            AnomalySet(
+              imageName: s.imageName,
+              anomalyConf: s.anomalyConfidence,
+              lineNumber: s.lineNumber,
+              imageNumber: s.imageNumber,
+              anomalyDef: AnomalyDef.undefined,
+            ),
+      )
+          .toList();
 
-          final updated = projectManager.loadedProject!.copyWith(allSets: sets);
-          projectManager.setProject(updated, projectManager.filePath!);
-          ProjectFileService().saveToFile(projectManager.filePath!, updated);
-        });
+      final updated = projectManager.loadedProject!.copyWith(allSets: sets);
+      projectManager.setProject(updated, projectManager.filePath!);
+      ProjectFileService().saveToFile(projectManager.filePath!, updated);
+    });
+  }
+
+  Future<void> _testProgress() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final result = await context
+        .read<AnomalyServiceProvider>()
+        .controller
+        .getProgress(projectName: projectManager.loadedProject!.projectName);
+    print(result);
   }
 
   Future<void> _loadProjectInfo() async {
@@ -70,10 +79,10 @@ class _ProjectOverviewState extends State<ProjectOverview> {
         .read<AnomalyServiceProvider>()
         .controller
         .getProjectInfo(
-          projectName: projectManager.loadedProject!.projectName,
-          imagePath: projectManager.loadedProject!.imageFolderPath,
-          sosiPath: projectManager.loadedProject!.sosiFilePath,
-        );
+      projectName: projectManager.loadedProject!.projectName,
+      imagePath: projectManager.loadedProject!.imageFolderPath,
+      sosiPath: projectManager.loadedProject!.sosiFilePath,
+    );
 
     setState(() {
       _projectInfo = result;
@@ -153,9 +162,9 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                           projectManager.loadedProject!.allSets.isEmpty
                               ? loc.g_noImagesProcessed
                               : projectManager
-                                    .loadedProject!
-                                    .allSets[_projectInfo!.lastProcessedImage]
-                                    .imageName,
+                              .loadedProject!
+                              .allSets[_projectInfo!.lastProcessedImage]
+                              .imageName,
                         ),
                       ],
                     ),
@@ -179,7 +188,10 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       children: [
                         Text(
                           loc.projectOverview_runAnalysis,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium,
                         )
                       ],
                     ),
@@ -196,15 +208,40 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       children: [
                         Text(
                           loc.projectOverview_classifyImages,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium,
                         ),
                         Icon(
                           Icons.arrow_forward_ios_outlined,
                           size: 20,
-                          color: Theme.of(context).brightness == Brightness.light
+                          color: Theme
+                              .of(context)
+                              .brightness == Brightness.light
                               ? MyColors.secondaryBlack
                               : MyColors.primaryWhite,
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _testProgress(),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Test progress fetch",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium,
+                        )
                       ],
                     ),
                   ),
