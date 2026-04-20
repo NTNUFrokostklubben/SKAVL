@@ -124,6 +124,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     _tilerService.dispose();
+    _anomalyService.dispose();
     super.dispose();
   }
 
