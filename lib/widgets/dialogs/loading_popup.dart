@@ -2,65 +2,39 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 
-class LoadingDialog extends StatefulWidget {
-  const LoadingDialog({super.key});
+class LoadingDialog extends StatelessWidget {
+  final ValueNotifier<int> processedImages;
+  final ValueNotifier<int> totalImages;
 
-  @override
-  State<LoadingDialog> createState() => _LoadingDialogState();
+  const LoadingDialog({
+    super.key,
+    required this.processedImages,
+    required this.totalImages,
+  });
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, {
+    required ValueNotifier<int> processedImages,
+    required ValueNotifier<int> totalImages,
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => LoadingDialog(),
+      builder: (_) => LoadingDialog(
+        processedImages: processedImages,
+        totalImages: totalImages,
+      ),
     );
   }
 
   static void hide(BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
   }
-}
-
-class _LoadingDialogState extends State<LoadingDialog> {
-
-  AppLocalizations? loc() {
-    return AppLocalizations.of(context);
-  }
 
   // TODO: This is just a mockup, replace with real progress updates
 
-  double totalImages = 17000;
-  double progress = 0.0;
-  Timer? _timer;
-  
-
-  @override
-  void initState() {
-    super.initState();
-    _startLoading();
-  }
-
-  void _startLoading() {
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      setState(() {
-        progress += 0.01; // 10%
-
-        if (progress >= 1.0) {
-          progress = 1.0;
-          _timer?.cancel();
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         content: SizedBox(
@@ -80,31 +54,37 @@ class _LoadingDialogState extends State<LoadingDialog> {
               ),
               const SizedBox(height: 50),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      loc()!.loadingDialog_analyzing,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      loc()!.loadingDialog_grabCoffee,
-                    ),
-                    const SizedBox(height: 30),
-                    LinearProgressIndicator(
-                      value: progress,
-                      semanticsLabel: loc()!.loadingDialog_semanticsLabel,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      '${(totalImages*progress).toInt()} / ${totalImages.toInt()}',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
+                child: ValueListenableBuilder<int>(
+                  valueListenable: processedImages,
+                  builder: (_, processed, _) {
+                    final total = totalImages.value;
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          loc!.loadingDialog_analyzing,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          loc!.loadingDialog_grabCoffee,
+                        ),
+                        const SizedBox(height: 30),
+                        LinearProgressIndicator(
+                          value: total > 0 ? processed / total : null,
+                          semanticsLabel: loc.loadingDialog_semanticsLabel,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '$processed / $total',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    );
+                  }
                 ),
               ),
             ],

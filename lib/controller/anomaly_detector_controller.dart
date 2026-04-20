@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
 
 /// Anomaly Detector Controller handles the communication with the anomaly detection service.
@@ -8,6 +11,9 @@ class AnomalyDetectorController {
 
   final AnomalyDetectorServiceClient anomalyDetectorClient;
 
+  // Used for polling for progress.
+  Timer? _progressTimer;
+
   /// Gets the project information from the anomaly detection service.
   ///
   /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
@@ -15,15 +21,16 @@ class AnomalyDetectorController {
     required String projectName,
     required String imagePath,
     required String sosiPath,
-  }) async => await anomalyDetectorClient.describeAnomalyProject(
-      DescribeAnomalyProjectRequest(
-        projectMetadata: ProjectMetadata(
-          sosiFilePath: sosiPath,
-          imageFolderPath: imagePath,
-          projectName: projectName,
+  }) async =>
+      await anomalyDetectorClient.describeAnomalyProject(
+        DescribeAnomalyProjectRequest(
+          projectMetadata: ProjectMetadata(
+            sosiFilePath: sosiPath,
+            imageFolderPath: imagePath,
+            projectName: projectName,
+          ),
         ),
-      ),
-    );
+      );
 
   /// Sends a start procedure to the anomaly service with supplied data.
   ///
@@ -51,11 +58,40 @@ class AnomalyDetectorController {
     );
   }
 
+  /// Gets progress of analysis
   Future<GetProgressResponse> getProgress({
     required String projectName
-  }) async => await anomalyDetectorClient.getProgress(
-      GetProgressRequest(
-        projectName: projectName
-      ),
+  }) async =>
+      await anomalyDetectorClient.getProgress(
+        GetProgressRequest(
+            projectName: projectName
+        ),
+      );
+
+  void startPolling({
+    required String projectName,
+    required ValueNotifier<int> processedImages,
+    required ValueNotifier<int> totalImages,
+  }) async {
+    // initial request to populate progress before poll starts.
+    final response = await anomalyDetectorClient.getProgress(
+      GetProgressRequest(projectName: projectName),
     );
+    // Commented out as we always start new analysis currently so this should be 0 initially.
+    // processedImages.value = response.lastProcessedImage;
+    totalImages.value = response.totalImages;
+
+    _progressTimer = Timer.periodic(const Duration(seconds: 10), (_) async {
+      final response = await anomalyDetectorClient.getProgress(
+        GetProgressRequest(projectName: projectName),
+      );
+      processedImages.value = response.lastProcessedImage;
+      totalImages.value = response.totalImages;
+    });
+  }
+
+  void stopPolling() {
+    _progressTimer?.cancel();
+    _progressTimer = null;
+  }
 }

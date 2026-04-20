@@ -6,6 +6,7 @@ import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
+import 'package:skavl/widgets/dialogs/loading_popup.dart';
 import 'package:skavl/widgets/labels/fieldlabels.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 
@@ -31,20 +32,40 @@ class _ProjectOverviewState extends State<ProjectOverview> {
   ///
   /// Will need to do incremental writes eventually to allow partial project completion.
   Future<void> _startAnomalyDetection(
-      ProjectManagerService projectManager,) async {
+    ProjectManagerService projectManager,
+  ) async {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
+    final processedImages = ValueNotifier<int>(0);
+    final totalImages = ValueNotifier<int>(0);
+
+    final controller = context.read<AnomalyServiceProvider>().controller;
+
+    LoadingDialog.show(
+      context,
+      processedImages: processedImages,
+      totalImages: totalImages,
+    );
+
+    controller.startPolling(
+      projectName: projectManager.loadedProject!.projectName,
+      processedImages: processedImages,
+      totalImages: totalImages,
+    );
+
+    controller
         .runAnalysis(
           projectName: projectManager.loadedProject!.projectName,
           imagePath: imagePath,
           sosiPath: sosiPath,
-          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath
+          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath,
         )
         .then((response) {
+          controller.stopPolling();
+          if (context.mounted) {
+            LoadingDialog.hide(context);
+          }
           final sets = response.anomalyResponse.anomalySets
               .map(
                 (s) => AnomalySet(
@@ -162,7 +183,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                               ? loc.g_noImagesProcessed
                               : projectManager
                                     .loadedProject!
-                                    .allSets[_projectInfo!.lastProcessedImage]
+                                    .allSets[_projectInfo!.lastProcessedImage-1]
                                     .imageName,
                         ),
                       ],
@@ -188,7 +209,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                         Text(
                           loc.projectOverview_runAnalysis,
                           style: Theme.of(context).textTheme.bodyMedium,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -209,7 +230,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                         Icon(
                           Icons.arrow_forward_ios_outlined,
                           size: 20,
-                          color: Theme.of(context).brightness == Brightness.light
+                          color:
+                              Theme.of(context).brightness == Brightness.light
                               ? MyColors.secondaryBlack
                               : MyColors.primaryWhite,
                         ),
@@ -228,11 +250,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       children: [
                         Text(
                           "Test progress fetch",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyMedium,
-                        )
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),
