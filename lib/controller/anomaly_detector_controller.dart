@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
 
+import '../entity/analysis_progress.dart';
+
 /// Anomaly Detector Controller handles the communication with the anomaly detection service.
 ///
 /// This class provides methods for common operations such as getting project info, running analysis and manipulating data.
@@ -70,23 +72,19 @@ class AnomalyDetectorController {
 
   void startPolling({
     required String projectName,
-    required ValueNotifier<int> processedImages,
-    required ValueNotifier<int> totalImages,
+    required ValueNotifier<AnalysisProgress> progress
   }) async {
     // initial request to populate progress before poll starts.
     final response = await anomalyDetectorClient.getProgress(
       GetProgressRequest(projectName: projectName),
     );
-    // Commented out as we always start new analysis currently so this should be 0 initially.
-    // processedImages.value = response.lastProcessedImage;
-    totalImages.value = response.totalImages;
+    progress.value = AnalysisProgress(response.lastProcessedImage, response.totalImages);
 
     _progressTimer = Timer.periodic(const Duration(seconds: 10), (_) async {
       final response = await anomalyDetectorClient.getProgress(
         GetProgressRequest(projectName: projectName),
       );
-      processedImages.value = response.lastProcessedImage;
-      totalImages.value = response.totalImages;
+      progress.value = AnalysisProgress(response.lastProcessedImage, response.totalImages);
     });
   }
 

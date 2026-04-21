@@ -1,27 +1,24 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 
+import '../../entity/analysis_progress.dart';
+
 class LoadingDialog extends StatelessWidget {
-  final ValueNotifier<int> processedImages;
-  final ValueNotifier<int> totalImages;
+  final ValueNotifier<AnalysisProgress> progress;
 
   const LoadingDialog({
     super.key,
-    required this.processedImages,
-    required this.totalImages,
+    required this.progress
   });
 
   static void show(BuildContext context, {
-    required ValueNotifier<int> processedImages,
-    required ValueNotifier<int> totalImages,
+    required ValueNotifier<AnalysisProgress> progress
   }) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (_) => LoadingDialog(
-        processedImages: processedImages,
-        totalImages: totalImages,
+        progress: progress,
       ),
     );
   }
@@ -29,8 +26,6 @@ class LoadingDialog extends StatelessWidget {
   static void hide(BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
   }
-
-  // TODO: This is just a mockup, replace with real progress updates
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +49,10 @@ class LoadingDialog extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               Expanded(
-                child: ValueListenableBuilder<int>(
-                  valueListenable: processedImages,
+                child: ValueListenableBuilder<AnalysisProgress>(
+                  valueListenable: progress,
                   builder: (_, processed, _) {
-                    final total = totalImages.value;
+                    final total = progress.value.total;
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -69,17 +64,17 @@ class LoadingDialog extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          loc!.loadingDialog_grabCoffee,
+                          loc.loadingDialog_grabCoffee,
                         ),
                         const SizedBox(height: 30),
                         LinearProgressIndicator(
-                          value: total > 0 ? processed / total : null,
+                          value: total > 0 ? processed.processed / total : null,
                           semanticsLabel: loc.loadingDialog_semanticsLabel,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          '$processed / $total',
+                          '${processed.processed} / $total',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
