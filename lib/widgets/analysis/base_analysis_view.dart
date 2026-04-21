@@ -160,12 +160,12 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
             });
 
             final totalImages =
-                projectManager?.loadedProject?.anomaliesInRange.length ?? 0;
+                projectManager.loadedProject?.anomaliesInRange.length ?? 0;
 
             final current = totalImages > 0
-                ? projectManager!
+                ? projectManager
                       .loadedProject!
-                      .anomaliesInRange[projectManager!
+                      .anomaliesInRange[projectManager
                       .loadedProject!
                       .currentPage]
                 : null;
