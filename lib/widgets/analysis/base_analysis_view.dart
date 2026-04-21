@@ -9,9 +9,11 @@ import 'package:path/path.dart' as path;
 import 'package:skavl/controller/tile_scene_controller.dart';
 import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
+import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
 import 'package:vector_math/vector_math_64.dart';
+import 'package:provider/provider.dart';
 
 /// The base class for analysis views, which provides common functionality for both StaticView and FreeView.
 ///
@@ -22,7 +24,6 @@ abstract class BaseAnalysisView extends StatefulWidget {
 
 /// The state for BaseAnalysisView, which manages the tile loading and rendering logic.
 abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
-
   // Controllers
   late final TransformationController tc;
   late final TileSceneController sceneController;
@@ -49,14 +50,20 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   // Fit-to-scene on load
   bool pendingFitToScene = false;
 
-  late final void Function() tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
+  late final void Function()
+  tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
 
   Rect getSceneRect(); // Scene bounds (used for sizing the canvas)
-  Map<String, Rect>? getCustomRects(); // Optional custom rects (FreeView uses this)
-  Rect? resolveRectSafe(String sourceId); // Resolve sourceId to a rect, but return null if not available
+  Map<String, Rect>?
+  getCustomRects(); // Optional custom rects (FreeView uses this)
+  Rect? resolveRectSafe(
+    String sourceId,
+  ); // Resolve sourceId to a rect, but return null if not available
   List<String> getImagePaths(); // Provide image paths
 
-  Widget buildViewport(Widget child); // Wrap the scene (used for grid / gestures / etc.)
+  Widget buildViewport(
+    Widget child,
+  ); // Wrap the scene (used for grid / gestures / etc.)
 
   /// Returns [count] full paths centred on the current page.
   ///
@@ -72,9 +79,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
     final folder = project.imageFolderPath;
     final before = count ~/ 2;
-    final after  = count - before - 1;
+    final after = count - before - 1;
     final from = (centerIdx - before).clamp(0, project.allSets.length - 1);
-    final to   = (centerIdx + after).clamp(0, project.allSets.length - 1);
+    final to = (centerIdx + after).clamp(0, project.allSets.length - 1);
 
     return project.allSets
         .sublist(from, to + 1)
@@ -127,6 +134,8 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    final ProjectManagerService projectManager = context
+        .read<ProjectManagerService>();
     return LayoutBuilder(
       builder: (context, constraints) {
         lastViewportSize = constraints.biggest;
@@ -139,7 +148,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
             }
 
             if (sceneController.sourceOrder.isEmpty) {
-              return const Center(child: Text('No anomalies match the current sensitivity.'));
+              return const Center(
+                child: Text('No anomalies match the current sensitivity.'),
+              );
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -148,18 +159,28 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
               scheduleViewportPlan();
             });
 
-            final windowSize = sceneController.sourceOrder.length;
-            final highlightIdx = (windowSize ~/ 2).clamp(0, windowSize - 1);
+            final totalImages =
+                projectManager.loadedProject?.anomaliesInRange.length ?? 0;
+
+            final current = totalImages > 0
+                ? projectManager
+                      .loadedProject!
+                      .anomaliesInRange[projectManager
+                      .loadedProject!
+                      .currentPage]
+                : null;
 
             final sceneRect = getSceneRect();
             final tileStack = SizedBox(
               width: sceneRect.width,
               height: sceneRect.height,
-              child: Stack(children: buildTiles(
-                highlightedSourceId: sceneController.sourceOrder.isNotEmpty
-                    ? sceneController.sourceOrder[highlightIdx]
-                    : null,
-              )),
+              child: Stack(
+                children: buildTiles(
+                  highlightedSourceId: sceneController.sourceOrder.isNotEmpty
+                      ? current?.imageName
+                      : null,
+                ),
+              ),
             );
             // The subclass is responsible for wrapping with InteractiveViewer
             return buildViewport(tileStack);
@@ -221,8 +242,12 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     final scaleY = viewportSize.height / sceneRect.height;
     final scale = min(scaleX, scaleY) * 0.9;
 
-    final dx = (viewportSize.width - sceneRect.width * scale) / 2 - sceneRect.left * scale;
-    final dy = (viewportSize.height - sceneRect.height * scale) / 2 - sceneRect.top * scale;
+    final dx =
+        (viewportSize.width - sceneRect.width * scale) / 2 -
+        sceneRect.left * scale;
+    final dy =
+        (viewportSize.height - sceneRect.height * scale) / 2 -
+        sceneRect.top * scale;
 
     tc.value = Matrix4.identity()
       ..translateByVector3(Vector3(dx, dy, 0.0))
