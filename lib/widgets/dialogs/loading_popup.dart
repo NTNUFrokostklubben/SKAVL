@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/controller/anomaly_detector_controller.dart';
+import 'package:skavl/entity/analysis_progress.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/proto/anomaly.pb.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/widgets/long_button.dart';
 
-import '../../entity/analysis_progress.dart';
+
 
 class LoadingDialog extends StatelessWidget {
   final ValueNotifier<AnalysisProgress> progress;
