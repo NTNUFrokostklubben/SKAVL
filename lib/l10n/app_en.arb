@@ -223,6 +223,11 @@
     "description": "Linear progress indicator - semantics label"
   },
 
+  "loadingDialog_stop": "Stop Analysis",
+  "@loadingDialog_stop": {
+    "description": "Stop analysis"
+  },
+
   "confirmAnomaly_imageName": "Image name",
   "@confirmAnomaly_imageName": {
     "description": "Image name - subtext"

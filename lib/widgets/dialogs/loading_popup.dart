@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/widgets/long_button.dart';
 
 import '../../entity/analysis_progress.dart';
 
@@ -21,6 +22,10 @@ class LoadingDialog extends StatelessWidget {
         progress: progress,
       ),
     );
+  }
+
+  Future<void> _stopAnalysis() async {
+    print("object");
   }
 
   static void hide(BuildContext context) {
@@ -82,6 +87,7 @@ class LoadingDialog extends StatelessWidget {
                   }
                 ),
               ),
+              LongButton(loc!.loadingDialog_stop, onPressed: _stopAnalysis,)
             ],
           ),
         ),

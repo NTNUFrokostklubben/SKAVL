@@ -225,6 +225,11 @@
     "description": "Linear fremdriftsindikator - semantics label"
   },
 
+  "loadingDialog_stop": "Stopp analyse",
+  "@loadingDialog_stop": {
+    "description": "Stop analysis"
+  },
+
   "confirmAnomaly_imageName": "Bilde navn",
   "@confirmAnomaly_imageName": {
     "description": "Bilde navn - subtext"
