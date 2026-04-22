@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/controller/anomaly_detector_controller.dart';
 import 'package:skavl/l10n/app_localizations.dart';
