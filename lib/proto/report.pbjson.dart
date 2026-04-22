@@ -42,6 +42,7 @@ const ReportGenerationRequest$json = {
       '5': 2,
       '10': 'confidenceThreshold'
     },
+    {'1': 'locale', '3': 4, '4': 1, '5': 9, '10': 'locale'},
   ],
 };
 
@@ -50,7 +51,8 @@ final $typed_data.Uint8List reportGenerationRequestDescriptor = $convert.base64D
     'ChdSZXBvcnRHZW5lcmF0aW9uUmVxdWVzdBJMChBwcm9qZWN0X21ldGFkYXRhGAEgASgLMiEuc2'
     'thdmwuYW5vbWFseS52MS5Qcm9qZWN0TWV0YWRhdGFSD3Byb2plY3RNZXRhZGF0YRI/Cgxhbm9t'
     'YWx5X3NldHMYAiADKAsyHC5za2F2bC5hbm9tYWx5LnYxLkFub21hbHlTZXRSC2Fub21hbHlTZX'
-    'RzEjEKFGNvbmZpZGVuY2VfdGhyZXNob2xkGAMgASgCUhNjb25maWRlbmNlVGhyZXNob2xk');
+    'RzEjEKFGNvbmZpZGVuY2VfdGhyZXNob2xkGAMgASgCUhNjb25maWRlbmNlVGhyZXNob2xkEhYK'
+    'BmxvY2FsZRgEIAEoCVIGbG9jYWxl');
 
 @$core.Deprecated('Use reportGenerationResponseDescriptor instead')
 const ReportGenerationResponse$json = {

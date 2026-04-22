@@ -6,9 +6,11 @@ import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
+import 'package:skavl/widgets/dialogs/loading_popup.dart';
 import 'package:skavl/widgets/labels/fieldlabels.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 
+import '../entity/analysis_progress.dart';
 import '../entity/anomaly_set.dart';
 import '../l10n/app_localizations.dart';
 import '../proto/anomaly.pb.dart' as proto;
@@ -36,16 +38,30 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
-    context
-        .read<AnomalyServiceProvider>()
-        .controller
+    final ValueNotifier<AnalysisProgress> progress =
+        ValueNotifier<AnalysisProgress>(AnalysisProgress(0, 0));
+
+    final controller = context.read<AnomalyServiceProvider>().controller;
+
+    LoadingDialog.show(context, progress: progress);
+
+    controller.startPolling(
+      projectName: projectManager.loadedProject!.projectName,
+      progress: progress,
+    );
+
+    final navigator = Navigator.of(context, rootNavigator: true);
+
+    controller
         .runAnalysis(
           projectName: projectManager.loadedProject!.projectName,
           imagePath: imagePath,
           sosiPath: sosiPath,
-          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath
+          waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath,
         )
         .then((response) {
+          controller.stopPolling();
+          navigator.pop();
           final sets = response.anomalyResponse.anomalySets
               .map(
                 (s) => AnomalySet(
@@ -154,7 +170,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                               ? loc.g_noImagesProcessed
                               : projectManager
                                     .loadedProject!
-                                    .allSets[_projectInfo!.lastProcessedImage]
+                                    .allSets
+                                    .last
                                     .imageName,
                         ),
                       ],
@@ -180,7 +197,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                         Text(
                           loc.projectOverview_runAnalysis,
                           style: Theme.of(context).textTheme.bodyMedium,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -201,7 +218,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                         Icon(
                           Icons.arrow_forward_ios_outlined,
                           size: 20,
-                          color: Theme.of(context).brightness == Brightness.light
+                          color:
+                              Theme.of(context).brightness == Brightness.light
                               ? MyColors.secondaryBlack
                               : MyColors.primaryWhite,
                         ),

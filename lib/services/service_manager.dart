@@ -12,10 +12,11 @@ class ServiceManager {
   final String _relativeExePath;
   Process? _process;
   final _statusController = StreamController<ServiceStatus>.broadcast();
+  bool autoRestart;
 
   Stream<ServiceStatus> get statusStream => _statusController.stream;
 
-  ServiceManager(this._relativeExePath);
+  ServiceManager(this._relativeExePath, {this.autoRestart = true});
 
   /// Getter for the absolute path to the service executable.
   String get _exePath {

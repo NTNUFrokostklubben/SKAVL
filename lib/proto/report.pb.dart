@@ -24,12 +24,14 @@ class ReportGenerationRequest extends $pb.GeneratedMessage {
     $1.ProjectMetadata? projectMetadata,
     $core.Iterable<$1.AnomalySet>? anomalySets,
     $core.double? confidenceThreshold,
+    $core.String? locale,
   }) {
     final result = create();
     if (projectMetadata != null) result.projectMetadata = projectMetadata;
     if (anomalySets != null) result.anomalySets.addAll(anomalySets);
     if (confidenceThreshold != null)
       result.confidenceThreshold = confidenceThreshold;
+    if (locale != null) result.locale = locale;
     return result;
   }
 
@@ -53,6 +55,7 @@ class ReportGenerationRequest extends $pb.GeneratedMessage {
         subBuilder: $1.AnomalySet.create)
     ..aD(3, _omitFieldNames ? '' : 'confidenceThreshold',
         fieldType: $pb.PbFieldType.OF)
+    ..aOS(4, _omitFieldNames ? '' : 'locale')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -97,6 +100,15 @@ class ReportGenerationRequest extends $pb.GeneratedMessage {
   $core.bool hasConfidenceThreshold() => $_has(2);
   @$pb.TagNumber(3)
   void clearConfidenceThreshold() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get locale => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set locale($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLocale() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLocale() => $_clearField(4);
 }
 
 /// Response containing the URL to the generated report
