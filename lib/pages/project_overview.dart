@@ -38,18 +38,16 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
-    final ValueNotifier<AnalysisProgress> progress = ValueNotifier<AnalysisProgress>(AnalysisProgress(0, 0));
+    final ValueNotifier<AnalysisProgress> progress =
+        ValueNotifier<AnalysisProgress>(AnalysisProgress(0, 0));
 
     final controller = context.read<AnomalyServiceProvider>().controller;
 
-    LoadingDialog.show(
-      context,
-      progress: progress
-    );
+    LoadingDialog.show(context, progress: progress);
 
     controller.startPolling(
       projectName: projectManager.loadedProject!.projectName,
-      progress: progress
+      progress: progress,
     );
 
     final navigator = Navigator.of(context, rootNavigator: true);
@@ -172,7 +170,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                               ? loc.g_noImagesProcessed
                               : projectManager
                                     .loadedProject!
-                                    .allSets[_projectInfo!.lastProcessedImage]
+                                    .allSets
+                                    .last
                                     .imageName,
                         ),
                       ],

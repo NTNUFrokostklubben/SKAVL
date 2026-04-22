@@ -228,6 +228,11 @@
     "description": "Stop analysis"
   },
 
+  "loadingDialog_stopping": "Stopping Analysis - Please wait",
+  "@loadingDialog_stopping": {
+    "description": "Stopping analysis - subtext"
+  },
+
   "confirmAnomaly_imageName": "Image name",
   "@confirmAnomaly_imageName": {
     "description": "Image name - subtext"

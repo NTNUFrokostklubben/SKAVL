@@ -7,5 +7,6 @@ import 'package:flutter/cupertino.dart';
 class AnalysisProgress {
   final int processed;
   final int total;
-  AnalysisProgress(this.processed, this.total);
+  final bool isStopping;
+  AnalysisProgress(this.processed, this.total, {this.isStopping = false});
 }

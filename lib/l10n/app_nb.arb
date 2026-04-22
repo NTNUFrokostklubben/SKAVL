@@ -230,6 +230,11 @@
     "description": "Stop analysis"
   },
 
+  "loadingDialog_stopping": "Stopper Analyse - Vennligst vent",
+  "@loadingDialog_stopping": {
+    "description": "Stopping analysis - subtext"
+  },
+
   "confirmAnomaly_imageName": "Bilde navn",
   "@confirmAnomaly_imageName": {
     "description": "Bilde navn - subtext"

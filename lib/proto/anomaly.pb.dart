@@ -97,6 +97,7 @@ class AnomalySet extends $pb.GeneratedMessage {
     $core.int? lineNumber,
     $core.int? imageNumber,
     UtmCoordinate? geotiffCoordinate,
+    $core.String? userClassification,
   }) {
     final result = create();
     if (imageName != null) result.imageName = imageName;
@@ -105,6 +106,8 @@ class AnomalySet extends $pb.GeneratedMessage {
     if (lineNumber != null) result.lineNumber = lineNumber;
     if (imageNumber != null) result.imageNumber = imageNumber;
     if (geotiffCoordinate != null) result.geotiffCoordinate = geotiffCoordinate;
+    if (userClassification != null)
+      result.userClassification = userClassification;
     return result;
   }
 
@@ -130,6 +133,7 @@ class AnomalySet extends $pb.GeneratedMessage {
     ..aI(5, _omitFieldNames ? '' : 'imageNumber')
     ..aOM<UtmCoordinate>(6, _omitFieldNames ? '' : 'geotiffCoordinate',
         subBuilder: UtmCoordinate.create)
+    ..aOS(7, _omitFieldNames ? '' : 'userClassification')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -205,6 +209,15 @@ class AnomalySet extends $pb.GeneratedMessage {
   void clearGeotiffCoordinate() => $_clearField(6);
   @$pb.TagNumber(6)
   UtmCoordinate ensureGeotiffCoordinate() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  $core.String get userClassification => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set userClassification($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasUserClassification() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearUserClassification() => $_clearField(7);
 }
 
 /// List of images processed with their confidence levels
@@ -800,6 +813,118 @@ class GetProgressResponse extends $pb.GeneratedMessage {
   $core.bool hasTotalImages() => $_has(2);
   @$pb.TagNumber(3)
   void clearTotalImages() => $_clearField(3);
+}
+
+/// Request to stop a running analysis with given project name.
+class StopAnalysisRequest extends $pb.GeneratedMessage {
+  factory StopAnalysisRequest({
+    $core.String? projectName,
+  }) {
+    final result = create();
+    if (projectName != null) result.projectName = projectName;
+    return result;
+  }
+
+  StopAnalysisRequest._();
+
+  factory StopAnalysisRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StopAnalysisRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StopAnalysisRequest',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'skavl.anomaly.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'projectName')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StopAnalysisRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StopAnalysisRequest copyWith(void Function(StopAnalysisRequest) updates) =>
+      super.copyWith((message) => updates(message as StopAnalysisRequest))
+          as StopAnalysisRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StopAnalysisRequest create() => StopAnalysisRequest._();
+  @$core.override
+  StopAnalysisRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StopAnalysisRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StopAnalysisRequest>(create);
+  static StopAnalysisRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get projectName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set projectName($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasProjectName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProjectName() => $_clearField(1);
+}
+
+/// Ack bool to confirm that stop request was received.
+class StopAnalysisResponse extends $pb.GeneratedMessage {
+  factory StopAnalysisResponse({
+    $core.bool? acknowledged,
+  }) {
+    final result = create();
+    if (acknowledged != null) result.acknowledged = acknowledged;
+    return result;
+  }
+
+  StopAnalysisResponse._();
+
+  factory StopAnalysisResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StopAnalysisResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StopAnalysisResponse',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'skavl.anomaly.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'acknowledged')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StopAnalysisResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StopAnalysisResponse copyWith(void Function(StopAnalysisResponse) updates) =>
+      super.copyWith((message) => updates(message as StopAnalysisResponse))
+          as StopAnalysisResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StopAnalysisResponse create() => StopAnalysisResponse._();
+  @$core.override
+  StopAnalysisResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StopAnalysisResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StopAnalysisResponse>(create);
+  static StopAnalysisResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get acknowledged => $_getBF(0);
+  @$pb.TagNumber(1)
+  set acknowledged($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasAcknowledged() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAcknowledged() => $_clearField(1);
 }
 
 const $core.bool _omitFieldNames =
