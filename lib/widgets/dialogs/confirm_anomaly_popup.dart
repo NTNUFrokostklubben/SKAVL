@@ -31,8 +31,6 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
   late final FocusNode _classificationFocusNode;
   AnomalyDef _selectedDef = AnomalyDef.anomaly;
 
-  // TODO: how do we make the dropdown options dynamic when the users add new anomaly types in terms of language?
-
   List<String> anomalyTypes = [];
 
   String? selectedAnomaly;
@@ -117,7 +115,16 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
                 ],
                 selected: {_selectedDef},
                 onSelectionChanged: (set) {
-                  setState(() => _selectedDef = set.first);
+                  final newValue = set.first;
+
+                  setState(() {
+                    _selectedDef = newValue;
+
+                    if (_selectedDef == AnomalyDef.noAnomaly) {
+                      _classificationController.clear();
+                      selectedAnomaly = null;
+                    }
+                  });
                 },
               ),
             ),
@@ -128,22 +135,28 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
               style: Theme.of(context).textTheme.titleSmall,
             ),
 
-            AutocompleteDropdown(
-              controller: _classificationController,
-              focusNode: _classificationFocusNode,
-              options: anomalyTypes,
+            Opacity(
+              opacity: _selectedDef == AnomalyDef.noAnomaly ? 0.2 : 1,
+              child: IgnorePointer(
+                ignoring: _selectedDef == AnomalyDef.noAnomaly,
+                child: AutocompleteDropdown(
+                  controller: _classificationController,
+                  focusNode: _classificationFocusNode,
+                  options: anomalyTypes,
 
-              onSelected: (value) {
-                setState(() {
-                  selectedAnomaly = value;
-                });
-              },
+                  onSelected: (value) {
+                    setState(() {
+                      selectedAnomaly = value;
+                    });
+                  },
 
-              onCreate: (newValue) {
-                setState(() {
-                  anomalyTypes.add(newValue);
-                });
-              },
+                  onCreate: (newValue) {
+                    setState(() {
+                      anomalyTypes.add(newValue);
+                    });
+                  },
+                ),
+              ),
             ),
           ],
         ),
@@ -168,13 +181,15 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
         ElevatedButton(
           onPressed: () async {
             final text = _classificationController.text.trim();
-            if (text.isEmpty) return;
-            await AnomalyTypeHistoryService().add(text);
+            if (text.isEmpty && _selectedDef == AnomalyDef.anomaly) return;
+            if (_selectedDef==AnomalyDef.anomaly){
+              await AnomalyTypeHistoryService().add(text);
+            }
             if (!context.mounted) return;
             Navigator.of(context).pop(
               AnomalyClassification(
                 anomalyDef: _selectedDef,
-                userClassification: text,
+                userClassification: _selectedDef == AnomalyDef.noAnomaly ? null : text,
               ),
             );
           },

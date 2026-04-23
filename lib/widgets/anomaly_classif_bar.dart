@@ -133,12 +133,18 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
     final ProjectMetadata project = _projectManager!.loadedProject!;
     final String filePath = _projectManager!.filePath!;
     final AnomalySet current = project.anomaliesInRange[project.currentPage];
-    final int index = project.allSets.indexOf(current);
+
+    final int index = project.allSets.indexWhere(
+      (s) => s.imageName == current.imageName,
+    );
+    if (index == -1) return;
 
     final updatedSets = List<AnomalySet>.from(project.allSets);
-    updatedSets[index] = current.copyWith(
+
+    updatedSets[index] = updatedSets[index].copyWith(
       anomalyDef: result.anomalyDef,
       userClassification: result.userClassification,
+      clearUserClassification: result.anomalyDef == AnomalyDef.noAnomaly,
     );
 
     final ProjectMetadata updated = project.copyWith(allSets: updatedSets);

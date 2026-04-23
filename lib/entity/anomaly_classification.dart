@@ -7,7 +7,7 @@ import 'anomaly_def.dart';
 /// Used primarily with [ConfirmAnomalyDialog]
 class AnomalyClassification {
   final AnomalyDef anomalyDef;
-  final String userClassification;
+  final String? userClassification;
 
   AnomalyClassification({
     required this.anomalyDef,
