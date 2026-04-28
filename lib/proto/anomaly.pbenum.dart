@@ -44,16 +44,19 @@ class AnomalyTypes extends $pb.ProtobufEnum {
       AnomalyTypes._(2, _omitEnumNames ? '' : 'WATER_MASK');
   static const AnomalyTypes ARTIFACT =
       AnomalyTypes._(3, _omitEnumNames ? '' : 'ARTIFACT');
+  static const AnomalyTypes ARTIFACT_LINE =
+      AnomalyTypes._(4, _omitEnumNames ? '' : 'ARTIFACT_LINE');
 
   static const $core.List<AnomalyTypes> values = <AnomalyTypes>[
     UNDEFINED,
     COLOR_AVERAGE,
     WATER_MASK,
     ARTIFACT,
+    ARTIFACT_LINE,
   ];
 
   static final $core.List<AnomalyTypes?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 3);
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
   static AnomalyTypes? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

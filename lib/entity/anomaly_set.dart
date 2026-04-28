@@ -51,14 +51,17 @@ class AnomalySet {
   AnomalySet copyWith({
     AnomalyDef? anomalyDef,
     String? userClassification,
+    bool clearUserClassification = false,
   }) => AnomalySet(
     imageName: imageName,
-    anomalyDef: anomalyDef ?? this.anomalyDef,
-    userClassification: userClassification ?? this.userClassification,
-    anomalyConf: anomalyConf,
-    lineNumber: lineNumber,
-    imageNumber: imageNumber,
-    anomalyType: anomalyType,
+      anomalyDef: anomalyDef ?? this.anomalyDef,
+      userClassification: clearUserClassification
+          ? null
+          : userClassification ?? this.userClassification,
+      anomalyConf: anomalyConf,
+      lineNumber: lineNumber,
+      imageNumber: imageNumber,
+      anomalyType: anomalyType,
   );
 }
 

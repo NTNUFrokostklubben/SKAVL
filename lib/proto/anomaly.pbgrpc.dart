@@ -50,6 +50,20 @@ class AnomalyDetectorServiceClient extends $grpc.Client {
     return $createUnaryCall(_$detectAnomalySet, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.GetProgressResponse> getProgress(
+    $0.GetProgressRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getProgress, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.StopAnalysisResponse> stopAnalysis(
+    $0.StopAnalysisRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$stopAnalysis, request, options: options);
+  }
+
   // method descriptors
 
   static final _$describeAnomalyProject = $grpc.ClientMethod<
@@ -62,6 +76,16 @@ class AnomalyDetectorServiceClient extends $grpc.Client {
       '/skavl.anomaly.v1.AnomalyDetectorService/DetectAnomalySet',
       ($0.DetectAnomalySetRequest value) => value.writeToBuffer(),
       $0.DetectAnomalySetResponse.fromBuffer);
+  static final _$getProgress =
+      $grpc.ClientMethod<$0.GetProgressRequest, $0.GetProgressResponse>(
+          '/skavl.anomaly.v1.AnomalyDetectorService/GetProgress',
+          ($0.GetProgressRequest value) => value.writeToBuffer(),
+          $0.GetProgressResponse.fromBuffer);
+  static final _$stopAnalysis =
+      $grpc.ClientMethod<$0.StopAnalysisRequest, $0.StopAnalysisResponse>(
+          '/skavl.anomaly.v1.AnomalyDetectorService/StopAnalysis',
+          ($0.StopAnalysisRequest value) => value.writeToBuffer(),
+          $0.StopAnalysisResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('skavl.anomaly.v1.AnomalyDetectorService')
@@ -87,6 +111,24 @@ abstract class AnomalyDetectorServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.DetectAnomalySetRequest.fromBuffer(value),
         ($0.DetectAnomalySetResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.GetProgressRequest, $0.GetProgressResponse>(
+            'GetProgress',
+            getProgress_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.GetProgressRequest.fromBuffer(value),
+            ($0.GetProgressResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.StopAnalysisRequest, $0.StopAnalysisResponse>(
+            'StopAnalysis',
+            stopAnalysis_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.StopAnalysisRequest.fromBuffer(value),
+            ($0.StopAnalysisResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.DescribeAnomalyProjectResponse> describeAnomalyProject_Pre(
@@ -106,4 +148,21 @@ abstract class AnomalyDetectorServiceBase extends $grpc.Service {
 
   $async.Future<$0.DetectAnomalySetResponse> detectAnomalySet(
       $grpc.ServiceCall call, $0.DetectAnomalySetRequest request);
+
+  $async.Future<$0.GetProgressResponse> getProgress_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.GetProgressRequest> $request) async {
+    return getProgress($call, await $request);
+  }
+
+  $async.Future<$0.GetProgressResponse> getProgress(
+      $grpc.ServiceCall call, $0.GetProgressRequest request);
+
+  $async.Future<$0.StopAnalysisResponse> stopAnalysis_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.StopAnalysisRequest> $request) async {
+    return stopAnalysis($call, await $request);
+  }
+
+  $async.Future<$0.StopAnalysisResponse> stopAnalysis(
+      $grpc.ServiceCall call, $0.StopAnalysisRequest request);
 }

@@ -29,6 +29,7 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
   double? _lastSensitivity;
 
   final Map<String, Offset> positions = {};
+  final Map<String, Map<String, Offset>> savedPositions = {};
   String? draggingId;
 
   //----------------------------------
@@ -60,18 +61,40 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
   void _loadCurrentPage(ProjectMetadata project) {
     final paths = getWindowPaths(project, ViewMode.free.imageCount);
     if (paths.isEmpty) return;
+
+    // Save current positions before navigating away
+    if (_lastPage != null) {
+      final currentAnomalies = project.anomaliesInRange;
+      if (_lastPage! < currentAnomalies.length) {
+        final currentAnomalyName = currentAnomalies[_lastPage!].imageName;
+        if (positions.isNotEmpty) {
+          savedPositions[currentAnomalyName] = Map.from(positions);
+        }
+      }
+    }
+
     _lastPage = project.currentPage;
     _lastSensitivity = project.sensitivity;
 
     sceneController.loadSources(paths).then((_) {
       if (!mounted) return;
+
+      final anomalies = project.anomaliesInRange;
+      final anomalyName = project.currentPage < anomalies.length
+          ? anomalies[project.currentPage].imageName
+          : null;
+
+      final saved = anomalyName != null ? savedPositions[anomalyName] : null;
+
       setState(() {
         positions.clear();
         for (final id in sceneController.sourceOrder) {
-          positions[id] = Offset(
-            Random().nextDouble() * 2000,
-            Random().nextDouble() * 2000,
-          );
+          positions[id] =
+              saved?[id] ??
+              Offset(
+                Random().nextDouble() * 20000,
+                Random().nextDouble() * 20000,
+              );
         }
       });
     });

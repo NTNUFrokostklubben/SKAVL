@@ -36,13 +36,14 @@ const AnomalyTypes$json = {
     {'1': 'COLOR_AVERAGE', '2': 1},
     {'1': 'WATER_MASK', '2': 2},
     {'1': 'ARTIFACT', '2': 3},
+    {'1': 'ARTIFACT_LINE', '2': 4},
   ],
 };
 
 /// Descriptor for `AnomalyTypes`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List anomalyTypesDescriptor = $convert.base64Decode(
     'CgxBbm9tYWx5VHlwZXMSDQoJVU5ERUZJTkVEEAASEQoNQ09MT1JfQVZFUkFHRRABEg4KCldBVE'
-    'VSX01BU0sQAhIMCghBUlRJRkFDVBAD');
+    'VSX01BU0sQAhIMCghBUlRJRkFDVBADEhEKDUFSVElGQUNUX0xJTkUQBA==');
 
 @$core.Deprecated('Use utmCoordinateDescriptor instead')
 const UtmCoordinate$json = {
@@ -88,6 +89,18 @@ const AnomalySet$json = {
       '6': '.skavl.anomaly.v1.UtmCoordinate',
       '10': 'geotiffCoordinate'
     },
+    {
+      '1': 'user_classification',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'userClassification',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_user_classification'},
   ],
 };
 
@@ -98,7 +111,8 @@ final $typed_data.Uint8List anomalySetDescriptor = $convert.base64Decode(
     'DjIeLnNrYXZsLmFub21hbHkudjEuQW5vbWFseVR5cGVzUgthbm9tYWx5VHlwZRIfCgtsaW5lX2'
     '51bWJlchgEIAEoBVIKbGluZU51bWJlchIhCgxpbWFnZV9udW1iZXIYBSABKAVSC2ltYWdlTnVt'
     'YmVyEk4KEmdlb3RpZmZfY29vcmRpbmF0ZRgGIAEoCzIfLnNrYXZsLmFub21hbHkudjEuVXRtQ2'
-    '9vcmRpbmF0ZVIRZ2VvdGlmZkNvb3JkaW5hdGU=');
+    '9vcmRpbmF0ZVIRZ2VvdGlmZkNvb3JkaW5hdGUSNAoTdXNlcl9jbGFzc2lmaWNhdGlvbhgHIAEo'
+    'CUgAUhJ1c2VyQ2xhc3NpZmljYXRpb26IAQFCFgoUX3VzZXJfY2xhc3NpZmljYXRpb24=');
 
 @$core.Deprecated('Use anomalyResponseDescriptor instead')
 const AnomalyResponse$json = {
@@ -267,3 +281,64 @@ final $typed_data.Uint8List detectAnomalySetResponseDescriptor =
     $convert.base64Decode(
         'ChhEZXRlY3RBbm9tYWx5U2V0UmVzcG9uc2USTAoQYW5vbWFseV9yZXNwb25zZRgBIAEoCzIhLn'
         'NrYXZsLmFub21hbHkudjEuQW5vbWFseVJlc3BvbnNlUg9hbm9tYWx5UmVzcG9uc2U=');
+
+@$core.Deprecated('Use getProgressRequestDescriptor instead')
+const GetProgressRequest$json = {
+  '1': 'GetProgressRequest',
+  '2': [
+    {'1': 'project_name', '3': 1, '4': 1, '5': 9, '10': 'projectName'},
+  ],
+};
+
+/// Descriptor for `GetProgressRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getProgressRequestDescriptor = $convert.base64Decode(
+    'ChJHZXRQcm9ncmVzc1JlcXVlc3QSIQoMcHJvamVjdF9uYW1lGAEgASgJUgtwcm9qZWN0TmFtZQ'
+    '==');
+
+@$core.Deprecated('Use getProgressResponseDescriptor instead')
+const GetProgressResponse$json = {
+  '1': 'GetProgressResponse',
+  '2': [
+    {'1': 'project_name', '3': 1, '4': 1, '5': 9, '10': 'projectName'},
+    {
+      '1': 'last_processed_image',
+      '3': 2,
+      '4': 1,
+      '5': 5,
+      '10': 'lastProcessedImage'
+    },
+    {'1': 'total_images', '3': 3, '4': 1, '5': 5, '10': 'totalImages'},
+  ],
+};
+
+/// Descriptor for `GetProgressResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getProgressResponseDescriptor = $convert.base64Decode(
+    'ChNHZXRQcm9ncmVzc1Jlc3BvbnNlEiEKDHByb2plY3RfbmFtZRgBIAEoCVILcHJvamVjdE5hbW'
+    'USMAoUbGFzdF9wcm9jZXNzZWRfaW1hZ2UYAiABKAVSEmxhc3RQcm9jZXNzZWRJbWFnZRIhCgx0'
+    'b3RhbF9pbWFnZXMYAyABKAVSC3RvdGFsSW1hZ2Vz');
+
+@$core.Deprecated('Use stopAnalysisRequestDescriptor instead')
+const StopAnalysisRequest$json = {
+  '1': 'StopAnalysisRequest',
+  '2': [
+    {'1': 'project_name', '3': 1, '4': 1, '5': 9, '10': 'projectName'},
+  ],
+};
+
+/// Descriptor for `StopAnalysisRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stopAnalysisRequestDescriptor = $convert.base64Decode(
+    'ChNTdG9wQW5hbHlzaXNSZXF1ZXN0EiEKDHByb2plY3RfbmFtZRgBIAEoCVILcHJvamVjdE5hbW'
+    'U=');
+
+@$core.Deprecated('Use stopAnalysisResponseDescriptor instead')
+const StopAnalysisResponse$json = {
+  '1': 'StopAnalysisResponse',
+  '2': [
+    {'1': 'acknowledged', '3': 1, '4': 1, '5': 8, '10': 'acknowledged'},
+  ],
+};
+
+/// Descriptor for `StopAnalysisResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stopAnalysisResponseDescriptor = $convert.base64Decode(
+    'ChRTdG9wQW5hbHlzaXNSZXNwb25zZRIiCgxhY2tub3dsZWRnZWQYASABKAhSDGFja25vd2xlZG'
+    'dlZA==');
