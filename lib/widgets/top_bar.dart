@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/main.dart';
-import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/settings.dart';
 import 'package:skavl/util/project_actions.dart';
@@ -80,9 +79,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         menuItem(loc()!.g_home, () {
                           navigateTo(context, MainPage());
                         }),
-                        menuItem("Analysis page", () {
-                          navigateTo(context, Analysis());
-                        }),
                         PopupMenuDivider(),
                         menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),
                         menuItem(loc()!.topbar_saveAs, () => ProjectActions.saveAs(context)),
@@ -91,9 +87,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                         }),
                         menuItem(loc()!.topbar_openProject, () => ProjectActions.openProject(context)),
                         submenu(loc()!.topbar_openRecent, []),
-                        submenu(loc()!.g_share, [
-                          menuItem(loc()!.g_share, () {}),
-                        ]),
                         menuItem("${loc()!.g_close} ${loc()!.g_project}", () => ProjectActions.closeProject(context)),
                         menuItem(loc()!.g_quit, () {}),
                       ],
@@ -112,18 +105,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                       ), // Parent
                     ),
                     SubmenuButton(
-                      menuChildren: <Widget>[],
-                      child: MenuAcceleratorLabel(
-                        '&${loc()!.g_view}',
-                      ), // Parent
-                    ),
-                    SubmenuButton(
                       menuChildren: <Widget>[
                         menuItem(loc()!.topbar_about, () {
                           showAboutDialog(
                             context: foreignContext,
                             applicationName: 'Skavl',
-                            applicationVersion: '0.1.0',
+                            applicationVersion: '0.1.1',
                             applicationLegalese: '© 2026 Bouvetøya AS',
                           );
                         }),
