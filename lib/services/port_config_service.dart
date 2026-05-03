@@ -17,9 +17,9 @@ class PortConfigService {
 
   /// Service default values
   static const List<ServicePortConfig> _defaults = [
-    ServicePortConfig(name: 'tiler', ip: '127.0.0.1', port: 50021),
-    ServicePortConfig(name: 'anomaly_detection', ip: '127.0.0.1', port: 50022),
-    ServicePortConfig(name: 'report_generation', ip: '127.0.0.1', port: 50023),
+    ServicePortConfig(name: 'skavl_tiler', ip: '127.0.0.1', port: 50021),
+    ServicePortConfig(name: 'skavl_anomaly', ip: '127.0.0.1', port: 50022),
+    ServicePortConfig(name: 'skavl_report', ip: '127.0.0.1', port: 50023),
   ];
 
   /// Gets normalized filepath to where the process is running
@@ -80,11 +80,7 @@ class PortConfigService {
   }
 
   /// Returns the [ServicePortConfig] for a given service name, or null if not found.
-  ServicePortConfig? getConfig(String name) {
-    try {
-      return _configs.firstWhere((c) => c.name == name);
-    } catch (_) {
-      return null;
-    }
+  ServicePortConfig getConfig(String name) {
+    return _configs.firstWhere((c) => c.name == name);
   }
 }

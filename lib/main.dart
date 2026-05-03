@@ -128,11 +128,14 @@ class _MainPageState extends State<MainPage> {
   Future<void> _initServices() async {
     await PortConfigService().initialize();
 
-    if (!await NetworkUtil.isPortInUse(50051)) {
-      _tilerService.start(args: ["--port","50051","--local"]);
+    final tilerConfig = PortConfigService().getConfig("skavl_tiler");
+    if (!await NetworkUtil.isPortInUse(tilerConfig.port)) {
+      _tilerService.start(args: ["--port",tilerConfig.port.toString(),"--local"]);
     }
-    if (!await NetworkUtil.isPortInUse(50052)) {
-      _anomalyService.start(args: ["server", "--port", "50052","--local"]);
+
+    final anomalyConfig = PortConfigService().getConfig("skavl_anomaly");
+    if (!await NetworkUtil.isPortInUse(anomalyConfig.port)) {
+      _anomalyService.start(args: ["server", "--port", anomalyConfig.toString(),"--local"]);
     }
   }
 
