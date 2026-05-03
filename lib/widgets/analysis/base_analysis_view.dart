@@ -97,7 +97,6 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
     tc = TransformationController();
 
     final tilerConfig = PortConfigService().getConfig("skavl_tiler");
-    print("Tiler config: ${tilerConfig.ip}:${tilerConfig.port}");
     channel = ClientChannel(
       tilerConfig.ip,
       port: tilerConfig.port,
