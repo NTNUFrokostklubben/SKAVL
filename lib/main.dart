@@ -5,6 +5,7 @@ import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
+import 'package:skavl/services/port_config_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
@@ -120,16 +121,18 @@ class _MainPageState extends State<MainPage> {
     _initServices();
   }
 
-  /// Starts tiler and anomaly service
+  /// Checks port configs and starts submodules.
   ///
   /// Checks if ports are in use, if they are it means a zombie process or standalone server is running.
   /// Skips starting the service if port is in use as code will hook into already running instance.
   Future<void> _initServices() async {
+    await PortConfigService().initialize();
+
     if (!await NetworkUtil.isPortInUse(50051)) {
-      _tilerService.start();
+      _tilerService.start(args: ["--port","50051","--local"]);
     }
     if (!await NetworkUtil.isPortInUse(50052)) {
-      _anomalyService.start(args: ["server", "--port", "50052"]);
+      _anomalyService.start(args: ["server", "--port", "50052","--local"]);
     }
   }
 

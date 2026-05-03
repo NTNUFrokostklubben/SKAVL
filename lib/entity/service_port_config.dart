@@ -1,31 +1,41 @@
-
-/// Entity for setting ports, connection ips and service names.
-///
-/// Used mostly for organizational purposes.
+/// Entity for setting service ports, connection ips and service names.
 class ServicePortConfig {
-  String _name = "default_service";
-  String _ip = "127.0.0.1";
-  String _port = "50051";
+  final String name;
+  final String ip;
+  final int port;
 
+  /// Default constructor for the ServicePortConfig
+  const ServicePortConfig({
+    this.name = "default_service",
+    this.ip = "127.0.0.1",
+    this.port = 50051,
+  });
 
-
-  String get name => _name;
-  String get ip => _ip;
-  String get port => _port;
-
-  /// Sets the name for the service
-  void setName(String name) {
-    _name = name;
+  /// Deserialize from Json
+  factory ServicePortConfig.fromJson(Map<String, dynamic> json) {
+    return ServicePortConfig(
+      name: json['name'] as String,
+      ip: json['ip'] as String,
+      port: json['port'] as int,
+    );
   }
 
-  /// Sets the connection IP for the service
-  void setIp(String ip) {
-    _ip = ip;
-  }
+  /// Serialize to Json
+  Map<String, dynamic> toJson() => {'name': name, 'ip': ip, 'port': port};
 
-  /// Sets the port to connect to for the service
-  void setPort(String port) {
-    _port = port;
+  /// Creates a new instance if only one or more fields are updated.
+  ServicePortConfig copyWith({
+    String? name,
+    String? ip,
+    int? port,
+  }) {
+    return ServicePortConfig(
+      name: name ?? this.name,
+      ip: ip ?? this.ip,
+      port: port ?? this.port,
+    );
   }
 
 }
+
+
