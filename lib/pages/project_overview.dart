@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/controller/report_generation_controller.dart';
 import 'package:skavl/entity/anomaly_def.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/services/project_file_service.dart';
@@ -103,6 +104,28 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     _loadProjectInfo();
   }
 
+  Future<void> _generateReportTest() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final _reportController = ReportGenerationController();
+    await _reportController.generateUnclassifiedReport(
+      projectMetadata: projectManager.loadedProject!,
+      anomalies: projectManager.loadedProject!.anomaliesInRange,
+      confidenceThreshold: projectManager.loadedProject!.sensitivity,
+      locale: AppLocalizations.of(context)!.localeName,
+    );
+  }
+
+  Future<void> _generateReportClassifiedTest() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final _reportController = ReportGenerationController();
+    await _reportController.generateClassifiedReport(
+      projectMetadata: projectManager.loadedProject!,
+      anomalies: projectManager.loadedProject!.anomaliesInRange,
+      confidenceThreshold: projectManager.loadedProject!.sensitivity,
+      locale: AppLocalizations.of(context)!.localeName,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ProjectManagerService projectManager = context
@@ -185,6 +208,42 @@ class _ProjectOverviewState extends State<ProjectOverview> {
             Row(
               spacing: 18,
               children: [
+                // TODO: Remove this, its for testing
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _generateReportTest(),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Generate unclassified report",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // TODO: Remove this, its for testing
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _generateReportClassifiedTest(),
+                    child: Row(
+                      spacing: 16,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Generate classified report",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 48,
                   child: ElevatedButton(

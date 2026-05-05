@@ -8,7 +8,7 @@ import '../proto/anomaly.pbgrpc.dart';
 /// Servicer provider for Anomaly Detection
 ///
 /// Lives as a provider to make it available through the entire application
-/// Uses hardcoded port and host for now, but is expandable.
+/// Takes port and ip from ports.json config
 class AnomalyServiceProvider extends ChangeNotifier {
 
   AnomalyServiceProvider() {
@@ -29,8 +29,6 @@ class AnomalyServiceProvider extends ChangeNotifier {
 
   late final ClientChannel _channel;
   late final AnomalyDetectorController controller;
-
-
 
   @override
   void dispose() {

@@ -17,9 +17,9 @@ class PortConfigService {
 
   /// Service default values
   static const List<ServicePortConfig> _defaults = [
-    ServicePortConfig(name: 'skavl_tiler', ip: '127.0.0.1', port: 50021),
-    ServicePortConfig(name: 'skavl_anomaly', ip: '127.0.0.1', port: 50022),
-    ServicePortConfig(name: 'skavl_report', ip: '127.0.0.1', port: 50023),
+    ServicePortConfig(name: 'skavl_tiler', ip: '127.0.0.1', port: 50051),
+    ServicePortConfig(name: 'skavl_anomaly', ip: '127.0.0.1', port: 50052),
+    ServicePortConfig(name: 'skavl_report', ip: '127.0.0.1', port: 50053),
   ];
 
   /// Gets normalized filepath to where the process is running
