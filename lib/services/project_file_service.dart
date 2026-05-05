@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../entity/project_metadata.dart';
+import 'package:skavl/entity/project_metadata.dart';
 
 /// Project file service class
 ///

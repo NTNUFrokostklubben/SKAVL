@@ -203,7 +203,7 @@
     "description": "Missing aerial images from form"
   },
 
-  "newprojectPage_Missingsosi": "Mangler coverage polygon SOSI",
+  "newprojectPage_Missingsosi": "Missing coverage polygon SOSI",
   "@newprojectPage_Missingsosi": {
     "description": "Missing polygon SOSI from form"
   },
@@ -273,6 +273,11 @@
     "description": "Confirmed no anomaly"
   },
 
+  "projectOverview_title": "Project overview",
+  "@projectOverview_title": {
+    "description": "Project overview"
+  },
+
   "projectOverview_projectName": "Project name",
   "@projectOverview_projectName": {
     "description": "Project name - label for project name in project overview"
@@ -306,7 +311,16 @@
   "projectOverview_classifyImages": "Classify images",
   "@projectOverview_classifyImages": {
     "description": "Classify anomalies"
-  }
+  },
 
+  "projectOverview_projectDetails": "PROJECT DETAILS",
+  "@projectOverview_projectDetails": {
+    "description": "project details"
+  },
+
+"projectOverview_progress": "PROGRESS",
+  "@projectOverview_progress": {
+    "description": "progress"
+  }
 
 }

@@ -4,8 +4,7 @@ import 'package:skavl/main.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/settings.dart';
 import 'package:skavl/util/project_actions.dart';
-
-import '../util/navigation_util.dart';
+import 'package:skavl/util/navigation_util.dart';
 
 /// A custom top bar widget that implements the PreferredSizeWidget interface,
 ///  allowing it to be used as an AppBar in a Scaffold.

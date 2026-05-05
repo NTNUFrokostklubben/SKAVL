@@ -1,6 +1,5 @@
 import 'package:skavl/entity/anomaly_def.dart';
 
-
 enum AnomalyType { undefined, colorAverage, waterMask, artifact }
 
 /// Represents each "set" of data included in a page of the main application.

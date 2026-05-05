@@ -10,9 +10,8 @@ import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
 import 'package:skavl/widgets/upload_button.dart';
-
-import '../entity/project_metadata.dart';
-import '../services/project_file_service.dart';
+import 'package:skavl/entity/project_metadata.dart';
+import 'package:skavl/services/project_file_service.dart';
 
 class CreateNewProject extends StatefulWidget {
   const CreateNewProject({super.key});

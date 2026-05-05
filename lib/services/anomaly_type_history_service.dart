@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:path/path.dart' as p;
 
 /// Service for managing the history of anomaly types classified by the user.

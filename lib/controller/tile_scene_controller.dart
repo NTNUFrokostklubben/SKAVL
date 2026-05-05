@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:skavl/entity/view_mode.dart';
-import '../proto/tiler.pbgrpc.dart';
-import '../widgets/tiler/panel_placement.dart';
+import 'package:skavl/proto/tiler.pbgrpc.dart';
+import 'package:skavl/widgets/tiler/panel_placement.dart';
 
 /// Controller that holds state for tiles in the viewport.
 ///

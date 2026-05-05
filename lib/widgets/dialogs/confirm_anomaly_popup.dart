@@ -7,8 +7,8 @@ import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/autocomplete_dropdown.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 
-import '../../entity/anomaly_classification.dart';
-import '../../entity/anomaly_def.dart';
+import 'package:skavl/entity/anomaly_classification.dart';
+import 'package:skavl/entity/anomaly_def.dart';
 
 class ConfirmAnomalyDialog extends StatefulWidget {
   const ConfirmAnomalyDialog({super.key});

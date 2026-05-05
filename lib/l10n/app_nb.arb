@@ -260,7 +260,6 @@
     "description": "Søk eller opprett avvikstype - text input hint"
   },
 
-
   "anomalyClassifBar_unClassified": "Uklassifisert",
   "@anomalyClassifBar_unClassified": {
     "description": "Unclassified - text for unclassified"
@@ -274,6 +273,11 @@
   "anomalyClassifBar_noAnomaly": "Klassifisert: Ikke avvik",
   "@anomalyClassifBar_noAnomaly": {
     "description": "Confirmed no anomaly"
+  },
+
+  "projectOverview_title": "Prosjektoversikt",
+  "@projectOverview_title": {
+    "description": "Project overview"
   },
 
   "projectOverview_projectName": "Prosjektnavn",
@@ -309,6 +313,16 @@
   "projectOverview_classifyImages": "Klassifiser flybilder",
   "@projectOverview_classifyImages": {
     "description": "Classify anomalies"
+  },
+
+  "projectOverview_projectDetails": "PROSJEKT DETALJER",
+  "@projectOverview_projectDetails": {
+    "description": "project details"
+  },
+
+"projectOverview_progress": "PROGRESSJON",
+  "@projectOverview_progress": {
+    "description": "progress"
   }
 
 }

@@ -1,8 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:skavl/widgets/labels/fieldlabels.dart';
-
-import '../l10n/app_localizations.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 
 /// Widget to select a file or folder location for use in the application
 class UploadButton extends StatelessWidget {
