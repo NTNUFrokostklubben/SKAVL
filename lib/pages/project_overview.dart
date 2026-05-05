@@ -104,8 +104,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
   Future<void> _generateReportTest() async {
     final projectManager = context.read<ProjectManagerService>();
-    final _reportController = ReportGenerationController();
-    await _reportController.generateUnclassifiedReport(
+    final reportController = ReportGenerationController();
+    await reportController.generateUnclassifiedReport(
       projectMetadata: projectManager.loadedProject!,
       anomalies: projectManager.loadedProject!.anomaliesInRange,
       confidenceThreshold: projectManager.loadedProject!.sensitivity,
@@ -115,8 +115,8 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
   Future<void> _generateReportClassifiedTest() async {
     final projectManager = context.read<ProjectManagerService>();
-    final _reportController = ReportGenerationController();
-    await _reportController.generateClassifiedReport(
+    final reportController = ReportGenerationController();
+    await reportController.generateClassifiedReport(
       projectMetadata: projectManager.loadedProject!,
       anomalies: projectManager.loadedProject!.anomaliesInRange,
       confidenceThreshold: projectManager.loadedProject!.sensitivity,

@@ -1,9 +1,7 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 import 'package:skavl/entity/anomaly_set.dart';
 import 'package:skavl/entity/project_metadata.dart';
-import 'package:skavl/proto/report.pb.dart';
 import 'package:skavl/proto/report.pbgrpc.dart';
 import 'package:skavl/services/port_config_service.dart';
 import 'package:skavl/util/file_system_util.dart';
