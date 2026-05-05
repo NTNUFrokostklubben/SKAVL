@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 import 'package:skavl/controller/anomaly_detector_controller.dart';
+import 'package:skavl/proto/anomaly.pbgrpc.dart';
 import 'package:skavl/services/port_config_service.dart';
-
-import '../proto/anomaly.pbgrpc.dart';
 
 /// Servicer provider for Anomaly Detection
 ///

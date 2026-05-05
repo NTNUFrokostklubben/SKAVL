@@ -8,8 +8,6 @@ import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/widgets/long_button.dart';
 
-
-
 class LoadingDialog extends StatelessWidget {
   final ValueNotifier<AnalysisProgress> progress;
 

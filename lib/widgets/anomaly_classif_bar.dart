@@ -5,10 +5,10 @@ import 'package:skavl/theme/colors.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/widgets/dialogs/confirm_anomaly_popup.dart';
 
-import '../entity/anomaly_def.dart';
-import '../entity/anomaly_set.dart';
-import '../services/project_file_service.dart';
-import '../services/project_manager_service.dart';
+import 'package:skavl/entity/anomaly_def.dart';
+import 'package:skavl/entity/anomaly_set.dart';
+import 'package:skavl/services/project_file_service.dart';
+import 'package:skavl/services/project_manager_service.dart';
 
 class AnomalyClassifBar extends StatefulWidget {
   const AnomalyClassifBar({super.key});

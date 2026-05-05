@@ -1,1 +1,0 @@
-All user facing pages should be present in this folder or sub-folders

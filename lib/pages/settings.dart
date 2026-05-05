@@ -4,8 +4,7 @@ import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 import 'package:skavl/widgets/top_bar.dart';
-
-import '../l10n/app_localizations.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 
 /// Settings page for changing global settings in the application
 /// Uses the settings model to store the actual settings values

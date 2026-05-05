@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
-
-import '../entity/analysis_progress.dart';
+import 'package:skavl/entity/analysis_progress.dart';
 
 /// Anomaly Detector Controller handles the communication with the anomaly detection service.
 ///

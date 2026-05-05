@@ -3,9 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/main.dart';
 import 'package:skavl/util/navigation_util.dart';
-
-import '../services/project_file_service.dart';
-import '../services/project_manager_service.dart';
+import 'package:skavl/services/project_file_service.dart';
+import 'package:skavl/services/project_manager_service.dart';
 
 /// Class to provide static methods for saving, loading and creating projects
 ///

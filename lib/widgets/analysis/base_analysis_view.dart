@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:path/path.dart' as path;
-
 import 'package:skavl/controller/tile_scene_controller.dart';
 import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
