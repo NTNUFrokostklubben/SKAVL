@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:skavl/controller/tile_scene_controller.dart';
 import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/tiler.pbgrpc.dart';
+import 'package:skavl/services/port_config_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/util/viewport_math.dart';
 import 'package:skavl/widgets/tiler/tile_layer.dart';
@@ -95,9 +96,10 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
     tc = TransformationController();
 
+    final tilerConfig = PortConfigService().getConfig("skavl_tiler");
     channel = ClientChannel(
-      '127.0.0.1',
-      port: 50051,
+      tilerConfig.ip,
+      port: tilerConfig.port,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
 
