@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 
 /// Class for representing images processed and total images to process

@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/services/project_manager_service.dart';
 
-import '../l10n/app_localizations.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 
 /// Status bar to show if a project is loaded in the application or not
 ///
 /// Only used for displaying information to the user
 class BottomStatusBar extends StatelessWidget {
   const BottomStatusBar({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {

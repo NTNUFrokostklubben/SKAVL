@@ -1,0 +1,12 @@
+flutter_launcher_icons:
+  android: false
+  ios: false
+  image_path: "assets/images/topographic-icon.png"
+
+  windows:
+    generate: true
+    image_path: "assets/images/topographic-icon.png"
+    icon_size: 48
+
+  macos:
+    generate: false

@@ -1,1 +1,0 @@
-All Entity classes should be present in this folder or sub-folders

@@ -11,13 +11,25 @@ class AppThemes {
 
   static final ThemeData lightTheme = ThemeData(
     colorScheme: .fromSeed(seedColor: MyColors.lightGreen, primary: MyColors.primaryWhite, secondary: MyColors.secondaryBlack),
-    textTheme: TextTheme(
-      titleLarge: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-      titleMedium: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      titleSmall: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      bodyMedium: const TextStyle(fontSize: 16),
-      bodySmall: const TextStyle(fontSize: 12),
-      labelLarge: const TextStyle(fontSize: 16)
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        fontSize: 32,
+        fontWeight: FontWeight.bold,
+        color: MyColors.secondaryBlack,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: MyColors.secondaryBlack,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: MyColors.secondaryBlack,
+      ),
+      bodyMedium: TextStyle(fontSize: 16, color: MyColors.secondaryBlack),
+      bodySmall: TextStyle(fontSize: 12, color: MyColors.secondaryBlack),
+      labelLarge: TextStyle(fontSize: 14, color: MyColors.secondaryBlack),
     ),
 
     // PAGE TRANSITION THEME
@@ -44,6 +56,12 @@ class AppThemes {
       fillColor: MyColors.primaryWhite,
       helperStyle: TextStyle(fontSize: 16, color: MyColors.secondaryBlack),
       labelStyle: TextStyle(fontSize: 16, color: MyColors.secondaryBlack),
+    ),
+
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: MyColors.secondaryBlack,
+      selectionColor: MyColors.secondaryBlack,
+      selectionHandleColor: MyColors.secondaryBlack,
     ),
 
     // ELEVATED BUTTON THEME
@@ -146,6 +164,12 @@ class AppThemes {
       fillColor: MyColors.darkGrey,
       helperStyle: TextStyle(fontSize: 16, color: MyColors.primaryWhite),
       labelStyle: TextStyle(fontSize: 16, color: MyColors.primaryWhite),
+    ),
+
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: MyColors.primaryWhite,
+      selectionColor: MyColors.primaryWhite,
+      selectionHandleColor: MyColors.primaryWhite,
     ),
 
     // ELEVATED BUTTON THEME

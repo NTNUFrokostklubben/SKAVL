@@ -36,10 +36,6 @@ class _AnalysisState extends State<Analysis> {
                 label: Text("Vertical"),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.layers_outlined),
-                label: Text("Overlay"),
-              ),
-              NavigationRailDestination(
                 icon: Icon(Icons.grid_view),
                 label: Text("Grid 2x2"),
               ),
@@ -48,7 +44,7 @@ class _AnalysisState extends State<Analysis> {
                 label: Text("Grid 3x3"),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.view_module),
+                icon: Icon(Icons.layers_outlined),
                 label: Text("Free"),
               ),
             ],
@@ -68,7 +64,6 @@ class _AnalysisState extends State<Analysis> {
               children: const [
                 StaticView(viewMode: ViewMode.horizontal),
                 StaticView(viewMode: ViewMode.vertical),
-                Text("Overlay"),
                 StaticView(viewMode: ViewMode.gridsmall),
                 StaticView(viewMode: ViewMode.gridbig),
                 FreeView(),
