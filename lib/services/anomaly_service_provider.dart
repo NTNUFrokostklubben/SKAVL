@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 import 'package:skavl/controller/anomaly_detector_controller.dart';
 import 'package:skavl/proto/anomaly.pbgrpc.dart';
+import 'package:skavl/services/port_config_service.dart';
 
 /// Servicer provider for Anomaly Detection
 ///
@@ -21,8 +22,9 @@ class AnomalyServiceProvider extends ChangeNotifier {
     );
   }
 
-  static const String _host = "127.0.0.1";
-  static const int _port = 50052;
+  final anomalyConfig = PortConfigService().getConfig("skavl_anomaly");
+  late final String _host = anomalyConfig.ip;
+  late final int _port = anomalyConfig.port;
 
   late final ClientChannel _channel;
   late final AnomalyDetectorController controller;
