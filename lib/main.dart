@@ -66,6 +66,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late final ServiceManager _tilerService;
   late final ServiceManager _anomalyService;
+  late final ServiceManager _reportService;
 
   @override
   void initState() {
@@ -84,6 +85,12 @@ class _MainPageState extends State<MainPage> {
       Platform.isWindows
           ? 'services/skavl-anomaly/server/skavl-anomaly-detection-server.exe'
           : 'services/skavl-anomaly/server/skavl-anomaly-detection-server'
+    );
+
+    _reportService = ServiceManager(
+        Platform.isWindows
+            ? 'services/skavl-report/server/skavl-report-server.exe'
+            : 'services/skavl-report/server/skavl-report-server'
     );
 
     // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
@@ -118,6 +125,21 @@ class _MainPageState extends State<MainPage> {
       }
     });
 
+    _reportService.statusStream.listen((status) {
+      if (status == ServiceStatus.notFound) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Skavl report service executable not found.'),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+        });
+      }
+    });
+
     _initServices();
   }
 
@@ -135,7 +157,12 @@ class _MainPageState extends State<MainPage> {
 
     final anomalyConfig = PortConfigService().getConfig("skavl_anomaly");
     if (!await NetworkUtil.isPortInUse(anomalyConfig.port)) {
-      _anomalyService.start(args: ["server", "--port", anomalyConfig.toString(),"--local"]);
+      _anomalyService.start(args: ["server", "--port", anomalyConfig.port.toString(),"--local"]);
+    }
+
+    final reportConfig = PortConfigService().getConfig("skavl_report");
+    if (!await NetworkUtil.isPortInUse(reportConfig.port)) {
+      _reportService.start(args: ["--port", reportConfig.port.toString(),"--local"]);
     }
   }
 
