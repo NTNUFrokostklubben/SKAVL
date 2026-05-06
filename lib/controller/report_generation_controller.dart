@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
+import 'package:intl/intl.dart';
 import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/report.pbgrpc.dart';
 import 'package:skavl/services/port_config_service.dart';
@@ -91,11 +92,11 @@ class ReportGenerationController {
     ProjectMetadata projectMetadata, {
     required String classification,
   }) async {
-    DateTime currentTime = DateTime.timestamp();
+    DateTime currentTime = DateTime.now();
     String? result = await FilePicker.saveFile(
       dialogTitle: 'Save report',
       fileName:
-          '${projectMetadata.projectName}-report-$classification-${currentTime.year}${currentTime.month}${currentTime.day}${currentTime.hour}${currentTime.minute}.pdf',
+          '${DateFormat('yyyy-MM-ddTHH-mm').format(currentTime)}_${projectMetadata.projectName}-report-$classification.pdf',
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );

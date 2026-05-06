@@ -102,7 +102,11 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     _loadProjectInfo();
   }
 
-  Future<void> _generateReportTest() async {
+  /// Generate classified report
+  ///
+  /// Uses loaded project to generate a unclassified report based on analysis.
+  /// TODO: Move into separate controller
+  Future<void> _generateReport() async {
     final projectManager = context.read<ProjectManagerService>();
     final reportController = ReportGenerationController();
     await reportController.generateUnclassifiedReport(
@@ -111,7 +115,11 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     );
   }
 
-  Future<void> _generateReportClassifiedTest() async {
+  /// Generate classified report
+  ///
+  /// Uses loaded project to generate a classified report based on user classifications.
+  /// TODO: Move into separate controller
+  Future<void> _generateReportClassified() async {
     final projectManager = context.read<ProjectManagerService>();
     final reportController = ReportGenerationController();
     await reportController.generateClassifiedReport(
@@ -218,7 +226,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                             .unclassifiedAnomaliesInRange
                             .isEmpty
                             ? null
-                            : () => _generateReportTest(),
+                            : () => _generateReport(),
                         child: Row(
                           spacing: 16,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -243,7 +251,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                             .classifiedAnomaliesInRange
                             .isEmpty
                             ? null
-                            : () => _generateReportClassifiedTest(),
+                            : () => _generateReportClassified(),
                         child: Row(
                           spacing: 16,
                           mainAxisAlignment: MainAxisAlignment.end,
