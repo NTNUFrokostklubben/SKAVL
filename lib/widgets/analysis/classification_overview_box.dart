@@ -5,11 +5,11 @@ import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/services/project_manager_service.dart';
 import 'package:skavl/theme/colors.dart';
 
+/// Status overview box to display number of remaining images to classify.
+///
+/// Can be expanded to contain more information if needed.
 class ClassificationOverviewBox extends StatelessWidget {
   const ClassificationOverviewBox({super.key});
-
-
-
 
   @override
   Widget build(BuildContext context) {
