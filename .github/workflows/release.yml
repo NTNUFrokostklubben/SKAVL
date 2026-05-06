@@ -74,6 +74,10 @@ jobs:
         shell: pwsh
         run: scripts\fetch_anomaly_detector.ps1
 
+      - name: Fetch report generator (Windows)
+        shell: pwsh
+        run: scripts\fetch_report_generator.ps1
+
       - name: Flutter pub get
         run: flutter pub get
 

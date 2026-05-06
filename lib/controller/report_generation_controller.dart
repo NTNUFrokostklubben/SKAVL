@@ -1,0 +1,110 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:grpc/grpc.dart';
+import 'package:intl/intl.dart';
+import 'package:skavl/entity/project_metadata.dart';
+import 'package:skavl/proto/report.pbgrpc.dart';
+import 'package:skavl/services/port_config_service.dart';
+import 'package:skavl/util/file_system_util.dart';
+
+import '../proto/anomaly.pb.dart' as pb2;
+
+/// gRPC specific controller/adapter controller for interfacing with report generation module
+class ReportGenerationController {
+  ReportGenerationController();
+
+  final _reportServiceConfig = PortConfigService().getConfig("skavl_report");
+  late final _channel = ClientChannel(
+    _reportServiceConfig.ip,
+    port: _reportServiceConfig.port,
+    options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+  );
+  late final _client = ReportServiceClient(_channel);
+
+  /// Generates an unclassified report based on projectName
+  Future<void> generateUnclassifiedReport({
+    required ProjectMetadata projectMetadata,
+    required String locale,
+  }) async => await _client
+      .generateReportUnclassified(
+        ReportGenerationRequest(
+          projectMetadata: pb2.ProjectMetadata(
+            projectName: projectMetadata.projectName,
+            sosiFilePath: projectMetadata.sosiFilePath,
+            imageFolderPath: projectMetadata.imageFolderPath,
+            sosiWaterMaskPath: projectMetadata.sosiWaterMaskPath,
+          ),
+          anomalySets: projectMetadata.unclassifiedAnomaliesInRange.map(
+            (a) => pb2.AnomalySet(
+              imageNumber: a.imageNumber,
+              lineNumber: a.lineNumber,
+              imageName: a.imageName,
+              anomalyType: pb2.AnomalyTypes.valueOf(a.anomalyType.index),
+              userClassification: a.userClassification,
+              geotiffCoordinate: pb2.UtmCoordinate(easting: 0, northing: 0),
+              anomalyConfidence: a.anomalyConf,
+            ),
+          ),
+          confidenceThreshold: projectMetadata.sensitivity,
+          locale: locale,
+          saveLocation: await _pickPath(
+            projectMetadata,
+            classification: 'unclassified',
+          ),
+        ),
+      )
+      .then((r) => FileSystemUtil.openDirectory(r.reportUrl));
+
+  /// Generates an unclassified report based on projectName
+  Future<void> generateClassifiedReport({
+    required ProjectMetadata projectMetadata,
+    required String locale,
+  }) async => await _client
+      .generateReportClassified(
+        ReportGenerationRequest(
+          projectMetadata: pb2.ProjectMetadata(
+            projectName: projectMetadata.projectName,
+            sosiFilePath: projectMetadata.sosiFilePath,
+            imageFolderPath: projectMetadata.imageFolderPath,
+            sosiWaterMaskPath: projectMetadata.sosiWaterMaskPath,
+          ),
+          anomalySets: projectMetadata.classifiedAnomaliesInRange.map(
+            (a) => pb2.AnomalySet(
+              imageNumber: a.imageNumber,
+              lineNumber: a.lineNumber,
+              imageName: a.imageName,
+              anomalyType: pb2.AnomalyTypes.valueOf(a.anomalyType.index),
+              userClassification: a.userClassification,
+              geotiffCoordinate: pb2.UtmCoordinate(easting: 0, northing: 0),
+              anomalyConfidence: a.anomalyConf,
+            ),
+          ),
+          confidenceThreshold: projectMetadata.sensitivity,
+          locale: locale,
+          saveLocation: await _pickPath(
+            projectMetadata,
+            classification: 'classified',
+          ),
+        ),
+      )
+      .then((r) => FileSystemUtil.openDirectory(r.reportUrl));
+
+  Future<String> _pickPath(
+    ProjectMetadata projectMetadata, {
+    required String classification,
+  }) async {
+    DateTime currentTime = DateTime.now();
+    String? result = await FilePicker.saveFile(
+      dialogTitle: 'Save report',
+      fileName:
+          '${DateFormat('yyyy-MM-ddTHH-mm').format(currentTime)}_${projectMetadata.projectName}-report-$classification.pdf',
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      return result;
+    } else {
+      return "";
+    }
+  }
+}

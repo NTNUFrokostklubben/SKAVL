@@ -96,7 +96,6 @@ class _ConfirmAnomalyDialog extends State<ConfirmAnomalyDialog> {
           children: [
             Text(
               '${loc()!.confirmAnomaly_imageName} : $imageName',
-              style: Theme.of(context).textTheme.bodyMedium,
             ),
 
             SizedBox(

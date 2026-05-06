@@ -124,3 +124,12 @@ if(NOT EXISTS "${ANOMALY_DEST}")
     USE_SOURCE_PERMISSIONS
     COMPONENT Runtime)
 endif()
+
+# Bundle skavl-report service alongside executable
+set(REPORT_DEST "${CMAKE_INSTALL_PREFIX}/services/skavl-report")
+if(NOT EXISTS "${REPORT_DEST}")
+  install(DIRECTORY "${CMAKE_SOURCE_DIR}/../services/skavl-report"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/services"
+    USE_SOURCE_PERMISSIONS
+    COMPONENT Runtime)
+endif()

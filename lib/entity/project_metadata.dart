@@ -1,3 +1,4 @@
+import 'package:skavl/entity/anomaly_def.dart';
 import 'package:skavl/entity/anomaly_set.dart';
 
 /// Represents the metadata per project loaded. This class will probably be
@@ -79,4 +80,14 @@ class ProjectMetadata {
   /// Returns list of anomalies based on confidence and sensitivity
   List<AnomalySet> get anomaliesInRange =>
       allSets.where((s) => s.anomalyConf >= sensitivity).toList();
+
+  /// Returns list of anomalies that are not yet classified
+  List<AnomalySet> get unclassifiedAnomaliesInRange => anomaliesInRange
+      .where((s) => s.anomalyDef == AnomalyDef.undefined)
+      .toList();
+
+  /// Returns list of anomalies that are classified
+  List<AnomalySet> get classifiedAnomaliesInRange => anomaliesInRange
+      .where((s) => s.anomalyDef != AnomalyDef.undefined)
+      .toList();
 }

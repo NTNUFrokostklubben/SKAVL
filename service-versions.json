@@ -1,4 +1,5 @@
 {
   "tiler": "v0.2.0-pre",
-  "skavl_anomaly": "v0.3.1-pre"
+  "skavl_anomaly": "v0.3.1-pre",
+  "skavl_report": "v0.2.2-pre"
 }

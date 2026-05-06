@@ -6,11 +6,14 @@ import 'package:skavl/theme/colors.dart';
 /// [Text] inherits style from bodyMedium
 /// [MenuAcceleratorLabel] inherits style from labelLarge
 class AppThemes {
-
   /// Default light theme of the application.
 
   static final ThemeData lightTheme = ThemeData(
-    colorScheme: .fromSeed(seedColor: MyColors.lightGreen, primary: MyColors.primaryWhite, secondary: MyColors.secondaryBlack),
+    colorScheme: .fromSeed(
+      seedColor: MyColors.lightGreen,
+      primary: MyColors.primaryWhite,
+      secondary: MyColors.secondaryBlack,
+    ),
     textTheme: const TextTheme(
       titleLarge: TextStyle(
         fontSize: 32,
@@ -51,7 +54,7 @@ class AppThemes {
         borderRadius: BorderRadius.all(Radius.circular(5)),
         borderSide: BorderSide(color: MyColors.darkGreen, width: 2),
       ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),  
+      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       filled: true,
       fillColor: MyColors.primaryWhite,
       helperStyle: TextStyle(fontSize: 16, color: MyColors.secondaryBlack),
@@ -70,7 +73,10 @@ class AppThemes {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         backgroundColor: MyColors.primaryWhite,
         foregroundColor: MyColors.secondaryBlack,
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        disabledBackgroundColor: MyColors.lightBlueGrey,
+        disabledForegroundColor: MyColors.secondaryBlack.withAlpha(100),
+        disabledIconColor: MyColors.secondaryBlack.withAlpha(50),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
         overlayColor: MyColors.lightGreen,
         shadowColor: MyColors.grey,
       ),
@@ -81,7 +87,7 @@ class AppThemes {
       style: TextButton.styleFrom(
         foregroundColor: MyColors.secondaryBlack,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
         shadowColor: MyColors.grey,
       ),
     ),
@@ -107,9 +113,7 @@ class AppThemes {
       foregroundColor: MyColors.secondaryBlack,
       elevation: 0,
     ),
-
   );
-
 
   static final ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
@@ -176,21 +180,24 @@ class AppThemes {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        backgroundColor: MyColors.darkGrey,
+        backgroundColor: MyColors.darkGreen,
         foregroundColor: MyColors.primaryWhite,
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        overlayColor: MyColors.darkGreen,
-        shadowColor: MyColors.darkGrey
+        disabledBackgroundColor: MyColors.darkGrey,
+        disabledForegroundColor: MyColors.primaryWhite.withAlpha(100),
+        disabledIconColor: MyColors.primaryWhite.withAlpha(50),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        overlayColor: MyColors.secondaryBlack,
+        shadowColor: MyColors.primaryWhite,
       ),
     ),
 
     // TEXT BUTTON THEME
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        // backgroundColor: MyColors.darkGrey,
+        backgroundColor: MyColors.darkGrey,
         foregroundColor: MyColors.primaryWhite,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
         shadowColor: MyColors.grey,
       ),
     ),
@@ -220,7 +227,7 @@ class AppThemes {
     bottomAppBarTheme: const BottomAppBarThemeData(
       color: MyColors.secondaryBlack,
       surfaceTintColor: MyColors.darkGreen,
-    )
+    ),
   );
 }
 

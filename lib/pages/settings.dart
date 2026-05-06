@@ -57,7 +57,7 @@ class Settings extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 spacing: 48,
                 children: [
-                  SizedBox(width: 80, child: Text(loc()!.settings_language, style: Theme.of(context).textTheme.bodyMedium)),
+                  SizedBox(width: 80, child: Text(loc()!.settings_language)),
                   DropdownMenu(
                     width: 400,
                     dropdownMenuEntries: languageEntries,
@@ -78,7 +78,6 @@ class Settings extends StatelessWidget {
               spacing: 48,
               children: [
                 SizedBox(width: 80, child: Text(loc()!.settings_theme,
-                      style: Theme.of(context).textTheme.bodyMedium,
                     )),
                 DropdownMenu(
                 width: 400,

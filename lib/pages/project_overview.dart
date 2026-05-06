@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/controller/report_generation_controller.dart';
 import 'package:skavl/entity/anomaly_def.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/services/project_file_service.dart';
@@ -101,6 +102,32 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     _loadProjectInfo();
   }
 
+  /// Generate classified report
+  ///
+  /// Uses loaded project to generate a unclassified report based on analysis.
+  /// TODO: Move into separate controller
+  Future<void> _generateReport() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final reportController = ReportGenerationController();
+    await reportController.generateUnclassifiedReport(
+      projectMetadata: projectManager.loadedProject!,
+      locale: AppLocalizations.of(context)!.localeName,
+    );
+  }
+
+  /// Generate classified report
+  ///
+  /// Uses loaded project to generate a classified report based on user classifications.
+  /// TODO: Move into separate controller
+  Future<void> _generateReportClassified() async {
+    final projectManager = context.read<ProjectManagerService>();
+    final reportController = ReportGenerationController();
+    await reportController.generateClassifiedReport(
+      projectMetadata: projectManager.loadedProject!,
+      locale: AppLocalizations.of(context)!.localeName,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final projectManager = context.read<ProjectManagerService>();
@@ -184,51 +211,111 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
             const Spacer(),
             // Run analysis button and navigate to classification page button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Stack(
               children: [
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => _startAnomalyDetection(projectManager),
-                    child: Row(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          loc.projectOverview_runAnalysis,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                // Report buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: projectManager
+                            .loadedProject!
+                            .unclassifiedAnomaliesInRange
+                            .isEmpty
+                            ? null
+                            : () => _generateReport(),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_unclassified
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(width: 12),
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed:
+                        projectManager
+                            .loadedProject!
+                            .classifiedAnomaliesInRange
+                            .isEmpty
+                            ? null
+                            : () => _generateReportClassified(),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_classified
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
-                const SizedBox(width: 12),
-
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => navigateTo(context, Analysis()),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          loc.projectOverview_classifyImages,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                // Analysis buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () => _startAnomalyDetection(projectManager),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_runAnalysis,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          size: 20,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                              ? MyColors.secondaryBlack
-                              : MyColors.primaryWhite,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(width: 12),
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        // Disables button of no images have been analyzed yet
+                        onPressed: projectManager.loadedProject!.allSets.isEmpty
+                            ? null
+                            : () => navigateTo(context, Analysis()),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_classifyImages,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              size: 20,
+                              color:
+                                  Theme.of(context).brightness == Brightness.light
+                                  ? MyColors.secondaryBlack
+                                  : MyColors.primaryWhite,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
