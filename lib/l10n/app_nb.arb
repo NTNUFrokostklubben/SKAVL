@@ -328,6 +328,15 @@
 "projectOverview_progress": "PROGRESSJON",
   "@projectOverview_progress": {
     "description": "progress"
+  },
+  "projectOverview_unclassified": "Generer uklassifisert rapport",
+  "@projectOverview_unclassified": {
+    "description": "Button for generating unclassified report"
+  },
+
+  "projectOverview_classified": "Generer klassifisert rapport",
+  "@projectOverview_classified": {
+    "description": "Button for generating classified report"
   }
 
 }

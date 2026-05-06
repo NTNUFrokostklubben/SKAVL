@@ -225,7 +225,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "Generate unclassified report"
+                              loc.projectOverview_unclassified
                             ),
                           ],
                         ),
@@ -250,7 +250,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "Generate classified report"
+                              loc.projectOverview_classified
                             ),
                           ],
                         ),
