@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skavl/widgets/analysis/classification_overview_box.dart';
 import 'package:skavl/widgets/analysis/free_view.dart';
 import 'package:skavl/widgets/analysis/static_view.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
@@ -59,14 +60,22 @@ class _AnalysisState extends State<Analysis> {
 
           // Main work pane
           Expanded(
-            child: IndexedStack(
-              index: index,
-              children: const [
-                StaticView(viewMode: ViewMode.horizontal),
-                StaticView(viewMode: ViewMode.vertical),
-                StaticView(viewMode: ViewMode.gridsmall),
-                StaticView(viewMode: ViewMode.gridbig),
-                FreeView(),
+            child: Stack(
+              children: [
+                IndexedStack(
+                  index: index,
+                  children: const [
+                    StaticView(viewMode: ViewMode.horizontal),
+                    StaticView(viewMode: ViewMode.vertical),
+                    StaticView(viewMode: ViewMode.gridsmall),
+                    StaticView(viewMode: ViewMode.gridbig),
+                    FreeView(),
+                  ],
+                ),
+                const Positioned(
+                    right: 8,
+                    top: 8,
+                    child: ClassificationOverviewBox())
               ],
             ),
           ),
@@ -74,10 +83,7 @@ class _AnalysisState extends State<Analysis> {
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          AnomalyClassifBar(),
-          BottomStatusBar()
-        ],
+        children: [AnomalyClassifBar(), BottomStatusBar()],
       ),
     );
   }

@@ -275,6 +275,11 @@
     "description": "Confirmed no anomaly"
   },
 
+  "overviewWidget_remaining": "Antall uklassifiserte flyfoto",
+  "@overviewWidget_remaining": {
+    "description": "Remaining images to classify"
+  },
+
   "projectOverview_title": "Prosjektoversikt",
   "@projectOverview_title": {
     "description": "Project overview"
