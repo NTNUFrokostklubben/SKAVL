@@ -85,4 +85,9 @@ class ProjectMetadata {
   List<AnomalySet> get unclassifiedAnomaliesInRange => anomaliesInRange
       .where((s) => s.anomalyDef == AnomalyDef.undefined)
       .toList();
+
+  /// Returns list of anomalies that are classified
+  List<AnomalySet> get classifiedAnomaliesInRange => anomaliesInRange
+      .where((s) => s.anomalyDef != AnomalyDef.undefined)
+      .toList();
 }

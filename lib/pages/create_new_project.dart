@@ -152,7 +152,6 @@ class _CreateNewProjectState extends State<CreateNewProject> {
                           children: [
                             Text(
                               loc()!.newprojectPage_title,
-                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Icon(
                               Icons.arrow_forward_ios_outlined,

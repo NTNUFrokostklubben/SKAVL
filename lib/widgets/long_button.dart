@@ -14,8 +14,7 @@ class LongButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         onPressed: onPressed,
-        child: Text(title, 
-          style: Theme.of(context).textTheme.bodyMedium),
+        child: Text(title, ),
       ),
     );
   }

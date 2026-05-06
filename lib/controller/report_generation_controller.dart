@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:grpc/grpc.dart';
-import 'package:skavl/entity/anomaly_set.dart';
 import 'package:skavl/entity/project_metadata.dart';
 import 'package:skavl/proto/report.pbgrpc.dart';
 import 'package:skavl/services/port_config_service.dart';
@@ -23,8 +22,6 @@ class ReportGenerationController {
   /// Generates an unclassified report based on projectName
   Future<void> generateUnclassifiedReport({
     required ProjectMetadata projectMetadata,
-    required List<AnomalySet> anomalies,
-    required double confidenceThreshold,
     required String locale,
   }) async => await _client
       .generateReportUnclassified(
@@ -35,7 +32,7 @@ class ReportGenerationController {
             imageFolderPath: projectMetadata.imageFolderPath,
             sosiWaterMaskPath: projectMetadata.sosiWaterMaskPath,
           ),
-          anomalySets: projectMetadata.anomaliesInRange.map(
+          anomalySets: projectMetadata.unclassifiedAnomaliesInRange.map(
             (a) => pb2.AnomalySet(
               imageNumber: a.imageNumber,
               lineNumber: a.lineNumber,
@@ -59,8 +56,6 @@ class ReportGenerationController {
   /// Generates an unclassified report based on projectName
   Future<void> generateClassifiedReport({
     required ProjectMetadata projectMetadata,
-    required List<AnomalySet> anomalies,
-    required double confidenceThreshold,
     required String locale,
   }) async => await _client
       .generateReportClassified(
@@ -71,7 +66,7 @@ class ReportGenerationController {
             imageFolderPath: projectMetadata.imageFolderPath,
             sosiWaterMaskPath: projectMetadata.sosiWaterMaskPath,
           ),
-          anomalySets: projectMetadata.anomaliesInRange.map(
+          anomalySets: projectMetadata.classifiedAnomaliesInRange.map(
             (a) => pb2.AnomalySet(
               imageNumber: a.imageNumber,
               lineNumber: a.lineNumber,

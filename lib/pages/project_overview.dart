@@ -107,8 +107,6 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     final reportController = ReportGenerationController();
     await reportController.generateUnclassifiedReport(
       projectMetadata: projectManager.loadedProject!,
-      anomalies: projectManager.loadedProject!.anomaliesInRange,
-      confidenceThreshold: projectManager.loadedProject!.sensitivity,
       locale: AppLocalizations.of(context)!.localeName,
     );
   }
@@ -118,8 +116,6 @@ class _ProjectOverviewState extends State<ProjectOverview> {
     final reportController = ReportGenerationController();
     await reportController.generateClassifiedReport(
       projectMetadata: projectManager.loadedProject!,
-      anomalies: projectManager.loadedProject!.anomaliesInRange,
-      confidenceThreshold: projectManager.loadedProject!.sensitivity,
       locale: AppLocalizations.of(context)!.localeName,
     );
   }
@@ -207,87 +203,111 @@ class _ProjectOverviewState extends State<ProjectOverview> {
 
             const Spacer(),
             // Run analysis button and navigate to classification page button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Stack(
               children: [
-                // TODO: Remove this, its for testing
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => _generateReportTest(),
-                    child: Row(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Generate unclassified report",
-                          style: Theme.of(context).textTheme.bodyMedium,
+                // Report buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: projectManager
+                            .loadedProject!
+                            .unclassifiedAnomaliesInRange
+                            .isEmpty
+                            ? null
+                            : () => _generateReportTest(),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Generate unclassified report"
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                // TODO: Remove this, its for testing
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => _generateReportClassifiedTest(),
-                    child: Row(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Generate classified report",
-                          style: Theme.of(context).textTheme.bodyMedium,
+
+                    const SizedBox(width: 12),
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed:
+                        projectManager
+                            .loadedProject!
+                            .classifiedAnomaliesInRange
+                            .isEmpty
+                            ? null
+                            : () => _generateReportClassifiedTest(),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Generate classified report"
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => _startAnomalyDetection(projectManager),
-                    child: Row(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          loc.projectOverview_runAnalysis,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
 
-                const SizedBox(width: 12),
-
-                SizedBox(
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => navigateTo(context, Analysis()),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          loc.projectOverview_classifyImages,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                // Analysis buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () => _startAnomalyDetection(projectManager),
+                        child: Row(
+                          spacing: 16,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_runAnalysis,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          size: 20,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                              ? MyColors.secondaryBlack
-                              : MyColors.primaryWhite,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(width: 12),
+
+                    SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        // Disables button of no images have been analyzed yet
+                        onPressed: projectManager.loadedProject!.allSets.isEmpty
+                            ? null
+                            : () => navigateTo(context, Analysis()),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              loc.projectOverview_classifyImages,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              size: 20,
+                              color:
+                                  Theme.of(context).brightness == Brightness.light
+                                  ? MyColors.secondaryBlack
+                                  : MyColors.primaryWhite,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -239,7 +239,6 @@ class _AnomalyClassifBar extends State<AnomalyClassifBar> {
                   onPressed: openAnomalyConfirmDialog,
                   child: Text(
                     loc()!.anomalyClassifBar_confirm,
-                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 Text(statusText, style: Theme.of(context).textTheme.bodySmall),

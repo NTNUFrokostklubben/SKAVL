@@ -25,7 +25,6 @@ class ClassificationOverviewBox extends StatelessWidget {
       ),
       child: Text(
         "${loc.overviewWidget_remaining}: $unclassified",
-        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }

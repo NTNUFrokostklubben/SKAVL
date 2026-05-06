@@ -98,7 +98,6 @@ class LoadingDialog extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         '${processed.processed} / $total',
-                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
                   );
