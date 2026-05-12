@@ -54,6 +54,9 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   late final void Function()
   tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
 
+  /// Get opacity for a given source
+  double getOpacityForSource(String sourceId) => 1.0;
+
   // ---- Pointer logic for what button is pressed ----
   int? panPointer;
 
@@ -233,17 +236,20 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
       return Positioned.fromRect(
         rect: rect,
-        child: TileLayer(
-          panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
-          panelHeightPx: desc.descriptor.sourceHeightPx.toDouble(),
-          tileSizePx: committedTileSize,
-          tiles: tiles,
-          originX: rect.left,
-          originY: rect.top,
-          highlighted: sourceId == highlightedSourceId,
-          factor: committedFactor,
-          previousTiles: prevTiles,
-          previousTileSizePx: previousCommittedTileSize,
+        child: Opacity(
+          opacity: getOpacityForSource(sourceId),
+          child: TileLayer(
+            panelWidthPx: desc.descriptor.sourceWidthPx.toDouble(),
+            panelHeightPx: desc.descriptor.sourceHeightPx.toDouble(),
+            tileSizePx: committedTileSize,
+            tiles: tiles,
+            originX: rect.left,
+            originY: rect.top,
+            highlighted: sourceId == highlightedSourceId,
+            factor: committedFactor,
+            previousTiles: prevTiles,
+            previousTileSizePx: previousCommittedTileSize,
+          ),
         ),
       );
     }).toList();
