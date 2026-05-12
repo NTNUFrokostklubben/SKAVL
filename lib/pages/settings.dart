@@ -19,7 +19,8 @@ class Settings extends StatelessWidget {
       return AppLocalizations.of(context);
     }
 
-    List<DropdownMenuEntry> languageEntries = [
+    List<DropdownMenuEntry<Locale?>> languageEntries = [
+      DropdownMenuEntry<Locale?>(value: null, label: loc()!.g_systemLoc),
       DropdownMenuEntry<Locale?>(value: Locale('en'), label: loc()!.g_enloc),
       DropdownMenuEntry<Locale?>(value: Locale('nb'), label: loc()!.g_nbloc),
     ];
@@ -58,7 +59,7 @@ class Settings extends StatelessWidget {
                 spacing: 48,
                 children: [
                   SizedBox(width: 80, child: Text(loc()!.settings_language)),
-                  DropdownMenu(
+                  DropdownMenu<Locale?>(
                     width: 400,
                     dropdownMenuEntries: languageEntries,
                     initialSelection: settings.locale,

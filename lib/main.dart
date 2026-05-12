@@ -19,12 +19,17 @@ import 'package:skavl/widgets/long_button.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/widgets/labels/headings.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final settings = SettingsModel();
+  await settings.load();
+
+
   runApp(
     /// State system for settings
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SettingsModel()),
+        ChangeNotifierProvider(create: (_) => settings),
         ChangeNotifierProvider(create: (_) => ProjectManagerService()),
         ChangeNotifierProvider(create: (_) => AnomalyServiceProvider()),
       ],
@@ -45,6 +50,14 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: settings.locale,
+      // Map system locales with fallbacks
+      localeResolutionCallback: (deviceLocale, supported) {
+        if (deviceLocale == null) return const Locale('nb');
+        final lang = deviceLocale.languageCode;
+        if (lang == 'nb' || lang == 'nn' || lang == 'no') return const Locale('nb');
+        if (lang == 'en') return const Locale('en');
+        return const Locale('nb');
+      },
       title: 'SKAVL',
 
       theme: AppThemes.lightTheme,
