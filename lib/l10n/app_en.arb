@@ -105,7 +105,7 @@
     "description": "About menu item"
   },
 
-  "topbar_saveAs": " Save as",
+  "topbar_saveAs": "Save as",
   "@topbar_saveAs": {
     "description": "Save something as something specific"
   },
