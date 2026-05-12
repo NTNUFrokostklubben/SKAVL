@@ -87,6 +87,13 @@ jobs:
       - name: Build Flutter Windows
         run: flutter build windows --release
 
+      - name: Copy VC redistributables to release directory
+        shell: pwsh
+        run: |
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\msvcp140.dll') build\windows\x64\runner\Release
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140.dll') build\windows\x64\runner\Release
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140_1.dll') build\windows\x64\runner\Release
+
       - name: Package Windows build
         shell: pwsh
         run: |
