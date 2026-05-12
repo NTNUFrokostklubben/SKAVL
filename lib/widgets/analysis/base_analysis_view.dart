@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:path/path.dart' as path;
@@ -52,6 +53,32 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
   late final void Function()
   tcListener; // Listener for TransformationController to trigger tile loading on zoom/pan
+
+  // ---- Pointer logic for what button is pressed ----
+  int? panPointer;
+
+  /// Handle pointer events for panning for middle mouse and right click
+  ///
+  /// Due to issues with [InteractiveViewer], manual panning is required for specific buttons
+  void handlePanPointerDown(PointerDownEvent event) {
+    if (event.buttons == kMiddleMouseButton || event.buttons == kSecondaryMouseButton) {
+      panPointer = event.pointer;
+    }
+  }
+
+  /// Manual panning for middle mouse and right click
+  ///
+  /// Due to issues with [InteractiveViewer], manual panning is required for specific buttons
+  void handlePanPointerMove(PointerMoveEvent event) {
+    if (event.pointer != panPointer) return;
+    final scale = tc.value.getMaxScaleOnAxis();
+    tc.value = tc.value.clone()..translateByVector3(Vector3(event.delta.dx / scale, event.delta.dy / scale, 0));
+  }
+
+  /// Handle pointer up for panning
+  void handlePanPointerUp(PointerEvent event) {
+    if (event.pointer == panPointer) panPointer = null;
+  }
 
   Rect getSceneRect(); // Scene bounds (used for sizing the canvas)
   Map<String, Rect>?

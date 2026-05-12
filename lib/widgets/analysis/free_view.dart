@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart';
@@ -150,26 +151,36 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
   Widget buildViewport(Widget child) {
     return Listener(
       onPointerDown: (event) {
-        draggingId = _hitTest(_toScene(event.localPosition));
+        handlePanPointerDown(event);
+        if (event.buttons == kPrimaryMouseButton) {
+          draggingId = _hitTest(_toScene(event.localPosition));
+        }
       },
       onPointerMove: (event) {
-        if (draggingId == null) return;
-        final scale = tc.value.getMaxScaleOnAxis();
-        setState(() {
-          positions[draggingId!] =
-              positions[draggingId!]! + event.delta / scale;
-        });
-        scheduleViewportPlan();
+        handlePanPointerMove(event);
+        if (draggingId != null && event.pointer != panPointer) {
+          final scale = tc.value.getMaxScaleOnAxis();
+          setState(() {
+            positions[draggingId!] = positions[draggingId!]! + event.delta / scale;
+          });
+          scheduleViewportPlan();
+        }
       },
-      onPointerUp: (_) => draggingId = null,
-      onPointerCancel: (_) => draggingId = null,
+      onPointerUp: (event) {
+        handlePanPointerUp(event);
+        draggingId = null;
+      },
+      onPointerCancel: (event) {
+        handlePanPointerUp(event);
+        draggingId = null;
+      },
       child: InteractiveViewer(
         transformationController: tc,
         minScale: 0.005,
         maxScale: 4,
         boundaryMargin: EdgeInsets.zero,
         constrained: false,
-        panEnabled: draggingId == null,
+        panEnabled: false,
         child: Stack(
           children: [
             SizedBox(
