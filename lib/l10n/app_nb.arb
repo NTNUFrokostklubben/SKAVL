@@ -50,6 +50,9 @@
   "@g_help": {
     "description": "Help menu item, but also used as help in general"
   },
+
+  "g_systemLoc": "Systemspråk",
+  "@g_systemLoc": {},
   
   "g_enloc": "Engelsk",
   "@g_enloc": {},
