@@ -73,20 +73,35 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     maximumSize: WidgetStateProperty.all(Size(1000, height)),
                   ),
                   children: <Widget>[
+                    MenuItemButton(
+                      child: Text(loc()!.g_home),
+                      onPressed: () {
+                        navigateTo(context, MainPage());
+                      },
+                    ),
+                    SizedBox.fromSize(size: Size(12, 0),),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        menuItem(loc()!.g_home, () {
-                          navigateTo(context, MainPage());
-                        }),
-                        PopupMenuDivider(),
-                        menuItem(loc()!.g_save, () => ProjectActions.saveProject(context)),
-                        menuItem(loc()!.topbar_saveAs, () => ProjectActions.saveAs(context)),
+                        menuItem(
+                          loc()!.g_save,
+                          () => ProjectActions.saveProject(context),
+                        ),
+                        menuItem(
+                          loc()!.topbar_saveAs,
+                          () => ProjectActions.saveAs(context),
+                        ),
                         menuItem(loc()!.topbar_newProject, () {
                           navigateTo(context, CreateNewProject());
                         }),
-                        menuItem(loc()!.topbar_openProject, () => ProjectActions.openProject(context)),
+                        menuItem(
+                          loc()!.topbar_openProject,
+                          () => ProjectActions.openProject(context),
+                        ),
                         submenu(loc()!.topbar_openRecent, []),
-                        menuItem("${loc()!.g_close} ${loc()!.g_project}", () => ProjectActions.closeProject(context)),
+                        menuItem(
+                          "${loc()!.g_close} ${loc()!.g_project}",
+                          () => ProjectActions.closeProject(context),
+                        ),
                         menuItem(loc()!.g_quit, () {}),
                       ],
                       child: MenuAcceleratorLabel(

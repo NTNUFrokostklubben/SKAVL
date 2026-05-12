@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/main.dart';
 import 'package:skavl/services/project_manager_service.dart';
 
 import 'package:skavl/l10n/app_localizations.dart';
+import 'package:skavl/util/navigation_util.dart';
 
 /// Status bar to show if a project is loaded in the application or not
 ///
@@ -20,16 +22,20 @@ class BottomStatusBar extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Divider(height: 1, thickness: 2),
-        Container(
-          height: 24,
-          color: Theme.of(context).appBarTheme.backgroundColor,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            projectManagerService.hasProject
-                ? "${loc!.g_project}: ${projectManagerService.loadedProject!.projectName}"
-                : "${loc!.g_project}: none",
-            style: Theme.of(context).textTheme.bodySmall,
+        InkWell(
+          onTap: () => navigateTo(context, MainPage()),
+          mouseCursor: SystemMouseCursors.click,
+          child: Container(
+            height: 24,
+            color: Theme.of(context).appBarTheme.backgroundColor,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              projectManagerService.hasProject
+                  ? "${loc!.g_project}: ${projectManagerService.loadedProject!.projectName}"
+                  : "${loc!.g_project}: none",
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ),
       ],
