@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skavl/widgets/image_selection_overlay.dart';
+import 'package:skavl/widgets/opacity_slider.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'base_analysis_view.dart';
 import 'package:skavl/entity/project_metadata.dart';
@@ -32,7 +35,39 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
   final Map<String, Map<String, Offset>> savedPositions = {};
   String? draggingId;
 
+  // Opacity tracking
+  final Map<String, Map<String, double>> savedOpacities = {};
+  final Map<String, double> opacities = {};
+
+  // Image selection tracking
+  String? selectedId;
+  Offset? _pointerDownPos;
+  String? _pointerDownHitId;
+
+  static const double _clickThreshold = 5.0;
+
   //----------------------------------
+
+  /// Override of getting opacity from given source if one exists in memory.
+  @override
+  double getOpacityForSource(String sourceId) => opacities[sourceId] ?? 1.0;
+
+  /// Calculate screen rect size for displaying source text
+  Rect? _selectionScreenRect(String sourceId) {
+    final sceneRect = resolveRectSafe(sourceId);
+    if (sceneRect == null) return null;
+
+    final topLeft = tc.value.transform3(Vector3(sceneRect.left, sceneRect.top, 0));
+    final bottomRight = tc.value.transform3(Vector3(sceneRect.right, sceneRect.bottom, 0));
+    final transformed = Rect.fromLTRB(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+
+    final viewportSize = lastViewportSize ?? Size.zero;
+    final viewport = Rect.fromLTWH(0, 0, viewportSize.width, viewportSize.height);
+
+    final intersected = transformed.intersect(viewport);
+    if (intersected.isEmpty) return null;
+    return intersected;
+  }
 
   @override
   void initState() {
@@ -54,7 +89,10 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
     if (!mounted) return;
     final project = _projectManager.loadedProject;
     if (project == null) return;
-    if (project.currentPage == _lastPage && project.sensitivity == _lastSensitivity) return;
+    if (project.currentPage == _lastPage &&
+        project.sensitivity == _lastSensitivity) {
+      return;
+    }
     _loadCurrentPage(project);
   }
 
@@ -62,13 +100,16 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
     final paths = getWindowPaths(project, ViewMode.free.imageCount);
     if (paths.isEmpty) return;
 
-    // Save current positions before navigating away
+    // Save current positions and opacity before navigating away
     if (_lastPage != null) {
       final currentAnomalies = project.anomaliesInRange;
       if (_lastPage! < currentAnomalies.length) {
         final currentAnomalyName = currentAnomalies[_lastPage!].imageName;
         if (positions.isNotEmpty) {
           savedPositions[currentAnomalyName] = Map.from(positions);
+        }
+        if (opacities.isNotEmpty) {
+          savedOpacities[currentAnomalyName] = Map.from(opacities);
         }
       }
     }
@@ -84,20 +125,54 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
           ? anomalies[project.currentPage].imageName
           : null;
 
-      final saved = anomalyName != null ? savedPositions[anomalyName] : null;
+      final savedPos = anomalyName != null ? savedPositions[anomalyName] : null;
+      final savedOp = anomalyName != null ? savedOpacities[anomalyName] : null;
 
       setState(() {
         positions.clear();
+        opacities.clear();
+        selectedId = null;
         for (final id in sceneController.sourceOrder) {
           positions[id] =
-              saved?[id] ??
+              savedPos?[id] ??
               Offset(
-                Random().nextDouble() * 20000,
-                Random().nextDouble() * 20000,
+                sceneSize / 2 + Random().nextDouble() * 20000,
+                sceneSize / 2 + Random().nextDouble() * 20000,
               );
+          if (savedOp?[id] != null) {
+            opacities[id] = savedOp![id]!;
+          }
         }
+        _centerOnCluster();
+        pendingInitialPlan = true;
       });
     });
+  }
+
+  /// Center the viewport around the cluster of images
+  ///
+  /// Needed for infinite canvas as images are offset to fake negative coordinates from origin.
+  void _centerOnCluster() {
+    final viewportSize = lastViewportSize;
+    if (viewportSize == null) return;
+
+    final rects = sceneController.sourceOrder
+        .map((id) => resolveRectSafe(id))
+        .whereType<Rect>();
+    if (rects.isEmpty) return;
+
+    final bounds = rects.reduce((a, b) => a.expandToInclude(b));
+
+    final scaleX = viewportSize.width / bounds.width;
+    final scaleY = viewportSize.height / bounds.height;
+    final scale = min(scaleX, scaleY) * 0.9;
+
+    final dx = viewportSize.width / 2 - bounds.center.dx * scale;
+    final dy = viewportSize.height / 2 - bounds.center.dy * scale;
+
+    tc.value = Matrix4.identity()
+      ..translateByVector3(Vector3(dx, dy, 0.0))
+      ..scaleByVector3(Vector3.all(scale));
   }
 
   @override
@@ -148,47 +223,124 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
 
   @override
   Widget buildViewport(Widget child) {
-    return Listener(
-      onPointerDown: (event) {
-        draggingId = _hitTest(_toScene(event.localPosition));
-      },
-      onPointerMove: (event) {
-        if (draggingId == null) return;
-        final scale = tc.value.getMaxScaleOnAxis();
-        setState(() {
-          positions[draggingId!] =
-              positions[draggingId!]! + event.delta / scale;
-        });
-        scheduleViewportPlan();
-      },
-      onPointerUp: (_) => draggingId = null,
-      onPointerCancel: (_) => draggingId = null,
-      child: InteractiveViewer(
-        transformationController: tc,
-        minScale: 0.005,
-        maxScale: 4,
-        boundaryMargin: EdgeInsets.zero,
-        constrained: false,
-        panEnabled: draggingId == null,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: sceneSize,
-              height: sceneSize,
-              child: CustomPaint(
-                painter: GridPainter(
-                  thinColor: Theme.of(context).brightness == Brightness.light
-                      ? MyColors.secondaryBlack
-                      : MyColors.primaryWhite,
-                  thickColor: Theme.of(context).brightness == Brightness.light
-                      ? MyColors.secondaryBlack
-                      : MyColors.primaryWhite,
+    return Stack(
+      children: [
+        Listener(
+          onPointerDown: (event) {
+            handlePanPointerDown(event);
+            if (event.buttons == kPrimaryMouseButton) {
+              _pointerDownPos = event.localPosition;
+              _pointerDownHitId = _hitTest(_toScene(event.localPosition));
+              draggingId = _pointerDownHitId;
+            }
+          },
+          onPointerMove: (event) {
+            handlePanPointerMove(event);
+            if (draggingId != null && event.pointer != panPointer) {
+              final scale = tc.value.getMaxScaleOnAxis();
+              setState(() {
+                positions[draggingId!] =
+                    positions[draggingId!]! + event.delta / scale;
+              });
+              scheduleViewportPlan();
+            }
+          },
+          onPointerUp: (event) {
+            handlePanPointerUp(event);
+            if (_pointerDownPos != null) {
+              final moved = (event.localPosition - _pointerDownPos!).distance;
+              // Determine if click or drag
+              if (moved < _clickThreshold) {
+                setState(() {
+                  if (selectedId != null) {
+                    // Deselect any image when clicked
+                    selectedId = null;
+                  } else {
+                    // Select image if no image is selected
+                    selectedId = _pointerDownHitId;
+                  }
+                });
+              }
+            }
+            draggingId = null;
+            _pointerDownPos = null;
+            _pointerDownHitId = null;
+          },
+          onPointerCancel: (event) {
+            handlePanPointerUp(event);
+            draggingId = null;
+            _pointerDownPos = null;
+            _pointerDownHitId = null;
+          },
+          child: InteractiveViewer(
+            transformationController: tc,
+            minScale: 0.005,
+            maxScale: 4,
+            boundaryMargin: EdgeInsets.all(double.infinity),
+            constrained: false,
+            panEnabled: false,
+            child: Stack(
+              children: [
+                SizedBox(
+                  width: sceneSize,
+                  height: sceneSize,
+                  child: CustomPaint(
+                    painter: GridPainter(
+                      thinColor:
+                          Theme.of(context).brightness == Brightness.light
+                          ? MyColors.secondaryBlack
+                          : MyColors.primaryWhite,
+                      thickColor:
+                          Theme.of(context).brightness == Brightness.light
+                          ? MyColors.secondaryBlack
+                          : MyColors.primaryWhite,
+                    ),
+                  ),
                 ),
-              ),
+                child, // tile stack
+              ],
             ),
-            child, // tile stack
-          ],
+          ),
         ),
+        // Image selection logic for clearly showing user which image is selected.
+        if (selectedId != null)
+          AnimatedBuilder(
+            animation: tc,
+            builder: (context, _) {
+              final selRect = _selectionScreenRect(selectedId!);
+              if (selRect == null) return const SizedBox.shrink();
+              return Stack(
+                children: [
+                  ImageSelectionOverlay(screenRect: selRect, label: selectedId!),
+                  _buildSliderOverlay(),
+                ],
+              );
+            },
+          ),
+      ],
+    );
+  }
+
+  /// Builds a lider widget as an overlay on the selected image.
+  ///
+  /// The slider is positioned at the top-right corner of the image.
+  /// If the image bounds are outside of the viewport, slider anchors in the top right corner of the viewport.
+  Widget _buildSliderOverlay() {
+    final rect = resolveRectSafe(selectedId!);
+    if (rect == null) return const SizedBox.shrink();
+
+    final topRight = tc.value.transform3(Vector3(rect.right, rect.top, 0));
+    final viewportSize = lastViewportSize ?? Size.zero;
+
+    final left = topRight.x.clamp(0.0, viewportSize.width - 80);
+    final top = topRight.y.clamp(80.0, viewportSize.height - 280);
+
+    return Positioned(
+      left: left,
+      top: top,
+      child: VerticalSlider(
+        value: opacities[selectedId!] ?? 1.0,
+        onChanged: (v) => setState(() => opacities[selectedId!] = v),
       ),
     );
   }

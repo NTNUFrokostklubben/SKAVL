@@ -64,13 +64,20 @@ class _StaticViewState extends BaseTileViewState<StaticView> {
 
   @override
   Widget buildViewport(Widget child) {
-    return InteractiveViewer(
-      transformationController: tc,
-      minScale: 0.005,
-      maxScale: 3,
-      boundaryMargin: EdgeInsets.all(double.infinity),
-      constrained: false,
-      child: child,
+    return Listener(
+      onPointerDown: handlePanPointerDown,
+      onPointerMove: handlePanPointerMove,
+      onPointerUp: handlePanPointerUp,
+      onPointerCancel: handlePanPointerUp,
+      child: InteractiveViewer(
+        transformationController: tc,
+        minScale: 0.005,
+        maxScale: 3,
+        boundaryMargin: EdgeInsets.all(double.infinity),
+        constrained: false,
+        panEnabled: false,
+        child: child,
+      ),
     );
   }
 
