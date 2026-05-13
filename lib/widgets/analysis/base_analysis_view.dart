@@ -47,6 +47,7 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
   bool planInFlight = false;
   int planGeneration = 0;
   Size? lastViewportSize;
+  bool pendingInitialPlan = false;
 
   // Fit-to-scene on load
   bool pendingFitToScene = false;
@@ -186,8 +187,12 @@ abstract class BaseTileViewState<T extends BaseAnalysisView> extends State<T> {
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
+              final shouldPlan = pendingFitToScene || pendingInitialPlan;
               if (pendingFitToScene) fitViewportToScene();
-              scheduleViewportPlan();
+              if (shouldPlan) {
+                scheduleViewportPlan();
+                pendingInitialPlan = false;
+              }
             });
 
             final totalImages =

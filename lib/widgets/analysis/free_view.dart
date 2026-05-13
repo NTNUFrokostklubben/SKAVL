@@ -90,8 +90,9 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
     final project = _projectManager.loadedProject;
     if (project == null) return;
     if (project.currentPage == _lastPage &&
-        project.sensitivity == _lastSensitivity)
+        project.sensitivity == _lastSensitivity) {
       return;
+    }
     _loadCurrentPage(project);
   }
 
@@ -142,6 +143,7 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
             opacities[id] = savedOp![id]!;
           }
         }
+        pendingInitialPlan = true;
       });
     });
   }
