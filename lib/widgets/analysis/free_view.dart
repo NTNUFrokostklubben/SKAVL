@@ -136,16 +136,43 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
           positions[id] =
               savedPos?[id] ??
               Offset(
-                Random().nextDouble() * 20000,
-                Random().nextDouble() * 20000,
+                sceneSize / 2 + Random().nextDouble() * 20000,
+                sceneSize / 2 + Random().nextDouble() * 20000,
               );
           if (savedOp?[id] != null) {
             opacities[id] = savedOp![id]!;
           }
         }
+        _centerOnCluster();
         pendingInitialPlan = true;
       });
     });
+  }
+
+  /// Center the viewport around the cluster of images
+  ///
+  /// Needed for infinite canvas as images are offset to fake negative coordinates from origin.
+  void _centerOnCluster() {
+    final viewportSize = lastViewportSize;
+    if (viewportSize == null) return;
+
+    final rects = sceneController.sourceOrder
+        .map((id) => resolveRectSafe(id))
+        .whereType<Rect>();
+    if (rects.isEmpty) return;
+
+    final bounds = rects.reduce((a, b) => a.expandToInclude(b));
+
+    final scaleX = viewportSize.width / bounds.width;
+    final scaleY = viewportSize.height / bounds.height;
+    final scale = min(scaleX, scaleY) * 0.9;
+
+    final dx = viewportSize.width / 2 - bounds.center.dx * scale;
+    final dy = viewportSize.height / 2 - bounds.center.dy * scale;
+
+    tc.value = Matrix4.identity()
+      ..translateByVector3(Vector3(dx, dy, 0.0))
+      ..scaleByVector3(Vector3.all(scale));
   }
 
   @override
@@ -249,7 +276,7 @@ class _FreeViewState extends BaseTileViewState<FreeView> {
             transformationController: tc,
             minScale: 0.005,
             maxScale: 4,
-            boundaryMargin: EdgeInsets.zero,
+            boundaryMargin: EdgeInsets.all(double.infinity),
             constrained: false,
             panEnabled: false,
             child: Stack(
