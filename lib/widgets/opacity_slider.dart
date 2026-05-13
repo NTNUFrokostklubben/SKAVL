@@ -20,7 +20,7 @@ class VerticalSlider extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 1),
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
