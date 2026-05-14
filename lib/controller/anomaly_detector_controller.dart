@@ -53,7 +53,7 @@ class AnomalyDetectorController {
     return await anomalyDetectorClient.detectAnomalySet(
       DetectAnomalySetRequest(
         projectMetadata: metadata,
-        startMode: StartMode.START_RESTART,
+        startMode: StartMode.START_CONTINUE,
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:skavl/entity/anomaly_def.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/util/anomaly_helpers.dart';
 import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
@@ -73,7 +74,12 @@ class _ProjectOverviewState extends State<ProjectOverview> {
               )
               .toList();
 
-          final updated = projectManager.loadedProject!.copyWith(allSets: sets);
+          final merged = mergeAnomalySets(
+            projectManager.loadedProject!.allSets,
+            sets,
+          );
+
+          final updated = projectManager.loadedProject!.copyWith(allSets: merged);
           projectManager.setProject(updated, projectManager.filePath!);
           ProjectFileService().saveToFile(projectManager.filePath!, updated);
         });
