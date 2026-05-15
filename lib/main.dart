@@ -169,7 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       loc()!.welcomePage_createNewButton,
                       onPressed: () => navigateTo(context, CreateNewProject()),
                     ),
-                    LongButton("test shutdown", onPressed: () => ServiceLifetimeService().shutdownAll()),
                   ],
                 ),
                 const Image(
