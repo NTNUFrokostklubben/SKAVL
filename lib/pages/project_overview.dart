@@ -7,6 +7,7 @@ import 'package:skavl/entity/anomaly_set.dart';
 import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/pages/analysis.dart';
 import 'package:skavl/proto/anomaly.pb.dart' as proto;
+import 'package:skavl/proto/anomaly.pbenum.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
@@ -29,9 +30,11 @@ class _ProjectOverviewState extends State<ProjectOverview> {
   proto.DescribeAnomalyProjectResponse? _projectInfo;
   bool _isLoading = true;
 
-  /// Run entire analysis from data and parses it to project file.
+  /// Run entire analysis from data based on [ProjectManagerService] and [StartMode].
   ///
-  /// Will need to do incremental writes eventually to allow partial project completion.
+  /// Supports two start modes:
+  /// - Start from scratch (START_RESTART)
+  /// - Continue previous analysis as stored in the Anomaly Service database (START_CONTINUE).
   Future<void> _startAnomalyDetection(
     ProjectManagerService projectManager, {
     proto.StartMode startMode = proto.StartMode.START_CONTINUE,
