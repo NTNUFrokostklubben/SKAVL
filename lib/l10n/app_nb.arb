@@ -213,7 +213,7 @@
     "description": "Missing polygon SOSI from form"
   },
 
-  "loadingDialog_analyzing": "Analyserer luftbildene dine",
+  "loadingDialog_analyzing": "Analyserer flybildene dine",
   "@loadingDialog_analyzing": {
     "description": "Analyserer luftbildene dine - title"
   },
