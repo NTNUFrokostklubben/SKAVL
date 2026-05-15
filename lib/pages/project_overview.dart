@@ -111,8 +111,16 @@ class _ProjectOverviewState extends State<ProjectOverview> {
       builder: (ctx) => AlertDialog(
         title: MediumHeader(loc!.projectOverview_startFromScratch),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        content: Text(
-          loc.projectOverview_scratchDesc, textAlign: TextAlign.center,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              loc.projectOverview_scratchDesc,
+            ),
+            Text(loc.projectOverview_scratchAreyousure, style: Theme.of(context).textTheme.titleSmall,),
+
+          ],
         ),
         actions: [
           TextButton(

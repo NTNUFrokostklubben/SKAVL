@@ -347,8 +347,13 @@
     "description": "Title for restarting analysis popup"
   },
 
-  "projectOverview_scratchDesc": "This will delete all existing analysis results for this project and start over from the first image.\nAre you sure you want restart the analysis?",
+  "projectOverview_scratchDesc": "This will delete all existing analysis results for this project and start over from the first image.",
   "@projectOverview_scratchDesc": {
+    "description": "Description for restarting analysis popup"
+  },
+
+  "projectOverview_scratchAreyousure": "Are you sure you want restart the analysis?",
+  "@projectOverview_scratchAreyousure": {
     "description": "Description for restarting analysis popup"
   },
 
