@@ -13,6 +13,7 @@ class ServiceManager {
   final _statusController = StreamController<ServiceStatus>.broadcast();
   bool autoRestart;
   bool _intentionalShutdown = false;
+  List<String> _lastArgs = const [];
 
   Stream<ServiceStatus> get statusStream => _statusController.stream;
 
@@ -26,6 +27,7 @@ class ServiceManager {
 
   /// Starts service from stored executable path and monitors its status.
   Future<void> start({List<String> args = const []}) async {
+    _lastArgs = args;
     _intentionalShutdown = false;
 
     final exe = File(_exePath);
@@ -42,10 +44,10 @@ class ServiceManager {
     );
     _statusController.add(ServiceStatus.running);
 
-    _process!.exitCode.then((_) {
+    _process!.exitCode.then((code) {
       _statusController.add(ServiceStatus.stopped);
       if (!_intentionalShutdown && autoRestart) {
-        start();
+        start(args: _lastArgs);
       }
     });
   }
