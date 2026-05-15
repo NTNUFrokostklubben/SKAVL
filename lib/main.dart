@@ -53,8 +53,9 @@ class MyApp extends StatelessWidget {
       localeResolutionCallback: (deviceLocale, supported) {
         if (deviceLocale == null) return const Locale('nb');
         final lang = deviceLocale.languageCode;
-        if (lang == 'nb' || lang == 'nn' || lang == 'no')
+        if (lang == 'nb' || lang == 'nn' || lang == 'no') {
           return const Locale('nb');
+        }
         if (lang == 'en') return const Locale('en');
         return const Locale('nb');
       },
