@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skavl/controller/report_generation_controller.dart';
+import 'package:skavl/entity/analysis_progress.dart';
 import 'package:skavl/entity/anomaly_def.dart';
+import 'package:skavl/entity/anomaly_set.dart';
+import 'package:skavl/l10n/app_localizations.dart';
 import 'package:skavl/pages/analysis.dart';
+import 'package:skavl/proto/anomaly.pb.dart' as proto;
+import 'package:skavl/proto/anomaly.pbenum.dart';
+import 'package:skavl/services/anomaly_service_provider.dart';
 import 'package:skavl/services/project_file_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/theme/colors.dart';
+import 'package:skavl/util/anomaly_helpers.dart';
 import 'package:skavl/util/navigation_util.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/dialogs/loading_popup.dart';
 import 'package:skavl/widgets/labels/headings.dart';
-import 'package:skavl/entity/analysis_progress.dart';
-import 'package:skavl/entity/anomaly_set.dart';
-import 'package:skavl/l10n/app_localizations.dart';
-import 'package:skavl/proto/anomaly.pb.dart' as proto;
-import 'package:skavl/services/anomaly_service_provider.dart';
-import 'package:skavl/theme/colors.dart';
 import 'package:skavl/widgets/top_bar.dart';
 
 class ProjectOverview extends StatefulWidget {
@@ -28,12 +30,15 @@ class _ProjectOverviewState extends State<ProjectOverview> {
   proto.DescribeAnomalyProjectResponse? _projectInfo;
   bool _isLoading = true;
 
-  /// Run entire analysis from data and parses it to project file.
+  /// Run entire analysis from data based on [ProjectManagerService] and [StartMode].
   ///
-  /// Will need to do incremental writes eventually to allow partial project completion.
+  /// Supports two start modes:
+  /// - Start from scratch (START_RESTART)
+  /// - Continue previous analysis as stored in the Anomaly Service database (START_CONTINUE).
   Future<void> _startAnomalyDetection(
-    ProjectManagerService projectManager,
-  ) async {
+    ProjectManagerService projectManager, {
+    proto.StartMode startMode = proto.StartMode.START_CONTINUE,
+  }) async {
     final imagePath = projectManager.loadedProject!.imageFolderPath;
     final sosiPath = projectManager.loadedProject!.sosiFilePath;
 
@@ -57,10 +62,12 @@ class _ProjectOverviewState extends State<ProjectOverview> {
           imagePath: imagePath,
           sosiPath: sosiPath,
           waterSosiPath: projectManager.loadedProject!.sosiWaterMaskPath,
+          startMode: startMode,
         )
         .then((response) {
           controller.stopPolling();
           navigator.pop();
+
           final sets = response.anomalyResponse.anomalySets
               .map(
                 (s) => AnomalySet(
@@ -73,10 +80,82 @@ class _ProjectOverviewState extends State<ProjectOverview> {
               )
               .toList();
 
-          final updated = projectManager.loadedProject!.copyWith(allSets: sets);
+          List<AnomalySet> newSets;
+          if (startMode == proto.StartMode.START_RESTART) {
+            newSets = sets;
+          } else {
+            newSets = mergeAnomalySets(
+              projectManager.loadedProject!.allSets,
+              sets,
+            );
+          }
+
+          final updated = projectManager.loadedProject!.copyWith(
+            allSets: newSets,
+            currentPage: 0
+          );
           projectManager.setProject(updated, projectManager.filePath!);
           ProjectFileService().saveToFile(projectManager.filePath!, updated);
         });
+  }
+
+  /// Dialog for starting analysis from scratch.
+  ///
+  /// Hidden under 3-dot menu on project overview page.
+  Future<void> _confirmAndRestartAnalysis(
+    ProjectManagerService projectManager,
+  ) async {
+    final loc = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: MediumHeader(loc!.projectOverview_startFromScratch),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              loc.projectOverview_scratchDesc,
+            ),
+            Text(loc.projectOverview_scratchAreyousure, style: Theme.of(context).textTheme.titleSmall,),
+
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            style: TextButton.styleFrom(
+              foregroundColor: MyColors.secondaryBlack,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            child: Text(loc.g_cancel, style: Theme.of(ctx).textTheme.titleSmall),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade700,
+              foregroundColor: MyColors.primaryWhite,
+            ),
+            child: Text(
+              loc.projectOverview_scratchConfirm,
+              style: Theme.of(
+                ctx,
+              ).textTheme.titleSmall?.copyWith(color: MyColors.primaryWhite),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      _startAnomalyDetection(
+        projectManager,
+        startMode: proto.StartMode.START_RESTART,
+      );
+    }
   }
 
   Future<void> _loadProjectInfo() async {
@@ -141,7 +220,28 @@ class _ProjectOverviewState extends State<ProjectOverview> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            LargeHeader(loc.projectOverview_title),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                LargeHeader(loc.projectOverview_title),
+                PopupMenuButton<String>(
+                  popUpAnimationStyle: AnimationStyle.noAnimation,
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (v) {
+                    if (v == "restart") {
+                      _confirmAndRestartAnalysis(projectManager);
+                    }
+                  },
+                  itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      value: "restart",
+                      child: Text("Start analysis from scratch"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
             const SizedBox(height: 24),
 
             _SectionCard(
@@ -217,25 +317,21 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
                     SizedBox(
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: projectManager
-                            .loadedProject!
-                            .unclassifiedAnomaliesInRange
-                            .isEmpty
+                        onPressed:
+                            projectManager
+                                .loadedProject!
+                                .unclassifiedAnomaliesInRange
+                                .isEmpty
                             ? null
                             : () => _generateReport(),
                         child: Row(
                           spacing: 16,
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              loc.projectOverview_unclassified
-                            ),
-                          ],
+                          children: [Text(loc.projectOverview_unclassified)],
                         ),
                       ),
                     ),
@@ -246,21 +342,17 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed:
-                        projectManager
-                            .loadedProject!
-                            .classifiedAnomaliesInRange
-                            .isEmpty
+                            projectManager
+                                .loadedProject!
+                                .classifiedAnomaliesInRange
+                                .isEmpty
                             ? null
                             : () => _generateReportClassified(),
                         child: Row(
                           spacing: 16,
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              loc.projectOverview_classified
-                            ),
-                          ],
+                          children: [Text(loc.projectOverview_classified)],
                         ),
                       ),
                     ),
@@ -279,11 +371,7 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                           spacing: 16,
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              loc.projectOverview_runAnalysis,
-                            ),
-                          ],
+                          children: [Text(loc.projectOverview_runAnalysis)],
                         ),
                       ),
                     ),
@@ -300,14 +388,13 @@ class _ProjectOverviewState extends State<ProjectOverview> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              loc.projectOverview_classifyImages,
-                            ),
+                            Text(loc.projectOverview_classifyImages),
                             Icon(
                               Icons.arrow_forward_ios_outlined,
                               size: 20,
                               color:
-                                  Theme.of(context).brightness == Brightness.light
+                                  Theme.of(context).brightness ==
+                                      Brightness.light
                                   ? MyColors.secondaryBlack
                                   : MyColors.primaryWhite,
                             ),

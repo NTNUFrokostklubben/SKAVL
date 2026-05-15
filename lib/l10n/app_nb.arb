@@ -53,7 +53,7 @@
 
   "g_systemLoc": "Systemspråk",
   "@g_systemLoc": {},
-  
+
   "g_enloc": "Engelsk",
   "@g_enloc": {},
 
@@ -102,12 +102,12 @@
 
   "settings_systemMode": "System modus",
   "@settings_systemMode": {},
-  
+
   "topbar_about" : "Om",
   "@topbar_about": {
     "description": "About menu item"
   },
-  
+
   "topbar_saveAs": "Lagre som",
   "@topbar_saveAs": {
     "description": "Save something as something specific"
@@ -127,7 +127,7 @@
   "@topbar_openProject": {
     "description": "Open File menu item"
   },
-  
+
   "topbar_openRecent": "Åpne nylige prosjekt",
   "@topbar_openRecent": {
     "description": "Open Recent menu item"
@@ -137,7 +137,7 @@
   "@anomalyClassifBar_confirm": {
     "description": "Bekreft avvik"
   },
-  
+
   "welcomePage_SKAVL": "Velkommen til SKAVL!",
   "@welcomePage_SKAVL": {
     "description": "Velkommen til SKAVL - title"
@@ -257,7 +257,7 @@
   "@anomalyClassifBar_anomalyType": {
     "description": "Avvik type - title"
   },
-  
+
   "anomalyClassifBar_searchCreate": "Søk eller opprett avvikstype",
   "@anomalyClassifBar_searchCreate": {
     "description": "Søk eller opprett avvikstype - text input hint"
@@ -340,6 +340,26 @@
   "projectOverview_classified": "Generer klassifisert rapport",
   "@projectOverview_classified": {
     "description": "Button for generating classified report"
+  },
+
+  "projectOverview_startFromScratch": "Start analyse fra starten",
+  "@projectOverview_startFromScratch": {
+    "description": "Title for restarting analysis popup"
+  },
+
+  "projectOverview_scratchDesc": "Dette vil slette alle eksisterende analyser for dette prosjektet og starte analyser fra første bilde.",
+  "@projectOverview_scratchDesc": {
+    "description": "Description for restarting analysis popup"
+  },
+
+  "projectOverview_scratchAreyousure": "Er du sikker på at du vil starte analysen på nytt?",
+  "@projectOverview_scratchAreyousure": {
+    "description": "Description for restarting analysis popup"
+  },
+
+  "projectOverview_scratchConfirm": "Start på nytt",
+  "@projectOverview_scratchConfirm":{
+    "description": "Confirm button for restarting analysis popup"
   }
 
 }

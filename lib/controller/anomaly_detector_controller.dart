@@ -33,13 +33,12 @@ class AnomalyDetectorController {
   );
 
   /// Sends a start procedure to the anomaly service with supplied data.
-  ///
-  /// Currently does not use information for anything, but response has been tested with print so it is ready for implementation.
   Future<DetectAnomalySetResponse> runAnalysis({
     required String imagePath,
     required String sosiPath,
     required String projectName,
     String? waterSosiPath = "",
+    StartMode startMode = StartMode.START_CONTINUE,
   }) async {
     final metadata = ProjectMetadata()
       ..projectName = projectName
@@ -53,7 +52,7 @@ class AnomalyDetectorController {
     return await anomalyDetectorClient.detectAnomalySet(
       DetectAnomalySetRequest(
         projectMetadata: metadata,
-        startMode: StartMode.START_RESTART,
+        startMode: startMode,
       ),
     );
   }
