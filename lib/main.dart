@@ -1,16 +1,16 @@
-import 'dart:io';
+import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:skavl/model/settings_model.dart';
 import 'package:skavl/pages/create_new_project.dart';
 import 'package:skavl/pages/project_overview.dart';
 import 'package:skavl/services/anomaly_service_provider.dart';
-import 'package:skavl/services/port_config_service.dart';
 import 'package:skavl/services/project_manager_service.dart';
+import 'package:skavl/services/service_lifetime_service.dart';
 import 'package:skavl/services/service_manager.dart';
 import 'package:skavl/theme/app_themes.dart';
 import 'package:skavl/util/navigation_util.dart';
-import 'package:skavl/util/network_util.dart';
 import 'package:skavl/util/project_actions.dart';
 import 'package:skavl/widgets/bottom_status_bar.dart';
 import 'package:skavl/widgets/top_bar.dart';
@@ -23,7 +23,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = SettingsModel();
   await settings.load();
-
 
   runApp(
     /// State system for settings
@@ -54,7 +53,9 @@ class MyApp extends StatelessWidget {
       localeResolutionCallback: (deviceLocale, supported) {
         if (deviceLocale == null) return const Locale('nb');
         final lang = deviceLocale.languageCode;
-        if (lang == 'nb' || lang == 'nn' || lang == 'no') return const Locale('nb');
+        if (lang == 'nb' || lang == 'nn' || lang == 'no') {
+          return const Locale('nb');
+        }
         if (lang == 'en') return const Locale('en');
         return const Locale('nb');
       },
@@ -76,45 +77,25 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  late final ServiceManager _tilerService;
-  late final ServiceManager _anomalyService;
-  late final ServiceManager _reportService;
+class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
+  StreamSubscription<ServiceStatusEvent>? _statusSub;
 
   @override
   void initState() {
     super.initState();
 
-    // Determine tiler service path based on OS.
-    _tilerService = ServiceManager(
-      Platform.isWindows
-          ? 'services/tiler/server/skavl-tiler.exe'
-          : 'services/tiler/server/skavl-tiler',
-    );
+    WidgetsBinding.instance.addObserver(this);
 
-    // Determine anomaly service path based on OS.
-    // TODO: Linux not supported yet as sosi driver is not included. Add this later
-    _anomalyService = ServiceManager(
-      Platform.isWindows
-          ? 'services/skavl-anomaly/server/skavl-anomaly-detection-server.exe'
-          : 'services/skavl-anomaly/server/skavl-anomaly-detection-server'
-    );
-
-    _reportService = ServiceManager(
-        Platform.isWindows
-            ? 'services/skavl-report/server/skavl-report-server.exe'
-            : 'services/skavl-report/server/skavl-report-server'
-    );
-
-    // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
-    _tilerService.statusStream.listen((status) {
-      if (status == ServiceStatus.notFound) {
+    _statusSub = ServiceLifetimeService().statusStream.listen((event) {
+      if (event.status == ServiceStatus.notFound) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Tiler service executable not found.'),
-                duration: Duration(seconds: 5),
+              SnackBar(
+                content: Text(
+                  'Service ${event.serviceName} executable not found.',
+                ),
+                duration: const Duration(seconds: 5),
               ),
             );
           }
@@ -122,67 +103,19 @@ class _MainPageState extends State<MainPage> {
       }
     });
 
-    // Callback to check if the service executable is missing. Will be implemented more cleanly in the future, but for debugging and MVP this is sufficient.
-    _anomalyService.statusStream.listen((status) {
-      if (status == ServiceStatus.notFound) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Skavl Anomaly service executable not found.'),
-                duration: Duration(seconds: 5),
-              ),
-            );
-          }
-        });
-      }
-    });
-
-    _reportService.statusStream.listen((status) {
-      if (status == ServiceStatus.notFound) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Skavl report service executable not found.'),
-                duration: Duration(seconds: 5),
-              ),
-            );
-          }
-        });
-      }
-    });
-
-    _initServices();
+    ServiceLifetimeService().initAll();
   }
 
-  /// Checks port configs and starts submodules.
-  ///
-  /// Checks if ports are in use, if they are it means a zombie process or standalone server is running.
-  /// Skips starting the service if port is in use as code will hook into already running instance.
-  Future<void> _initServices() async {
-    await PortConfigService().initialize();
-
-    final tilerConfig = PortConfigService().getConfig("skavl_tiler");
-    if (!await NetworkUtil.isPortInUse(tilerConfig.port)) {
-      _tilerService.start(args: ["--port",tilerConfig.port.toString(),"--local"]);
-    }
-
-    final anomalyConfig = PortConfigService().getConfig("skavl_anomaly");
-    if (!await NetworkUtil.isPortInUse(anomalyConfig.port)) {
-      _anomalyService.start(args: ["server", "--port", anomalyConfig.port.toString(),"--local"]);
-    }
-
-    final reportConfig = PortConfigService().getConfig("skavl_report");
-    if (!await NetworkUtil.isPortInUse(reportConfig.port)) {
-      _reportService.start(args: ["--port", reportConfig.port.toString(),"--local"]);
-    }
+  @override
+  Future<AppExitResponse> didRequestAppExit() async {
+    await ServiceLifetimeService().shutdownAll();
+    return AppExitResponse.exit;
   }
 
   @override
   void dispose() {
-    _tilerService.dispose();
-    _anomalyService.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _statusSub?.cancel();
     super.dispose();
   }
 
